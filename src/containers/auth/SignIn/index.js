@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import { AccessToken, LoginManager, GraphRequest, GraphRequestManager } from "react-native-fbsdk";
+import { AccessToken, LoginManager, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 
-export default class SignIn extends Component {
+import { incrementCounter, decrementCounter } from '../../../redux/ducks/counter';
+
+class SignIn extends Component {
   signIn = () => {
     LoginManager.logInWithReadPermissions(["public_profile", "email", "user_birthday", "user_friends"])
       .then(
@@ -16,10 +19,17 @@ export default class SignIn extends Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Sign In</Text>
         <Button title="call mark" onPress={this.signIn}/>
+
+        <View style={{ flex: 1 }}>
+          <Button title="+" onPress={() => this.props.incrementCounter()}/>
+          <Text>{this.props.counter}</Text>
+          <Button title="-" onPress={() => this.props.decrementCounter()}/>
+        </View>
       </View>
     );
   }
@@ -38,3 +48,13 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
+
+export default connect(
+  (state) => ({
+    counter: state.counter
+  }),
+  {
+    incrementCounter,
+    decrementCounter
+  }
+)(SignIn);

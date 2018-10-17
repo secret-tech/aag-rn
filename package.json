@@ -13,6 +13,10 @@
     "react-native": "0.57.3",
     "react-native-fbsdk": "^0.8.0",
     "react-navigation": "^2.18.0",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.1",
+    "redux-actions": "^2.6.1",
+    "redux-saga": "^0.16.2",
     "xcode": "^1.0.0"
   },
   "devDependencies": {

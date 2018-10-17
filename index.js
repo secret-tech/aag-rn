@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { AppRegistry, View, Button } from 'react-native';
-import { name as appName } from './app.json';
+import { Provider } from 'react-redux';
 
 import AppNavigator from './src/navigation/AppNavigator';
+
+import configureStore from './src/redux/configureStore';
+import { name as appName } from './app.json';
 
 class App extends Component {
   state = {
@@ -20,9 +23,10 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
-      <AppNavigator initialRouteName={this.state.initialRouteName} />
+      <Provider store={configureStore()}>
+        <AppNavigator initialRouteName={this.state.initialRouteName} />
+      </Provider>
     );
   }
 }
