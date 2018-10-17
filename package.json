@@ -7,9 +7,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "adm-zip": "^0.4.11",
+    "plist": "^3.0.1",
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.3",
-    "react-navigation": "^2.18.0"
+    "react-native-fbsdk": "^0.8.0",
+    "react-navigation": "^2.18.0",
+    "xcode": "^1.0.0"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",
