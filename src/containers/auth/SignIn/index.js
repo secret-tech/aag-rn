@@ -27,7 +27,7 @@ class SignIn extends Component {
 
         <View style={{ flex: 1 }}>
           <Button title="+" onPress={() => this.props.incrementCounter()}/>
-          <Text>{this.props.counter}</Text>
+          <Text>{this.props.counterNum}</Text>
           <Button title="-" onPress={() => this.props.decrementCounter()}/>
         </View>
       </View>
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 
 export default connect(
   (state) => ({
-    counter: state.counter
+    counterNum: state.get('counter').get('num')
   }),
   {
     incrementCounter,
