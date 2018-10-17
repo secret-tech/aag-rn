@@ -1,35 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import { AccessToken, LoginManager, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
+import { StyleSheet } from 'react-native';
+import { View, Button, Text } from 'native-base';
 
-import { incrementCounter, decrementCounter } from '../../../redux/ducks/counter';
+import { fetchFbUserData } from '../../../redux/ducks/auth/auth';
 
 class SignIn extends Component {
-  signIn = () => {
-    LoginManager.logInWithReadPermissions(["public_profile", "email", "user_birthday", "user_friends"])
-      .then(
-        (result) => {
-          console.log('result', result);
-        },
-        (error) => {
-          console.log('error', error);
-        }
-      );
-  }
-
   render() {
-    console.log(this.props);
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Sign In</Text>
-        <Button title="call mark" onPress={this.signIn}/>
-
-        <View style={{ flex: 1 }}>
-          <Button title="+" onPress={() => this.props.incrementCounter()}/>
-          <Text>{this.props.counterNum}</Text>
-          <Button title="-" onPress={() => this.props.decrementCounter()}/>
-        </View>
+        <Button block onPress={() => this.props.fetchFbUserData()}>
+          <Text>Call Facebook</Text>
+        </Button>
       </View>
     );
   }
@@ -40,21 +23,33 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#6546fa',
   },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+    color: '#fff'
   },
 });
 
 export default connect(
   (state) => ({
-    counterNum: state.get('counter').get('num')
+    authorized: state.get('auth').get('authorized'),
+    jwt: state.get('auth').get('jwt'),
+    loading: state.get('auth').get('loading'),
+    fbUserData: {
+      ageRange: state.get('auth').get('fbUserData').get('ageRange'),
+      birthday: state.get('auth').get('fbUserData').get('birthday'),
+      email: state.get('auth').get('fbUserData').get('email'),
+      firstName: state.get('auth').get('fbUserData').get('firstName'),
+      lastName: state.get('auth').get('fbUserData').get('lastName'),
+      name: state.get('auth').get('fbUserData').get('name'),
+      id: state.get('auth').get('fbUserData').get('id'),
+      picture: state.get('auth').get('fbUserData').get('picture')
+    }
   }),
   {
-    incrementCounter,
-    decrementCounter
+    fetchFbUserData
   }
 )(SignIn);
