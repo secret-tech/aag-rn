@@ -42,10 +42,10 @@ function* fetchFbUserDataIterator() {
     yield call(console.log, err, result);
     if (true) { // TODO не забудь ебнуть это говно
       yield put(fetchFbUserData.success(result));
-      yield call(setToken, 'jwt123');
-      yield put(NavigationActions.navigate({ routeName: 'Home' }));
+      // yield call(setToken, 'jwt123');
+      // yield put(NavigationActions.navigate({ routeName: 'Home' }));
 
-      // yield put(NavigationActions.navigate({ routeName: 'SignUp' }));
+      yield put(NavigationActions.navigate({ routeName: 'SignUp' }));
     } else {
       yield call(console.log, 'fb login cancelled', true);
     }

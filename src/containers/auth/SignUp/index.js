@@ -18,9 +18,17 @@ class SignUp extends Component {
           <Image style={s.logo} source={logo}/>
 
           <View style={s.buttons}>
-            <Button block onPress={() => console.log('u picked the role!')}>
-              <Text>pick the role</Text>
-            </Button>
+            <View style={s.button}>
+              <Button block light bordered onPress={() => console.log('SIGN_UP AS PROVIDER')}>
+                <Text>Sign Up as Adviser</Text>
+              </Button>
+            </View>
+            
+            <View style={s.button}>
+              <Button block light bordered onPress={() => console.log('SIGN_UP AS USER')}>
+                <Text>Sign Up as User</Text>
+              </Button>
+            </View>
           </View>
         </View>
       </View>
