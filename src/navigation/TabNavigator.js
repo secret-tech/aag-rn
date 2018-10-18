@@ -1,4 +1,3 @@
-import React from 'react';
 import { createBottomTabNavigator } from 'react-navigation';
 
 import Explore from '../containers/explore/Explore';
@@ -10,5 +9,6 @@ export default createBottomTabNavigator({
   Chat: { screen: Chat },
   Profile: { screen: Profile }
 }, {
-  initialRouteName: 'Explore'
+  initialRouteName: 'Explore',
+  headerMode: 'none'
 });

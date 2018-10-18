@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { StyleSheet, Text, View } from 'react-native';
+import { Button } from 'native-base';
 
-export default class Explore extends Component {
+import { signOut } from '../../../redux/ducks/auth/auth';
+
+class Explore extends Component {
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Explore</Text>
+        <Button onPress={() => this.props.signOut()}>
+          <Text>out</Text>
+        </Button>
       </View>
     );
   }
@@ -24,3 +31,5 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
+
+export default connect(null, { signOut })(Explore);

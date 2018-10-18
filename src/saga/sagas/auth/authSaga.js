@@ -1,12 +1,15 @@
-import { all, takeLatest, call, fork, cps, put } from 'redux-saga/effects';
+import { all, takeLatest, call, fork, put } from 'redux-saga/effects';
 import { 
   AccessToken, 
   LoginManager, 
   GraphRequest, 
   GraphRequestManager 
 } from 'react-native-fbsdk';
+import { NavigationActions } from 'react-navigation';
 
-import { fetchFbUserData } from '../../../redux/ducks/auth/auth';
+import { fetchFbUserData, SIGN_OUT } from '../../../redux/ducks/auth/auth';
+
+import { setToken, rmToken } from '../../../utils/auth';
 
 
 const createFbUserDataPayload = (accessToken) => ({
@@ -26,8 +29,7 @@ function* fetchFbUserDataIterator() {
     yield LoginManager.logInWithReadPermissions(fbReqPerm);
     const { accessToken } = yield AccessToken.getCurrentAccessToken();
     const { err, result } = yield new Promise((resolve) => {
-      new GraphRequestManager().addRequest(new GraphRequest(
-        '/me',
+      new GraphRequestManager().addRequest(new GraphRequest('/me',
         createFbUserDataPayload(accessToken),
         (err, result) => resolve({ err, result })
       )).start();
@@ -38,7 +40,16 @@ function* fetchFbUserDataIterator() {
     // если нет - редиректим на выбор роли
 
     yield call(console.log, err, result);
-    yield put(fetchFbUserData.success(result));
+    if (true) { // TODO не забудь ебнуть это говно
+      yield put(fetchFbUserData.success(result));
+      yield call(setToken, 'jwt123');
+      yield put(NavigationActions.navigate({ routeName: 'Home' }));
+
+      // yield put(NavigationActions.navigate({ routeName: 'SignUp' }));
+    } else {
+      yield call(console.log, 'fb login cancelled', true);
+    }
+
   } catch (e) {
     yield call(console.log, 'authSaga/fetchFbUserDataIterator', e);
   }
@@ -52,8 +63,26 @@ function* fetchFbUserDataSaga() {
 }
 
 
+function* signOutIterator() {
+  try {
+    yield call(rmToken);
+    yield put(NavigationActions.navigate({ routeName: 'Auth' }));
+  } catch (e) {
+    yield call(console.log, e);
+  }
+}
+
+function* signOutSaga() {
+  yield takeLatest(
+    SIGN_OUT,
+    signOutIterator
+  )
+}
+
+
 export default function* () {
   yield all([
-    fork(fetchFbUserDataSaga)
+    fork(fetchFbUserDataSaga),
+    fork(signOutSaga)
   ]);
 }

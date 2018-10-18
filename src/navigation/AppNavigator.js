@@ -1,23 +1,29 @@
-import React from 'react';
-import { createStackNavigator } from 'react-navigation';
+import { connect } from 'react-redux';
+import { createSwitchNavigator } from 'react-navigation';
+import {
+  reduxifyNavigator,
+  createReactNavigationReduxMiddleware,
+  createNavigationReducer,
+} from 'react-navigation-redux-helpers';
 
 import TabNavigator from './TabNavigator';
-import SignIn from '../containers/auth/SignIn';
-import SignUp from '../containers/auth/SignUp';
+import AuthNavigator from './AuthNavigator';
+import AuthSpinner from '../containers/auth/AuthSpinner';
 
-const AppNavigator = (props) => {
-  const { initialRouteName, screenProps } = props;
+const AppNavigator = createSwitchNavigator({
+  AuthSpinner,
+  Home: TabNavigator,
+  Auth: AuthNavigator
+}, {
+  initialRouteName: 'AuthSpinner',
+  headerMode: 'none'
+});
 
-  const RootNavigator = createStackNavigator({
-    Home: { screen: TabNavigator },
-    SignIn: { screen: SignIn },
-    SignUp: { screen: SignUp },
-  }, {
-    initialRouteName,
-    headerMode: "none"
-  });
+export const navReducer = createNavigationReducer(AppNavigator);
+export const navMiddleware =
+  createReactNavigationReduxMiddleware('root', (state) => state.nav);
 
-  return <RootNavigator screenProps={screenProps}/>
-};
-
-export default AppNavigator;
+const ReduxifiedAppNav = reduxifyNavigator(AppNavigator, 'root');
+export default connect((state) => ({
+  state: state.nav
+}))(ReduxifiedAppNav);

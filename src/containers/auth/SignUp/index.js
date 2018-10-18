@@ -1,26 +1,38 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { connect } from 'react-redux';
+import { StatusBar, Image } from 'react-native';
+import { View, Button, Text } from 'native-base';
 
-export default class SignUp extends Component {
+import { fetchFbUserData } from '../../../redux/ducks/auth/auth';
+
+import s from './styles';
+
+const logo = require('../../../assets/images/logo/logoWhite.png');
+
+class SignUp extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Sign Up</Text>
+      <View style={s.container}>
+        <StatusBar barStyle="light-content" />
+        <View style={s.loginView}>
+          <Image style={s.logo} source={logo}/>
+
+          <View style={s.buttons}>
+            <Button block onPress={() => console.log('u picked the role!')}>
+              <Text>pick the role</Text>
+            </Button>
+          </View>
+        </View>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-});
+export default connect(
+  (state) => ({
+    auth: state.auth
+  }),
+  {
+    fetchFbUserData
+  }
+)(SignUp);

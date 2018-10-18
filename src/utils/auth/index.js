@@ -4,7 +4,7 @@ export const setToken = async (token) => {
   const bearerToken = token ? `Bearer ${token}` : null;
 
   try {
-    await AsyncStorage.setItem('jwt', token);
+    await AsyncStorage.setItem('jwt', bearerToken);
   } catch (e) {
     throw new Error('utils/auth/setToken', e);
   }
