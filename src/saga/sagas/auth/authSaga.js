@@ -1,64 +1,73 @@
-import { all, takeLatest, call, fork, put } from 'redux-saga/effects';
+import { all, takeLatest, call, fork, put, select } from 'redux-saga/effects';
 import { 
   AccessToken, 
-  LoginManager, 
-  GraphRequest, 
-  GraphRequestManager 
+  LoginManager
 } from 'react-native-fbsdk';
 import { NavigationActions } from 'react-navigation';
+import axios from 'axios';
 
-import { fetchFbUserData, SIGN_OUT } from '../../../redux/ducks/auth/auth';
+import { fetchFbToken, signUp, SIGN_OUT } from '../../../redux/ducks/auth/auth';
 
 import { setToken, rmToken } from '../../../utils/auth';
 
 
-const createFbUserDataPayload = (accessToken) => ({
-  httpMethod: 'GET',
-  version: 'v3.1',
-  parameters: {
-    fields: {
-      string: 'name,first_name,id,last_name,email,gender,birthday,picture.height(500),age_range,photos'
-    }
-  },
-  accessToken: accessToken.toString()
-});
-
-function* fetchFbUserDataIterator() {
+function* fetchFbTokenIterator() {
   try {
     const fbReqPerm = ['public_profile', 'email', 'user_birthday', 'user_friends'];
     yield LoginManager.logInWithReadPermissions(fbReqPerm);
     const { accessToken } = yield AccessToken.getCurrentAccessToken();
-    const { err, result } = yield new Promise((resolve) => {
-      new GraphRequestManager().addRequest(new GraphRequest('/me',
-        createFbUserDataPayload(accessToken),
-        (err, result) => resolve({ err, result })
-      )).start();
-    });
 
-    // тут обрабатываем ответ.
-    // если такой пользователь есть - коллим логин
-    // если нет - редиректим на выбор роли
+    yield put(fetchFbToken.success(accessToken));
 
-    yield call(console.log, err, result);
-    if (true) { // TODO не забудь ебнуть это говно
-      yield put(fetchFbUserData.success(result));
-      // yield call(setToken, 'jwt123');
-      // yield put(NavigationActions.navigate({ routeName: 'Home' }));
+    const res = yield call(
+      axios.post,
+      'https://aag.secrettech.io/auth/facebook',
+      { access_token: accessToken }
+    );
 
+    if (res.data.user === null) {
       yield put(NavigationActions.navigate({ routeName: 'SignUp' }));
     } else {
-      yield call(console.log, 'fb login cancelled', true);
+      yield call(setToken, res.data.token);
+      yield put(NavigationActions.navigate({ routeName: 'Home' }));
     }
-
   } catch (e) {
     yield call(console.log, 'authSaga/fetchFbUserDataIterator', e);
   }
 }
 
-function* fetchFbUserDataSaga() {
+function* fetchFbTokenSaga() {
   yield takeLatest(
-    fetchFbUserData.REQUEST,
-    fetchFbUserDataIterator
+    fetchFbToken.REQUEST,
+    fetchFbTokenIterator
+  );
+}
+
+
+const authSelector = (state) => state.auth.auth;
+
+function* signUpIterator({ payload }) {
+  try {
+    const auth = yield select(authSelector);
+    const req = { access_token: auth.get('fbToken'), role: payload };
+    const res = yield call(
+      axios.post,
+      'https://aag.secrettech.io/auth/registerFacebook',
+      req
+    );
+
+    yield call(setToken, res.data.token);
+    yield put(NavigationActions.navigate({ routeName: 'Home' }));
+    yield put(signUp.success());
+  } catch (e) {
+    yield call(console.log, e);
+  }
+}
+
+function* signUpSaga() {
+  yield takeLatest(
+    signUp.REQUEST,
+    signUpIterator
   );
 }
 
@@ -82,7 +91,8 @@ function* signOutSaga() {
 
 export default function* () {
   yield all([
-    fork(fetchFbUserDataSaga),
+    fork(fetchFbTokenSaga),
+    fork(signUpSaga),
     fork(signOutSaga)
   ]);
 }

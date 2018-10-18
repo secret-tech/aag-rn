@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { StatusBar, Image } from 'react-native';
 import { View, Button, Text } from 'native-base';
 
-import { fetchFbUserData } from '../../../redux/ducks/auth/auth';
+import { signUp } from '../../../redux/ducks/auth/auth';
 
 import s from './styles';
 
@@ -19,13 +19,21 @@ class SignUp extends Component {
 
           <View style={s.buttons}>
             <View style={s.button}>
-              <Button block light bordered onPress={() => console.log('SIGN_UP AS PROVIDER')}>
-                <Text>Sign Up as Adviser</Text>
+              <Button 
+                block
+                light
+                bordered
+                onPress={() => this.props.signUp('advisor')}>
+                <Text>Sign Up as Advisor</Text>
               </Button>
             </View>
             
             <View style={s.button}>
-              <Button block light bordered onPress={() => console.log('SIGN_UP AS USER')}>
+              <Button
+                block
+                light
+                bordered
+                onPress={() => this.props.signUp('user')}>
                 <Text>Sign Up as User</Text>
               </Button>
             </View>
@@ -37,10 +45,8 @@ class SignUp extends Component {
 }
 
 export default connect(
-  (state) => ({
-    auth: state.auth
-  }),
+  null,
   {
-    fetchFbUserData
+    signUp
   }
 )(SignUp);

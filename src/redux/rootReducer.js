@@ -9,5 +9,8 @@ import auth from './ducks/auth/auth';
 export default combineReducers({
   nav: navReducer,
   counter,
-  auth
+  
+  auth: combineReducers({
+    auth
+  })
 });

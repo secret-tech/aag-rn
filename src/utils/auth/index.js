@@ -1,10 +1,8 @@
 import { AsyncStorage } from 'react-native';
 
 export const setToken = async (token) => {
-  const bearerToken = token ? `Bearer ${token}` : null;
-
   try {
-    await AsyncStorage.setItem('jwt', bearerToken);
+    await AsyncStorage.setItem('jwt', token);
   } catch (e) {
     throw new Error('utils/auth/setToken', e);
   }
