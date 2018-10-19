@@ -1,23 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-import { signOut } from '../../../redux/ducks/auth/auth';
-
-import Explorer from '../../../components/explore/Explorer';
-
-const ADVISORS = [
-  { name: 'name 1' },
-  { name: 'name 2' },
-  { name: 'name 3' },
-  { name: 'name 4' }
-];
-
-class Explore extends Component {
+class AdvisorProfile extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Explorer advisors={ADVISORS}/>
+        <Text>Advisor profile</Text>
       </View>
     );
   }
@@ -37,4 +26,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, { signOut })(Explore);
+export default connect(null, null)(AdvisorProfile);

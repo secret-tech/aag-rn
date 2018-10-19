@@ -1,15 +1,35 @@
-import { createBottomTabNavigator } from 'react-navigation';
+import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 
 import CustomTabNavigation from '../components/common/CustomTabNavigator';
 
 import Explore from '../containers/explore/Explore';
+import AdvisorProfile from '../containers/explore/AdvisorProfile';
+
 import Chat from '../containers/chat/Chat';
 import Profile from '../containers/profile/Profile';
 
 export default createBottomTabNavigator({
-  Explore: { screen: Explore },
-  Chat: { screen: Chat },
-  Profile: { screen: Profile }
+  Explore: createStackNavigator({
+    SubExplore: { screen: Explore },
+    ExploreAdvisorProfile: { screen: AdvisorProfile }
+  }, {
+    initialRouteName: 'SubExplore',
+    headerMode: 'none',
+  }),
+
+  Chat: createStackNavigator({
+    SubChat: { screen: Chat }
+  }, {
+    initialRouteName: 'SubChat',
+    headerMode: 'none'
+  }),
+
+  Profile: createStackNavigator({
+    SubProfile: { screen: Profile }
+  }, {
+    initialRouteName: 'SubProfile',
+    headerMode: 'none'
+  })
 }, {
   initialRouteName: 'Explore',
   headerMode: 'none',
