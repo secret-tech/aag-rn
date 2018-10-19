@@ -1,5 +1,7 @@
 import { createBottomTabNavigator } from 'react-navigation';
 
+import CustomTabNavigation from '../components/common/CustomTabNavigator';
+
 import Explore from '../containers/explore/Explore';
 import Chat from '../containers/chat/Chat';
 import Profile from '../containers/profile/Profile';
@@ -10,5 +12,6 @@ export default createBottomTabNavigator({
   Profile: { screen: Profile }
 }, {
   initialRouteName: 'Explore',
-  headerMode: 'none'
+  headerMode: 'none',
+  tabBarComponent: CustomTabNavigation
 });
