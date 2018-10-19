@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'native-base';
+import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
 import { signOut } from '../../../redux/ducks/auth/auth';
 
@@ -11,7 +12,7 @@ class Explore extends Component {
       <View style={styles.container}>
         <Text style={styles.welcome}>Explore</Text>
         <Button onPress={() => this.props.signOut()}>
-          <Text>out</Text>
+          <Icon name='emotsmile' size={30} color='#b22' />
         </Button>
       </View>
     );
