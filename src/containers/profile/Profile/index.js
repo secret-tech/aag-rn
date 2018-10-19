@@ -1,20 +1,16 @@
 import React, { Component } from 'react';
+import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View } from 'react-native';
-import { Button } from 'native-base';
-import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import { StyleSheet } from 'react-native';
 
-import { signOut } from '../../../redux/ducks/auth/auth';
+import ProfileView from '../../../components/profile/ProfileView';
 
 class Profile extends Component {
+  nav = (id, routeName) => this.props.navigation.navigate(id, {}, NavigationActions.navigate({ routeName }));
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Profile</Text>
-        <Button onPress={() => this.props.signOut()}>
-          <Icon name='emotsmile' size={30} color='#b22' />
-        </Button>
-      </View>
+      <ProfileView/>
     );
   }
 }
@@ -33,4 +29,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, { signOut })(Profile);
+export default connect(null, null)(Profile);

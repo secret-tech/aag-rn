@@ -11,18 +11,11 @@ class CustomTabNavigator extends Component {
     title: 'Welcome'
   }
 
-  nav = (id, routeName) => 
-    this.props.navigation.navigate(
-      id, 
-      {}, 
-      NavigationActions.navigate({ routeName })
-    );
+  nav = (id, routeName) => this.props.navigation.navigate(id, {}, NavigationActions.navigate({ routeName }));
 
   render() {
     const size = 22;
     const color = '#000';
-
-    console.log(this.props, NavigationActions);
 
     return (
       <Footer style={s.wrap}>
