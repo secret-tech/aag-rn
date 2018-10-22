@@ -10,7 +10,7 @@ class EditBio extends Component {
         <Header>
           <Left>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="arrow-back" />
+              <Icon name='arrow-back' />
               <Text>Back</Text>
             </Button>
           </Left>
