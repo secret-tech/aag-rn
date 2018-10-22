@@ -5,12 +5,28 @@ import { Image } from 'react-native';
 import { Container, Content, View, Text, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
+import { fetchProfile } from '../../../redux/ducks/profile/profile';
+
 import s from './styles';
 
 class Profile extends Component {
+  componentWillMount() {
+    this.props.fetchProfile();
+  }
+
   nav = (id, routeName) => this.props.navigation.navigate(id, {}, NavigationActions.navigate({ routeName }));
 
   render() {
+    console.log('profile props', this.props.profile.toJS());
+
+    const {
+      picture,
+      name,
+      age,
+      bio,
+      tags
+    } = this.props.profile.toJS();
+
     return (
       <Container>
         <Content>
@@ -20,15 +36,15 @@ class Profile extends Component {
             </Button>
 
             <View style={s.pictureWrap}>
-              <Image style={s.avatar} source={{ uri: 'https://images.pexels.com/photos/1492156/pexels-photo-1492156.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' }} resizeMode="cover" />
+              <Image style={s.avatar} source={{ uri: picture }} resizeMode="cover" />
             </View>
 
             <View style={s.nameWrap}>
-              <Text style={s.name}>Lauren Mayberry, 25</Text>
+              <Text style={s.name}>{name}, {age}</Text>
             </View>
 
             <View style={s.bioWrap}>
-              <Text style={s.bio}>Lorem ipsum dolor sit amet</Text>
+              <Text style={s.bio}>{bio}</Text>
             </View>
 
             <View style={s.tagsWrap}>
@@ -46,4 +62,11 @@ class Profile extends Component {
   }
 }
 
-export default connect(null, null)(Profile);
+export default connect(
+  (state) => ({
+    profile: state.profile.profile
+  }), 
+  {
+    fetchProfile
+  }
+)(Profile);

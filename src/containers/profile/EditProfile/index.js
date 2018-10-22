@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { TouchableOpacity } from 'react-native';
 import { Container, Content, Text, Header, Left, Button, Icon, Body, Title, Right, View } from 'native-base';
@@ -30,7 +31,7 @@ class EditProfile extends Component {
 
               <TouchableOpacity onPress={() => this.nav('Profile', 'ProfileEditBio')}>
                 <View style={s.bio}>
-                  <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur a ante ultrices, pretium diam eu, pretium sapien. Sed luctus bibendum ante non semper.</Text>
+                  <Text>{this.props.bio || 'Tap to edit your bio'}</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -61,4 +62,6 @@ class EditProfile extends Component {
   }
 }
 
-export default EditProfile;
+export default connect((state) => ({
+  bio: state.profile.profile.get('bio')
+}))(EditProfile);

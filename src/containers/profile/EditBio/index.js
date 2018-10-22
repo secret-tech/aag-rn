@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Container, Header, Left, Button, Icon, Text, Body, Title, Right, View, Content, Textarea } from 'native-base';
+
+import { updateBio } from '../../../redux/ducks/profile/editBio';
 
 import s from './styles';
 
 class EditBio extends Component {
+  state = {
+    bio: this.props.bio || ''
+  }
+
   render() {
     return (
       <Container>
@@ -18,7 +25,7 @@ class EditBio extends Component {
             <Title>Edit bio</Title>
           </Body>
           <Right>
-            <Button transparent>
+            <Button transparent onPress={() => this.props.updateBio(this.state.bio)}>
               <Text>Save</Text>
             </Button>
           </Right>
@@ -29,7 +36,9 @@ class EditBio extends Component {
               rowSpan={10}
               bordered
               style={s.textarea}
-              placeholder="Few words about you..."/>
+              value={this.state.bio}
+              onChangeText={(bio) => this.setState({ bio })}
+              placeholder={this.props.bio || 'Few words about you...'}/>
           </View>
         </Content>
       </Container>
@@ -37,4 +46,11 @@ class EditBio extends Component {
   }
 }
 
-export default EditBio;
+export default connect(
+  (state) => ({
+    bio: state.profile.profile.get('bio')
+  }),
+  {
+    updateBio
+  }
+)(EditBio);
