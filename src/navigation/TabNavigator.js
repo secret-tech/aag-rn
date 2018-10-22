@@ -9,6 +9,9 @@ import Chat from '../containers/chat/Chat';
 
 import Profile from '../containers/profile/Profile';
 import Settings from '../containers/profile/Settings';
+import EditProfile from '../containers/profile/EditProfile';
+import EditBio from '../containers/profile/EditBio';
+import EditTags from '../containers/profile/EditTags';
 
 export default createBottomTabNavigator({
   Explore: createStackNavigator({
@@ -28,7 +31,10 @@ export default createBottomTabNavigator({
 
   Profile: createStackNavigator({
     SubProfile: { screen: Profile },
-    ProfileSettings: { screen: Settings }
+    ProfileSettings: { screen: Settings },
+    ProfileEditProfile: { screen: EditProfile },
+    ProfileEditBio: { screen: EditBio },
+    ProfileEditTags: { screen: EditTags }
   }, {
     initialRouteName: 'SubProfile',
     headerMode: 'none'
