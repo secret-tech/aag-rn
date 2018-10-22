@@ -9,7 +9,7 @@ export default {
     paddingBottom: 20
   },
   title: {
-    fontWeight: "bold"
+    fontWeight: 'bold'
   },
 
   bio: {
@@ -19,15 +19,15 @@ export default {
   tags: {
     marginTop: 10,
     marginBottom: 10,
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     margin: -2.5
   },
   tag: {
     fontSize: 14,
-    color: "#000",
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
-    overflow: "hidden",
+    color: '#000',
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    overflow: 'hidden',
     borderRadius: 6,
     paddingTop: 3,
     paddingBottom: 4,

@@ -17,8 +17,6 @@ class Profile extends Component {
   nav = (id, routeName) => this.props.navigation.navigate(id, {}, NavigationActions.navigate({ routeName }));
 
   render() {
-    console.log('profile props', this.props.profile.toJS());
-
     const {
       picture,
       name,
@@ -48,12 +46,7 @@ class Profile extends Component {
             </View>
 
             <View style={s.tagsWrap}>
-              <Text style={s.tag}>Music</Text>
-              <Text style={s.tag}>Youtube</Text>
-              <Text style={s.tag}>Networking</Text>
-              <Text style={s.tag}>Development</Text>
-              <Text style={s.tag}>Video games</Text>
-              <Text style={s.tag}>Movies</Text>
+              {tags.map((tag, i) => <Text style={s.tag} key={`${tag}-${i}`}>{tag}</Text>)}
             </View>
           </View>
         </Content>

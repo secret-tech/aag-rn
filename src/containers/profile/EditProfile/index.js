@@ -10,12 +10,20 @@ class EditProfile extends Component {
   nav = (id, routeName) => this.props.navigation.navigate(id, {}, NavigationActions.navigate({ routeName }));
 
   render() {
+    const renderTags = () => this.props.tags.toJS().length > 0
+      ? (
+        <View style={s.tags}>
+          {this.props.tags.toJS().map((tag, i) => <Text style={s.tag} key={`${tag}-${i}`}>{tag}</Text>)}
+        </View>
+      )
+      : <Text style={s.tag}>Add few interests to get better recomendations</Text>;
+
     return (
       <Container>
         <Header>
           <Left>
             <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="arrow-back" />
+              <Icon name='arrow-back' />
               <Text>Back</Text>
             </Button>
           </Left>
@@ -39,16 +47,8 @@ class EditProfile extends Component {
             <View style={s.block}>
               <Text style={s.title}>Interests</Text>
 
-              <View style={s.tags}>
-                <Text style={s.tag}>Movies</Text>
-                <Text style={s.tag}>Rock</Text>
-                <Text style={s.tag}>Trips</Text>
-                <Text style={s.tag}>Internet memes</Text>
-                <Text style={s.tag}>TV shows</Text>
-                <Text style={s.tag}>Harry Potter</Text>
-                <Text style={s.tag}>Game of Thrones</Text>
-                <Text style={s.tag}>Star Wars</Text>
-                <Text style={s.tag}>Playstation 4</Text>
+              <View style={s.block}>
+                {renderTags()}
               </View>
 
               <Button block bordered onPress={() => this.nav('Profile', 'ProfileEditTags')}>
@@ -63,5 +63,6 @@ class EditProfile extends Component {
 }
 
 export default connect((state) => ({
-  bio: state.profile.profile.get('bio')
+  bio: state.profile.profile.get('bio'),
+  tags: state.profile.profile.get('tags')
 }))(EditProfile);

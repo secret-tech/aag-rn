@@ -1,27 +1,28 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Dimensions } from 'react-native';
 import { Container, Header, Left, Button, Icon, Text, Body, Title, Right, View, Content } from 'native-base';
 import TagInput from 'react-native-tag-input';
 
-import s from './styles';
+import { updateTags } from '../../../redux/ducks/profile/editTags';
 
-const INTERESTS = ['football', 'movies', 'alternative', 'cooking', 'astronomy', 'science', 'tv shows'];
+import s from './styles';
 
 class EditTags extends Component {
   state = {
-    interests: INTERESTS,
+    tags: this.props.tags.toJS() || [],
     text: ''
   }
 
-  addRow = (text) => {
+  addTag = (text) => {
     this.setState({ text });
 
     const lastTyped = text.charAt(text.length - 1);
     const parseWhen = [',', '.', '  '];
 
     if (parseWhen.indexOf(lastTyped) > -1) {
-      const interests = [...this.state.interests, this.state.text];
-      this.setState({ interests, text: "" });
+      const tags = [...this.state.tags, this.state.text];
+      this.setState({ tags, text: '' });
     }
   }
 
@@ -39,7 +40,7 @@ class EditTags extends Component {
             <Title>Edit interests</Title>
           </Body>
           <Right>
-            <Button transparent>
+            <Button transparent onPress={() => this.props.updateTags(this.state.tags)}>
               <Text>Save</Text>
             </Button>
           </Right>
@@ -47,11 +48,11 @@ class EditTags extends Component {
         <Content>
         <View style={s.wrapper}>
           <TagInput
-            value={this.state.interests}
-            onChange={(interests) => this.setState({ interests })}
+            value={this.state.tags}
+            onChange={(tags) => this.setState({ tags })}
             labelExtractor={(label) => label}
             text={this.state.text}
-            onChangeText={this.addRow}
+            onChangeText={this.addTag}
             maxHeight={Dimensions.get('window').height}
             tagContainerStyle={{
               paddingTop: 3,
@@ -84,4 +85,11 @@ class EditTags extends Component {
   }
 }
 
-export default EditTags;
+export default connect(
+  (state) => ({
+    tags: state.profile.profile.get('tags')
+  }), 
+  {
+    updateTags
+  }
+)(EditTags);

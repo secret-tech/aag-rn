@@ -1,11 +1,13 @@
 import { createAsyncAction, createAction, createReducer } from '../../../utils/actions';
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 
 export const FETCH_PROFILE = 'profile/profile/FETCH_PROFILE';
 export const MERGE_BIO = 'profile/profile/MERGE_BIO';
+export const MERGE_TAGS = 'profile/profile/MERGE_TAGS';
 
 export const fetchProfile = createAsyncAction(FETCH_PROFILE);
 export const mergeBio = createAction(MERGE_BIO);
+export const mergeTags = createAction(MERGE_TAGS);
 
 const initialState = Map({
   loading: false,
@@ -16,7 +18,7 @@ const initialState = Map({
   picture: '',
   birthday: '',
   bio: '',
-  tags: []
+  tags: List()
 });
 
 export default createReducer({
@@ -26,7 +28,14 @@ export default createReducer({
 
   [fetchProfile.SUCCESS]: (state, { payload }) => state.merge({
     loading: false,
-    ...payload
+    email: payload.email,
+    name: payload.name,
+    gender: payload.gender,
+    age: payload.age,
+    picture: payload.picture,
+    birthday: payload.birthday,
+    bio: payload.bio,
+    tags: List(payload.tags)
   }),
 
   [fetchProfile.FAILURE]: (state) => state.merge({
@@ -35,5 +44,9 @@ export default createReducer({
 
   [MERGE_BIO]: (state, { payload }) => state.merge({
     bio: payload
+  }),
+
+  [MERGE_TAGS]: (state, { payload }) => state.merge({
+    tags: List(payload)
   })
 }, initialState);
