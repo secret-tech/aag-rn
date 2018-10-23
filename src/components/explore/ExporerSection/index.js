@@ -8,6 +8,8 @@ import CardButton from '../CardButton';
 import s from './styles';
 
 class ExplorerSection extends Component {
+  capitalize = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+
   getItems = () => {
     const advisors = this.props.data.advisors.map((advisor) => ({ ...advisor, type: 'advisor' }));
     const button = { type: 'button', nav: this.props.data.type }
@@ -27,7 +29,7 @@ class ExplorerSection extends Component {
   render() {
     return (
       <View style={s.section}>
-        <Text style={s.title}>{this.props.title}</Text>
+        <Text style={s.title}>{this.capitalize(this.props.title)}</Text>
 
         <Carousel
           ref={(c) => { this._carousel = c; }}
