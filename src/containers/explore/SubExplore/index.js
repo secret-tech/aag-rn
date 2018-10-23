@@ -4,6 +4,8 @@ import { Container, Content, View, Button, Icon, Text } from 'native-base';
 
 import SubExplorer from '../../../components/explore/SubExplorer';
 
+import { fetchSubAdvisors } from '../../../redux/ducks/explore/subExplore';
+
 import s from './styles';
 
 const ADVISORS = [
@@ -15,6 +17,11 @@ const ADVISORS = [
 
 class SubExplore extends Component {
   capitalize = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+
+  componentWillMount() {
+    const { type } = this.props.navigation.state.params;
+    this.props.fetchSubAdvisors(type);
+  }
 
   render() {
     const { type } = this.props.navigation.state.params;
@@ -37,4 +44,6 @@ class SubExplore extends Component {
   }
 }
 
-export default connect(null, null)(SubExplore);
+export default connect(null, {
+  fetchSubAdvisors
+})(SubExplore);

@@ -6,6 +6,8 @@ import ExplorerSection from '../ExporerSection';
 
 class Explorer extends Component {
   renderSection = (type) => {
+    if (this.props.data.length <= 0) return null;
+
     const filteredData = this.props.data.filter((item) => item.type === type)[0];
     return <ExplorerSection title={`${type} advisors`} data={filteredData}/>;
   }

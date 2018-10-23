@@ -27,18 +27,20 @@ class ExplorerSection extends Component {
   }
 
   render() {
-    return (
-      <View style={s.section}>
-        <Text style={s.title}>{this.capitalize(this.props.title)}</Text>
-
-        <Carousel
-          ref={(c) => { this._carousel = c; }}
-          data={this.getItems()}
-          renderItem={this.itemRenderer}
-          sliderWidth={sliderWidth}
-          itemWidth={largeSlideWidth}/>
-      </View>
-    );
+    return this.props.data.advisors.length <= 0
+      ? <View><Text>...</Text></View>
+      : (
+        <View style={s.section}>
+          <Text style={s.title}>{this.capitalize(this.props.title)}</Text>
+  
+          <Carousel
+            ref={(c) => { this._carousel = c; }}
+            data={this.getItems()}
+            renderItem={this.itemRenderer}
+            sliderWidth={sliderWidth}
+            itemWidth={largeSlideWidth}/>
+        </View>
+      );
   }
 }
 

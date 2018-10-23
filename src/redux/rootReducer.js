@@ -10,6 +10,9 @@ import profile from './ducks/profile/profile'
 import editBio from './ducks/profile/editBio';
 import editTags from './ducks/profile/editTags';
 
+import explore from './ducks/explore/explore';
+import subExplore from './ducks/explore/subExplore';
+
 export default combineReducers({
   nav: navReducer,
   counter,
@@ -22,5 +25,10 @@ export default combineReducers({
     profile,
     editBio,
     editTags
+  }),
+
+  explore: combineReducers({
+    explore,
+    subExplore
   })
 });

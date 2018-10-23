@@ -1,44 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { View, Text } from 'native-base';
 
 import Explorer from '../../../components/explore/Explorer';
 
-const DATA = [
-  {
-    type: 'new',
-    advisors: [
-      { name: 'name 1' },
-      { name: 'name 2' },
-      { name: 'name 3' },
-      { name: 'name 4' }
-    ]
-  },
-  {
-    type: 'featured',
-    advisors: [
-      { name: 'name 1' },
-      { name: 'name 2' },
-      { name: 'name 3' },
-      { name: 'name 4' }
-    ]
-  },
-  {
-    type: 'online',
-    advisors: [
-      { name: 'name 1' },
-      { name: 'name 2' },
-      { name: 'name 3' },
-      { name: 'name 4' }
-    ]
-  }
-];
+import { fetchAdvisors } from '../../../redux/ducks/explore/explore';
+
 
 class Explore extends Component {
+  componentWillMount() {
+    this.props.fetchAdvisors();
+  }
+
   render() {
-    return (
-      <Explorer data={DATA}/>
-    );
+    const { data, loading } = this.props.explore.toJS();
+
+    return loading
+      ? <View><Text>Loading...</Text></View>
+      : <Explorer data={data}/>;
   }
 }
 
-export default connect(null, null)(Explore);
+
+export default connect(
+  (state) => ({
+    explore: state.explore.explore
+  }), 
+  {
+    fetchAdvisors
+  })(Explore);
