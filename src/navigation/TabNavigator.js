@@ -3,6 +3,7 @@ import { createBottomTabNavigator, createStackNavigator } from 'react-navigation
 import CustomTabNavigation from '../components/common/CustomTabNavigator';
 
 import Explore from '../containers/explore/Explore';
+import SubExplore from '../containers/explore/SubExplore';
 import AdvisorProfile from '../containers/explore/AdvisorProfile';
 
 import Chat from '../containers/chat/Chat';
@@ -15,28 +16,29 @@ import EditTags from '../containers/profile/EditTags';
 
 export default createBottomTabNavigator({
   Explore: createStackNavigator({
-    SubExplore: { screen: Explore },
+    ExploreExplore: { screen: Explore },
+    ExploreSubExplore: { screen: SubExplore },
     ExploreAdvisorProfile: { screen: AdvisorProfile }
   }, {
-    initialRouteName: 'SubExplore',
+    initialRouteName: 'ExploreExplore',
     headerMode: 'none',
   }),
 
   Chat: createStackNavigator({
-    SubChat: { screen: Chat }
+    ChatChat: { screen: Chat }
   }, {
-    initialRouteName: 'SubChat',
+    initialRouteName: 'ChatChat',
     headerMode: 'none'
   }),
 
   Profile: createStackNavigator({
-    SubProfile: { screen: Profile },
+    ProfileProfile: { screen: Profile },
     ProfileSettings: { screen: Settings },
     ProfileEditProfile: { screen: EditProfile },
     ProfileEditBio: { screen: EditBio },
     ProfileEditTags: { screen: EditTags }
   }, {
-    initialRouteName: 'SubProfile',
+    initialRouteName: 'ProfileProfile',
     headerMode: 'none'
   })
 }, {

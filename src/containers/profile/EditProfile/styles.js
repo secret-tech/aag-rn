@@ -16,6 +16,10 @@ export default {
     marginTop: 10,
   },
 
+  emptyTags: {
+    marginTop: 10,
+    marginBottom: 10,
+  },
   tags: {
     marginTop: 10,
     marginBottom: 10,

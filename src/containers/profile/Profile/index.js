@@ -17,13 +17,7 @@ class Profile extends Component {
   nav = (id, routeName) => this.props.navigation.navigate(id, {}, NavigationActions.navigate({ routeName }));
 
   render() {
-    const {
-      picture,
-      name,
-      age,
-      bio,
-      tags
-    } = this.props.profile.toJS();
+    const { picture, name, age, bio, tags } = this.props.profile.toJS();
 
     return (
       <Container>

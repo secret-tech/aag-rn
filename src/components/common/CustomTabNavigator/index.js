@@ -22,15 +22,15 @@ class CustomTabNavigator extends Component {
         <StatusBar barStyle="dark-content"/>
 
         <FooterTab style={s.footer}>
-          <Button transparent onPress={() => this.nav('Explore', 'SubExplore')}>
+          <Button transparent onPress={() => this.nav('Explore', 'ExploreExplore')}>
             <Icon name='feed' size={size} color={color} />
           </Button>
 
-          <Button transparent onPress={() => this.nav('Chat', 'SubChat')}>
+          <Button transparent onPress={() => this.nav('Chat', 'ChatChat')}>
             <Icon name='bubbles' size={size} color={color} />
           </Button>
 
-          <Button transparent onPress={() => this.nav('Profile', 'SubProfile')}>
+          <Button transparent onPress={() => this.nav('Profile', 'ProfileProfile')}>
             <Icon name='user' size={size} color={color} />
           </Button>
         </FooterTab>

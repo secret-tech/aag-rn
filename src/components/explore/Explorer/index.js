@@ -5,13 +5,18 @@ import ExplorerSection from '../ExporerSection';
 
 
 class Explorer extends Component {
+  renderSection = (type) => {
+    const filteredData = this.props.data.filter((item) => item.type === type)[0];
+    return <ExplorerSection title={`${type} advisors`} data={filteredData}/>;
+  }
+
   render() {
     return (
       <Container>
         <Content>
-          <ExplorerSection title="Featured" advisors={[{}, {}, {}]}/>
-          <ExplorerSection title="New" advisors={[{}, {}, {}]}/>
-          <ExplorerSection title="Cool" advisors={[{}, {}, {}]}/>
+          {this.renderSection('featured')}
+          {this.renderSection('new')}
+          {this.renderSection('online')}
         </Content>
       </Container>
     );

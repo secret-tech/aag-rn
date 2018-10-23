@@ -16,7 +16,11 @@ class EditProfile extends Component {
           {this.props.tags.toJS().map((tag, i) => <Text style={s.tag} key={`${tag}-${i}`}>{tag}</Text>)}
         </View>
       )
-      : <Text style={s.tag}>Add few interests to get better recomendations</Text>;
+      : (
+        <View style={s.emptyTags}>
+          <Text>Add few interests to get better recomendations</Text>
+        </View>
+      );
 
     return (
       <Container>
@@ -47,9 +51,7 @@ class EditProfile extends Component {
             <View style={s.block}>
               <Text style={s.title}>Interests</Text>
 
-              <View style={s.block}>
-                {renderTags()}
-              </View>
+              {renderTags()}
 
               <Button block bordered onPress={() => this.nav('Profile', 'ProfileEditTags')}>
                 <Text>Manage interests</Text>
