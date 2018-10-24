@@ -9,7 +9,7 @@ import { getToken } from '../../../utils/auth';
 function* fetchAdvisorsIterator() {
   try {
     const token = yield call(getToken);
-    const { data } = yield call(axios.get, 'https://aag.secrettech.io/explorer?limit=1', {
+    const { data } = yield call(axios.get, 'https://aag.secrettech.io/explorer?limit=5', {
       headers: {
         'Authorization': `Bearer ${token}`
       }

@@ -13,7 +13,12 @@ export const largeSlideHeight = largeSlideWidth / 2;
 
 class Card extends PureComponent {
   capitalize = (string) => string && string.charAt(0).toUpperCase() + string.slice(1);
-  nav = (id, routeName) => this.props.navigation.navigate(id, {}, NavigationActions.navigate({ routeName }));
+  nav = (id, routeName, params) => 
+    this.props.navigation.navigate({
+      routeName: id, 
+      params, 
+      action: NavigationActions.navigate({ routeName, params })
+    });
 
   render() {
     const {
@@ -27,7 +32,7 @@ class Card extends PureComponent {
       <Button
         transparent
         style={{ ...s.card, height: largeSlideHeight }}
-        onPress={() => this.nav('Explore', 'ExploreAdvisorProfile')}>
+        onPress={() => this.nav('Explore', 'ExploreAdvisorProfile', this.props.item)}>
         <Image style={s.avatar} source={{ uri: picture }} resizeMode="cover" />
         <View style={s.frontdrop}>
           {/* <Text style={s.ratio}>4/5</Text> */}
