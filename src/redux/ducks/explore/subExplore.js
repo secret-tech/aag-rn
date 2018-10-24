@@ -1,26 +1,33 @@
-import { createAsyncAction, createReducer } from '../../../utils/actions';
-import { Map, List } from 'immutable';
+import { createAsyncAction, createAction, createReducer } from '../../../utils/actions';
 
 export const FETCH_SUB_ADVISORS = 'explore/subExplore/FETCH_SUB_ADVISORS';
+export const PURGE_SUB_ADVISORS = 'explore/subExplore/PURGE_SUB_ADVISORS';
 
 export const fetchSubAdvisors = createAsyncAction(FETCH_SUB_ADVISORS);
+export const purgeSubAdvisors = createAction(PURGE_SUB_ADVISORS);
 
-const initialState = Map({
+const initialState = {
   loading: false,
-  data: List()
-});
+  data: []
+};
 
 export default createReducer({
-  [fetchSubAdvisors.REQUEST]: (state) => state.merge({
+  [fetchSubAdvisors.REQUEST]: (state) => ({
+    ...state,
     loading: true
   }),
 
-  [fetchSubAdvisors.SUCCESS]: (state, { payload }) => state.merge({
-    loading: false,
-    data: List(payload)
+  [fetchSubAdvisors.SUCCESS]: (state, { payload }) => {
+    return ({
+      loading: false,
+      data: [...state.data, ...payload.data]
+    });
+  },
+
+  [fetchSubAdvisors.FAILURE]: (state) => ({
+    ...state,
+    loading: false
   }),
 
-  [fetchSubAdvisors.FAILURE]: (state) => state.merge({
-    loading: false
-  })
+  [PURGE_SUB_ADVISORS]: () => ({ ...initialState })
 }, initialState);

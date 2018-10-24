@@ -18,8 +18,6 @@ function* updateTagsIterator({ payload }) {
       }
     });
 
-    yield call(console.log, tags);
-
     yield put(updateTags.success(tags));
     yield put(mergeTags(tags));
     yield put(NavigationActions.navigate({

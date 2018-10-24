@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withNavigation, NavigationActions } from 'react-navigation';
 import { Dimensions, Image } from 'react-native';
 import { View, Button, Text } from 'native-base';
@@ -11,8 +11,8 @@ export const largeSlideWidth = WS.width - 40;
 export const largeSlideHeight = largeSlideWidth / 2;
 
 
-class Card extends Component {
-  capitalize = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+class Card extends PureComponent {
+  capitalize = (string) => string && string.charAt(0).toUpperCase() + string.slice(1);
   nav = (id, routeName) => this.props.navigation.navigate(id, {}, NavigationActions.navigate({ routeName }));
 
   render() {

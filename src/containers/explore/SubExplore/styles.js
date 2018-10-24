@@ -1,4 +1,8 @@
 export default {
+  wrapper: {
+    paddingBottom: 60
+  },
+
   header: {
     display: 'flex',
     flexDirection: 'row',
