@@ -1,4 +1,5 @@
 import { AsyncStorage } from 'react-native';
+import jwtDecode from 'jwt-decode';
 
 export const setToken = async (token) => {
   try {
@@ -21,5 +22,14 @@ export const rmToken = async () => {
     await AsyncStorage.removeItem('jwt');
   } catch (e) {
     throw new Error('utils/auth/rmToken', e);
+  }
+}
+
+export const getUserId = async () => {
+  try {
+    const token = await getToken();
+    return jwtDecode(token).id;
+  } catch (e) {
+    throw new Error('utils/auth/getRole', e);
   }
 }

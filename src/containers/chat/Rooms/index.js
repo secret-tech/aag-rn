@@ -1,53 +1,18 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { Container, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Text, Button, Icon, Title } from 'native-base';
+import { Container, Content, List, ListItem, Left, Body, Right, Thumbnail, Text } from 'native-base';
+
+import { fetchRooms } from '../../../redux/ducks/chat/rooms';
 
 import withBack from '../../../hoc/AnroidBackHandler';
 
-const ROOMS = [
-  {
-    _id: 0,
-    text: 'Hello',
-    createdAt: new Date(Date.UTC(2018, 1, 1, 15, 0, 0)),
-    user: {
-      _id: 1,
-      name: 'Andrey',
-      avatar: 'https://api.adorable.io/avatars/285/andrey.png',
-    }
-  },
-  {
-    _id: 1,
-    text: 'thank you',
-    createdAt: new Date(Date.UTC(2018, 1, 1, 15, 0, 0)),
-    user: {
-      _id: 2,
-      name: 'John Doe',
-      avatar: 'https://api.adorable.io/avatars/285/johndoe.png',
-    }
-  },
-  {
-    _id: 2,
-    text: 'omg look at this',
-    createdAt: new Date(Date.UTC(2018, 1, 1, 15, 0, 0)),
-    user: {
-      _id: 3,
-      name: 'Mary Elizabeth Winstead',
-      avatar: 'https://api.adorable.io/avatars/285/marymary.png',
-    }
-  },
-  {
-    _id: 3,
-    text: 'omg look at this',
-    createdAt: new Date(Date.UTC(2018, 1, 1, 15, 0, 0)),
-    user: {
-      _id: 4,
-      name: 'July Brown',
-      avatar: 'https://api.adorable.io/avatars/285/july.png',
-    }
-  }
-]
 
 class Rooms extends Component {
+  componentWillMount() {
+    this.props.fetchRooms();
+  }
+
   nav = (id, routeName, params) => 
     this.props.navigation.navigate({
       routeName: id, 
@@ -56,28 +21,33 @@ class Rooms extends Component {
     });
 
   renderRoom = (room) => {
+    getLastText = (msgs) => msgs.length ? msgs[msgs.length - 1].text : null;
+    getLastTime = (msgs) => msgs.length ? msgs[msgs.length - 1].createdAt.toLocaleDateString('en-US') : null;
+
     return (
       <ListItem key={room._id} avatar button onPress={() => this.nav('Chat', 'ChatChat', { id: room._id })}>
         <Left style={{ borderBottomWidth: 0 }}>
-          <Thumbnail source={{ uri: room.user.avatar }} />
+          <Thumbnail source={{ uri: room.friend.picture }} />
         </Left>
         <Body style={{ borderBottomWidth: 0 }}>
-          <Text>{room.user.name}</Text>
-          <Text note>{room.text}</Text>
+          <Text>{room.friend.name}</Text>
+          <Text note>{getLastText(room.messages)}</Text>
         </Body>
         <Right style={{ borderBottomWidth: 0 }}>
-          <Text note>{room.createdAt.toLocaleDateString('en-US')}</Text>
+          <Text note>{getLastTime(room.messages)}</Text>
         </Right>
       </ListItem>
     );
   }
 
   render() {
+    const { conversations } = this.props;
+
     return (
       <Container>
         <Content>
           <List>
-            {ROOMS.map(this.renderRoom)}
+            {conversations.map(this.renderRoom)}
           </List>
         </Content>
       </Container>
@@ -87,4 +57,11 @@ class Rooms extends Component {
 
 const ComponentWithBack = withBack(Rooms);
 
-export default ComponentWithBack;
+export default connect(
+  (state) => ({
+    conversations: state.chat.rooms.conversations
+  }),
+  {
+    fetchRooms
+  }
+)(ComponentWithBack);

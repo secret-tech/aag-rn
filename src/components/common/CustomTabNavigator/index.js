@@ -11,7 +11,10 @@ class CustomTabNavigator extends Component {
     title: 'Welcome'
   }
 
-  nav = (id, routeName) => this.props.navigation.navigate(id, {}, NavigationActions.navigate({ routeName }));
+  // reset route
+  // nav = (id, routeName) => this.props.navigation.navigate(id, {}, NavigationActions.navigate({ routeName }));
+  // without reset
+  nav = (id, routeName) => this.props.navigation.navigate(id);
 
   render() {
     const size = 22;

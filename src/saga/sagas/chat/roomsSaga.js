@@ -9,15 +9,16 @@ import { getToken } from '../../../utils/auth';
 function* fetchRoomsIterator() {
   try {
     const token = yield call(getToken);
-    const { data } = yield call(axios.get, 'https://aag.secrettech.io/rooms', {
+    const { data: { conversations } } = yield call(axios.get, 'https://aag.secrettech.io/conversations', {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
 
-    yield put(fetchRooms.success(data));
+    yield put(fetchRooms.success(conversations));
   } catch (e) {
     yield call(console.log, e);
+    yield put(fetchRooms.failute());
   }
 }
 
