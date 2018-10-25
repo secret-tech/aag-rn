@@ -27,6 +27,7 @@
     "redux-immutable": "^4.0.0",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.2",
+    "socket.io-client": "^2.1.1",
     "xcode": "^1.0.0"
   },
   "devDependencies": {

@@ -1,8 +1,5 @@
 import { all, takeLatest, call, fork, put, select } from 'redux-saga/effects';
-import { 
-  AccessToken, 
-  LoginManager
-} from 'react-native-fbsdk';
+import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import { NavigationActions } from 'react-navigation';
 import axios from 'axios';
 

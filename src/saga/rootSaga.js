@@ -9,6 +9,9 @@ import editTagsSaga from './sagas/profile/editTagsSaga';
 import exploreSaga from './sagas/explore/exploreSaga';
 import subExploreSaga from './sagas/explore/subExploreSaga';
 
+import roomSaga from './sagas/chat/roomSaga';
+import roomsSaga from './sagas/chat/roomsSaga';
+
 export default function* () {
   yield all([
     fork(authSaga),
@@ -16,6 +19,8 @@ export default function* () {
     fork(editBioSaga),
     fork(editTagsSaga),
     fork(exploreSaga),
-    fork(subExploreSaga)
+    fork(subExploreSaga),
+    fork(roomSaga),
+    fork(roomsSaga)
   ]);
 }

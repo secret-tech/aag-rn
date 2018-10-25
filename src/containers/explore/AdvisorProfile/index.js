@@ -4,6 +4,8 @@ import { Dimensions, Text, View, Image } from 'react-native';
 import { Container, Content, Button, Icon } from 'native-base';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
+import { openOrCreateRoom } from '../../../redux/ducks/chat/room';
+
 import s from './styles';
 
 export const WS = Dimensions.get('window');
@@ -39,6 +41,7 @@ class AdvisorProfile extends Component {
 
   render() {
     const {
+      _id,
       pictures,
       name,
       bio,
@@ -71,7 +74,7 @@ class AdvisorProfile extends Component {
                 inactiveDotScale={0.7}/>
             </View>
 
-            <Button transparent style={s.connect} onPress={() => console.log('connect')}>
+            <Button transparent style={s.connect} onPress={() => this.props.openOrCreateRoom(_id)}>
               <Icon type="SimpleLineIcons" name="bubbles" style={{ fontSize: 24, color: '#fff', padding: 0, margin: 0 }}/>
             </Button>
           </View>
@@ -94,4 +97,9 @@ class AdvisorProfile extends Component {
   }
 }
 
-export default connect(null, null)(AdvisorProfile);
+export default connect(
+  null,
+  {
+    openOrCreateRoom
+  }
+)(AdvisorProfile);

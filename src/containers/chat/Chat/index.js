@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, Left, Body, Right, Text, Button, Icon, Title } from 'native-base';
+import io from 'socket.io-client';
+import { Container, Header, Left, Body, Right, Text, Button, Icon, Title } from 'native-base';
 import { GiftedChat } from 'react-native-gifted-chat';
 
 const MESSAGES = [
@@ -41,6 +42,10 @@ class Chat extends Component {
   }
 
   componentWillMount() {
+    this.socket = io('ws://aag.secrettech.io');
+
+    console.log(this);
+
     // init
     this.setState({ messages: MESSAGES });
   }

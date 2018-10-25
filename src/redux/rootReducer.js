@@ -2,8 +2,6 @@ import { combineReducers } from 'redux';
 
 import { navReducer } from '../navigation/AppNavigator';
 
-import counter from './ducks/counter';
-
 import auth from './ducks/auth/auth';
 
 import profile from './ducks/profile/profile'
@@ -13,9 +11,11 @@ import editTags from './ducks/profile/editTags';
 import explore from './ducks/explore/explore';
 import subExplore from './ducks/explore/subExplore';
 
+import room from './ducks/chat/room';
+import rooms from './ducks/chat/rooms';
+
 export default combineReducers({
   nav: navReducer,
-  counter,
   
   auth: combineReducers({
     auth
@@ -30,5 +30,10 @@ export default combineReducers({
   explore: combineReducers({
     explore,
     subExplore
+  }),
+
+  chat: combineReducers({
+    room,
+    rooms
   })
 });
