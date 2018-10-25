@@ -73,18 +73,6 @@ class Rooms extends Component {
   render() {
     return (
       <Container>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="arrow-back" />
-              <Text>Back</Text>
-            </Button>
-          </Left>
-          <Body>
-            <Title>Chats</Title>
-          </Body>
-          <Right/>
-        </Header>
         <Content>
           <List>
             {ROOMS.map(this.renderRoom)}
