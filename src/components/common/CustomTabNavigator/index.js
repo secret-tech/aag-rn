@@ -16,6 +16,8 @@ class CustomTabNavigator extends Component {
   render() {
     const size = 22;
     const color = '#000';
+    const activeColor = '#6546fa';
+    const active = this.props.navigation.state.routes[this.props.navigation.state.index].routeName;
 
     return (
       <Footer style={s.wrap}>
@@ -23,15 +25,15 @@ class CustomTabNavigator extends Component {
 
         <FooterTab style={s.footer}>
           <Button transparent onPress={() => this.nav('Explore', 'ExploreExplore')}>
-            <Icon name='feed' size={size} color={color} />
+            <Icon name='feed' size={size} color={active === 'Explore' ? activeColor : color} />
           </Button>
 
           <Button transparent onPress={() => this.nav('Chat', 'ChatRooms')}>
-            <Icon name='bubbles' size={size} color={color} />
+            <Icon name='bubbles' size={size} color={active === 'Chat' ? activeColor : color} />
           </Button>
 
           <Button transparent onPress={() => this.nav('Profile', 'ProfileProfile')}>
-            <Icon name='user' size={size} color={color} />
+            <Icon name='user' size={size} color={active === 'Profile' ? activeColor : color} />
           </Button>
         </FooterTab>
       </Footer>

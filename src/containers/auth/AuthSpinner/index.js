@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { ActivityIndicator, StatusBar, View } from 'react-native';
 
+import Spinner from '../../../components/common/Spinner';
+
 import { getToken } from '../../../utils/auth';
 
 class AuthSpinner extends Component {
@@ -15,12 +17,7 @@ class AuthSpinner extends Component {
   };
 
   render() {
-    return (
-      <View>
-        <ActivityIndicator />
-        <StatusBar barStyle="default" />
-      </View>
-    );
+    return <Spinner/>;
   }
 }
 

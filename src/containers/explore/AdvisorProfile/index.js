@@ -29,7 +29,6 @@ class AdvisorProfile extends Component {
   capitalize = (string) => string && string.charAt(0).toUpperCase() + string.slice(1);
 
   itemRenderer = (picture) => {
-    console.log(picture);
     return (
       <View style={{ ...s.pictureWrapper, height: largeSlideWidth, width: largeSlideWidth }}>
         <Image style={s.picture} source={{ uri: picture.item }} resizeMode="cover" />

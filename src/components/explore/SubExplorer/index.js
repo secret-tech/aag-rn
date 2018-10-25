@@ -10,7 +10,7 @@ class SubExplorer extends Component {
   }
 
   _renderItem = (advisor) => (
-    <View style={{ paddingLeft: 20, paddingRight: 20 }}>
+    <View style={{ paddingTop: 10, paddingLeft: 20, paddingRight: 20 }}>
       <Card {...advisor}/>
     </View>
   )

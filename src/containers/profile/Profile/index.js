@@ -7,6 +7,8 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
 import { fetchProfile } from '../../../redux/ducks/profile/profile';
 
+import Spinner from '../../../components/common/Spinner';
+
 import s from './styles';
 
 class Profile extends Component {
@@ -17,9 +19,11 @@ class Profile extends Component {
   nav = (id, routeName) => this.props.navigation.navigate(id, {}, NavigationActions.navigate({ routeName }));
 
   render() {
-    const { picture, name, age, bio, tags } = this.props.profile.toJS();
+    const { loading, picture, name, age, bio, tags } = this.props.profile.toJS();
 
-    return (
+    return loading
+      ? <Spinner/>
+      : (
       <Container>
         <Content>
           <View style={s.profile}>

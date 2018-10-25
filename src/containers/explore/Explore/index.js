@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { View, Text } from 'native-base';
 
 import Explorer from '../../../components/explore/Explorer';
+import Spinner from '../../../components/common/Spinner';
 
 import { fetchAdvisors } from '../../../redux/ducks/explore/explore';
 
@@ -16,7 +17,7 @@ class Explore extends Component {
     const { data, loading } = this.props.explore.toJS();
 
     return loading
-      ? <View><Text>Loading...</Text></View>
+      ? <Spinner/>
       : <Explorer data={data}/>;
   }
 }

@@ -32,7 +32,7 @@ function* fetchFbTokenIterator() {
       yield put(NavigationActions.navigate({ routeName: 'Home' }));
     }
   } catch (e) {
-    yield call(console.log, 'authSaga/fetchFbUserDataIterator', e);
+    yield call(console.log, e);
   }
 }
 
