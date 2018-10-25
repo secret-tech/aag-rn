@@ -26,7 +26,7 @@ class CustomTabNavigator extends Component {
             <Icon name='feed' size={size} color={color} />
           </Button>
 
-          <Button transparent onPress={() => this.nav('Chat', 'ChatChat')}>
+          <Button transparent onPress={() => this.nav('Chat', 'ChatRooms')}>
             <Icon name='bubbles' size={size} color={color} />
           </Button>
 
