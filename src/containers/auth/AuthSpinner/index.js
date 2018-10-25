@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, StatusBar, View } from 'react-native';
 
 import Spinner from '../../../components/common/Spinner';
 

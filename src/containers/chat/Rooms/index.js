@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { NavigationActions } from 'react-navigation';
 import { Container, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Text, Button, Icon, Title } from 'native-base';
 
+import withBack from '../../../hoc/AnroidBackHandler';
+
 const ROOMS = [
   {
     _id: 0,
@@ -83,4 +85,6 @@ class Rooms extends Component {
   }
 }
 
-export default Rooms;
+const ComponentWithBack = withBack(Rooms);
+
+export default ComponentWithBack;

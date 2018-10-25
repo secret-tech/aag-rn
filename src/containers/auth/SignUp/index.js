@@ -5,6 +5,8 @@ import { View, Button, Text } from 'native-base';
 
 import { signUp } from '../../../redux/ducks/auth/auth';
 
+import withBack from '../../../hoc/AnroidBackHandler';
+
 import s from './styles';
 
 const logo = require('../../../assets/images/logo/logoWhite.png');
@@ -44,9 +46,11 @@ class SignUp extends Component {
   }
 }
 
+const ComponentWithBack = withBack(SignUp);
+
 export default connect(
   null,
   {
     signUp
   }
-)(SignUp);
+)(ComponentWithBack);
