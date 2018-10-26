@@ -5,7 +5,7 @@ import { View, Button, Text } from 'native-base';
 
 import { signUp } from '../../../redux/ducks/auth/auth';
 
-import withBack from '../../../hoc/AnroidBackHandler';
+// import withBack from '../../../hoc/AnroidBackHandler';
 
 import s from './styles';
 
@@ -46,11 +46,11 @@ class SignUp extends Component {
   }
 }
 
-const ComponentWithBack = withBack(SignUp);
+// const ComponentWithBack = withBack(SignUp);
 
 export default connect(
   null,
   {
     signUp
   }
-)(ComponentWithBack);
+)(SignUp);

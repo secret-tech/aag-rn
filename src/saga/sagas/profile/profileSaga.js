@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { fetchProfile } from '../../../redux/ducks/profile/profile';
 
-import { getToken } from '../../../utils/auth';
+import { getToken, rmToken } from '../../../utils/auth';
 
 
 function* fetchProfileIterator() {
@@ -17,6 +17,7 @@ function* fetchProfileIterator() {
 
     yield put(fetchProfile.success(data));
   } catch (e) {
+    yield put(fetchProfile.failure());
     yield call(console.log, e);
   }
 }

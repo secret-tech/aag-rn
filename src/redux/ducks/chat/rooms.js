@@ -2,9 +2,11 @@ import { createAsyncAction, createAction, createReducer } from '../../../utils/a
 
 export const FETCH_ROOMS = 'chat/rooms/FETCH_ROOMS';
 export const MERGE_ROOM = 'chat/rooms/MERGE_ROOM';
+export const MERGE_LAST_MESSAGE = 'chat/rooms/MERGE_LAST_MESSAGE';
 
 export const fetchRooms = createAsyncAction(FETCH_ROOMS);
 export const mergeRoom = createAction(MERGE_ROOM);
+export const mergeLastMessage = createAction(MERGE_LAST_MESSAGE);
 
 const initialState = {
   loading: false,
@@ -36,5 +38,10 @@ export default createReducer({
   [MERGE_ROOM]: (state, { payload }) => ({
     ...state,
     conversations: joinWithoutDupes(state.conversations, [payload])
-  })
+  }),
+
+  [MERGE_LAST_MESSAGE]: (state, { payload }) => {
+    console.log(state, payload);
+    return state;
+  }
 }, initialState);

@@ -5,7 +5,7 @@ import { Container, Content, List, ListItem, Left, Body, Right, Thumbnail, Text 
 
 import { fetchRooms } from '../../../redux/ducks/chat/rooms';
 
-import withBack from '../../../hoc/AnroidBackHandler';
+// import withBack from '../../../hoc/AnroidBackHandler';
 
 
 class Rooms extends Component {
@@ -21,8 +21,9 @@ class Rooms extends Component {
     });
 
   renderRoom = (room) => {
-    getLastText = (msgs) => msgs.length ? msgs[msgs.length - 1].text : null;
-    getLastTime = (msgs) => msgs.length ? msgs[msgs.length - 1].createdAt.toLocaleDateString('en-US') : null;
+    console.log(room);
+    getLastText = (msgs) => msgs.length ? msgs[0].text : null;
+    getLastTime = (msgs) => msgs.length ? new Date(msgs[0].createdAt).toLocaleDateString('en-US') : null;
 
     return (
       <ListItem key={room._id} avatar button onPress={() => this.nav('Chat', 'ChatChat', { id: room._id })}>
@@ -55,7 +56,7 @@ class Rooms extends Component {
   }
 }
 
-const ComponentWithBack = withBack(Rooms);
+// const ComponentWithBack = withBack(Rooms);
 
 export default connect(
   (state) => ({
@@ -64,4 +65,4 @@ export default connect(
   {
     fetchRooms
   }
-)(ComponentWithBack);
+)(Rooms);

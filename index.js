@@ -9,6 +9,8 @@ import AppNavigator from './src/navigation/AppNavigator';
 
 class App extends Component {
   render() {
+    console.log('hello world');
+    
     return (
       <Provider store={store}>
         <AppNavigator />

@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
 import { fetchProfile } from '../../../redux/ducks/profile/profile';
 
-import withBack from '../../../hoc/AnroidBackHandler';
+// import withBack from '../../../hoc/AnroidBackHandler';
 import Spinner from '../../../components/common/Spinner';
 
 import s from './styles';
@@ -54,7 +54,7 @@ class Profile extends Component {
   }
 }
 
-const ComponentWithBack = withBack(Profile);
+// const ComponentWithBack = withBack(Profile);
 
 export default connect(
   (state) => ({
@@ -63,4 +63,4 @@ export default connect(
   {
     fetchProfile
   }
-)(ComponentWithBack);
+)(Profile);

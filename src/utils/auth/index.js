@@ -27,9 +27,9 @@ export const rmToken = async () => {
 
 export const getUserId = async () => {
   try {
-    const token = await getToken();
-    return jwtDecode(token).id;
+    const jwt = await AsyncStorage.getItem('jwt');
+    return jwtDecode(jwt).id;
   } catch (e) {
-    throw new Error('utils/auth/getRole', e);
+    throw new Error('utils/auth/getToken', e);
   }
 }

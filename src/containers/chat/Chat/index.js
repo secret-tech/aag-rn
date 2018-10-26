@@ -3,6 +3,10 @@ import io from 'socket.io-client';
 import { Container, Header, Left, Body, Right, Text, Button, Icon, Title } from 'native-base';
 import { GiftedChat } from 'react-native-gifted-chat';
 
+import Spinner from '../../../components/common/Spinner';
+
+import { getToken, getUserId } from '../../../utils/auth';
+
 const MESSAGES = [
   {
     _id: '962990ca-c3ef-4881-aa88-e147b75b63b1',
@@ -37,27 +41,90 @@ const MESSAGES = [
 ];
 
 class Chat extends Component {
-  state = {
-    messages: []
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      user: {
+        _id: ''
+      },
+      friend: {
+        _id: ''
+      },
+      messages: []
+    }
+  }
+
+  initSocket = async () => {
+    const token = await getToken();
+    const userId = await getUserId();
+
+    this.userId = userId;
+
+    // create socket instance
+    this.socket = io.connect('ws://aag.secrettech.io', {
+      autoConnect: false,
+      query: {
+        token,
+        conversationId: this.props.navigation.state.params.id
+      }
+    });
+
+    // add handlers
+    this.socket.on('loadConversation', ({ user, friend, messages }) => {
+      this.setState({
+        loading: false,
+        user,
+        friend,
+        messages: GiftedChat.append(this.state.messages, messages)
+      }, () => {
+        console.log(this.state);
+      });
+    });
+
+    this.socket.on('message', (message) => {
+      console.log('message', this.state.user.name, message);
+      this.setState({
+        messages: GiftedChat.append(this.state.messages, [message])
+      });
+    });
+
+    // open connection
+    this.socket.open();
   }
 
   componentWillMount() {
-    this.socket = io('ws://aag.secrettech.io');
+    this.initSocket();
+  }
 
-    console.log(this);
-
-    // init
-    this.setState({ messages: MESSAGES });
+  componentWillUnmount() {
+    this.socket.disconnect();
   }
 
   onSend = (messages) => {
     this.setState((prevState) => ({
       messages: GiftedChat.append(prevState.messages, messages),
-    }))
+    }));
+
+    console.log(messages);
+
+    messages.forEach((message) => {
+      const msg = {
+        createdAt: message.createdAt,
+        text: message.text,
+        conversationId: this.props.navigation.state.params.id,
+        senderId: this.state.user._id,
+        receiverId: this.state.friend._id
+      };
+      this.socket.emit('message', msg);
+      console.log('emitted', msg);
+    });
   }
 
   render() {
-    return (
+    return this.state.loading
+      ? <Spinner/>
+      : (
       <Container>
         <Header>
           <Left>
@@ -76,7 +143,7 @@ class Chat extends Component {
           messages={this.state.messages}
           onSend={(messages) => this.onSend(messages)}
           inverted={true}
-          user={{ _id: 0 }}/>
+          user={this.state.user}/>
       </Container>
     );
   }

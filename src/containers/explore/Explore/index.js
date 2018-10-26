@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import withBack from '../../../hoc/AnroidBackHandler';
+// import withBack from '../../../hoc/AnroidBackHandler';
 import Explorer from '../../../components/explore/Explorer';
 import Spinner from '../../../components/common/Spinner';
 
@@ -22,7 +22,7 @@ class Explore extends Component {
   }
 }
 
-const ComponentWithBack = withBack(Explore);
+// const ComponentWithBack = withBack(Explore);
 
 export default connect(
   (state) => ({
@@ -30,4 +30,4 @@ export default connect(
   }), 
   {
     fetchAdvisors
-  })(ComponentWithBack);
+  })(Explore);
