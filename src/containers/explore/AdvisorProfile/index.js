@@ -12,16 +12,6 @@ export const WS = Dimensions.get('window');
 export const sliderWidth = WS.width;
 export const largeSlideWidth = WS.width;
 
-const DATA = [
-  { picture: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' },
-  { picture: 'https://images.pexels.com/photos/445109/pexels-photo-445109.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' },
-  { picture: 'https://images.pexels.com/photos/415276/pexels-photo-415276.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' },
-  { picture: 'https://images.pexels.com/photos/580631/pexels-photo-580631.png?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' },
-  { picture: 'https://images.pexels.com/photos/206434/pexels-photo-206434.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' },
-  { picture: 'https://images.pexels.com/photos/185517/pexels-photo-185517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' },
-  { picture: 'https://images.pexels.com/photos/875862/pexels-photo-875862.png?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' },
-  { picture: 'https://images.pexels.com/photos/735552/pexels-photo-735552.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' }
-];
 
 class AdvisorProfile extends Component {
   state = {
@@ -42,6 +32,7 @@ class AdvisorProfile extends Component {
   render() {
     const {
       _id,
+      picture,
       pictures,
       name,
       bio,
@@ -59,7 +50,7 @@ class AdvisorProfile extends Component {
 
             <Carousel
               ref={(c) => { this._carousel = c; }}
-              data={pictures}
+              data={[picture, ...pictures]}
               renderItem={this.itemRenderer}
               sliderWidth={sliderWidth}
               itemWidth={largeSlideWidth}
@@ -67,7 +58,7 @@ class AdvisorProfile extends Component {
 
             <View style={s.paginationWrapper}>
               <Pagination
-                dotsLength={DATA.length}
+                dotsLength={[picture, ...pictures].length}
                 activeDotIndex={this.state.activeSlide}
                 dotStyle={s.dotStyle}
                 inactiveDotOpacity={0.5}

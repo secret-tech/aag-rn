@@ -1,5 +1,5 @@
 import { createAsyncAction, createReducer } from '../../../utils/actions';
-import { Map, List } from 'immutable';
+import { Map } from 'immutable';
 
 export const OPEN_OR_CREATE_ROOM = 'chat/rooms/OPEN_OR_CREATE_ROOM';
 

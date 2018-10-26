@@ -1,47 +1,128 @@
-import { createAsyncAction, createAction, createReducer } from '../../../utils/actions';
+import { createAction, createAsyncAction, createReducer } from '../../../utils/actions';
+
+export const LOAD_CONVERSATIONS = 'chat/rooms/LOAD_CONVERSATIONS';
+export const SOCKET_CONNECT = 'chat/rooms/SOCKET_CONNECT';
+export const LOAD_CONVERSATION = 'chat/rooms/LOAD_CONVERSATION';
+export const PURGE_CONVERSATION = 'chat/rooms/PURGE_CONVERSATION';
+export const SEND_MESSAGE = 'chat/rooms/SEND_MESSAGE';
+export const RECEIVE_MESSAGE = 'chat/rooms/RECEIVE_MESSAGE';
+export const MERGE_ROOM = 'chat/rooms/MERGE_ROOM';
+
+export const loadConversations = createAction(LOAD_CONVERSATIONS);
+export const socketConnect = createAction(SOCKET_CONNECT);
+export const loadConversation = createAsyncAction(LOAD_CONVERSATION);
+export const purgeConversation = createAction(PURGE_CONVERSATION);
+export const sendMessage = createAsyncAction(SEND_MESSAGE);
+export const receiveMessage = createAction(RECEIVE_MESSAGE);
+export const mergeRoom = createAction(MERGE_ROOM);
+
 
 export const FETCH_ROOMS = 'chat/rooms/FETCH_ROOMS';
-export const MERGE_ROOM = 'chat/rooms/MERGE_ROOM';
 export const MERGE_LAST_MESSAGE = 'chat/rooms/MERGE_LAST_MESSAGE';
 
 export const fetchRooms = createAsyncAction(FETCH_ROOMS);
-export const mergeRoom = createAction(MERGE_ROOM);
 export const mergeLastMessage = createAction(MERGE_LAST_MESSAGE);
+
 
 const initialState = {
   loading: false,
-  conversations: []
+  conversations: [],
+  conversation: {
+    _id: '',
+    user: {},
+    friend: {},
+    messages: []
+  }
 };
 
-const joinWithoutDupes = (a, b) => {
-  const aset = new Set(a.map(x => x._id));
-  return [...a, ...b.filter(x => !aset.has(x._id))];
-}
 
 export default createReducer({
-  [fetchRooms.REQUEST]: (state) => ({
+  [LOAD_CONVERSATIONS]: (state, { payload }) => ({
     ...state,
-    loading: true
+    conversations: payload
   }),
 
-  [fetchRooms.SUCCESS]: (state, { payload }) => ({
+  [loadConversation.SUCCESS]: (state, { payload }) => {
+    return ({
+      ...state,
+      conversation: payload
+    });
+  },
+
+  [PURGE_CONVERSATION]: (state) => ({
     ...state,
-    loading: false,
-    conversations: joinWithoutDupes(state.conversations, payload)
+    conversation: initialState.conversation
   }),
 
-  [fetchRooms.FAILURE]: (state) => ({
-    ...state,
-    loading: false
-  }),
+  [sendMessage.REQUEST]: (state, { payload }) => {
+    const conversations = state.conversations.map((conv) => {
+      if (conv._id === payload.conversationId) {
+        return {
+          ...conv,
+          messages: [...payload.messages, ...conv.messages]
+        };
+      }
 
-  [MERGE_ROOM]: (state, { payload }) => ({
-    ...state,
-    conversations: joinWithoutDupes(state.conversations, [payload])
-  }),
+      return conv;
+    });
 
-  [MERGE_LAST_MESSAGE]: (state, { payload }) => {
-    console.log(state, payload);
-    return state;
+    const messages = state.conversation._id === payload.conversationId
+      ? [...payload.messages, ...state.conversation.messages]
+      : state.conversation.messages;
+
+    return ({
+      ...state,
+      conversations,
+      conversation: {
+        ...state.conversation,
+        messages
+      }
+    });
+  },
+
+  [MERGE_ROOM]: (state, { payload }) => {
+    const conversations = [payload, ...state.conversations];
+
+    const exist = state.conversations.reduce((acc, conv) => {
+      if (conv._id === payload._id) return true;
+      return acc;
+    }, false);
+
+    console.log('exit?', exist);
+    console.log('s.c', state.conversations);
+    console.log('merged', conversations);
+
+    return ({
+      ...state,
+      conversations: exist ? state.conversations : conversations
+    });
+  },
+
+  [RECEIVE_MESSAGE]: (state, { payload }) => {
+    const { conversationId, ...message } = payload;
+
+    const conversations = state.conversations.map((conv) => {
+      if (conv._id === conversationId) {
+        return ({
+          ...conv,
+          messages: [message, ...conv.messages]
+        });
+      }
+
+      return conv;
+    });
+
+    const messages = state.conversation._id === conversationId
+      ? [message, ...state.conversation.messages]
+      : state.conversation.messages;
+
+    return ({
+      ...state,
+      conversations,
+      conversation: {
+        ...state.conversation,
+        messages
+      }
+    });
   }
 }, initialState);

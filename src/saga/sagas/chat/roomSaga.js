@@ -18,9 +18,10 @@ function* openOrCreateRoomIterator({ payload }) {
       }
     });
 
-    yield put(openOrCreateRoom.success());
+    yield put(NavigationActions.navigate({ routeName: 'ChatChat', params: { conversationId: data.conversation._id } }));
     yield put(mergeRoom(data.conversation));
-    yield put(NavigationActions.navigate({ routeName: 'ChatChat', params: { id: data.conversation._id } }));
+    yield call(console.log, 'conv', data.conversation);
+    yield put(openOrCreateRoom.success());
   } catch (e) {
     yield put(openOrCreateRoom.failure());
     yield call(console.log, e);
