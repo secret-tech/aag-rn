@@ -14,7 +14,7 @@ class SubExplore extends Component {
 
   componentWillMount() {
     const { type } = this.props.navigation.state.params;
-    this.props.fetchSubAdvisors({ type, page: 1, limit: 100 });
+    this.props.fetchSubAdvisors({ type, page: 1, limit: 10 });
   }
 
   componentWillUnmount() {

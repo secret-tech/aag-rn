@@ -55,7 +55,13 @@ class Rooms extends Component {
       <Container>
         <Content>
           <List>
-            {conversations.map(this.renderConversation)}
+            {conversations
+              .sort((a, b) => {
+                const ats = new Date(a.messages[0].createdAt).getTime();
+                const bts = new Date(b.messages[0].createdAt).getTime();
+                return bts - ats;
+              })
+              .map(this.renderConversation)}
           </List>
         </Content>
       </Container>
