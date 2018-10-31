@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { StatusBar, Image } from 'react-native';
 import { View, Button, Text } from 'native-base';
 
-import { fetchFbToken } from '../../../redux/ducks/auth/auth';
+import { signIn } from '../../../redux/ducks/auth/auth';
 
 import s from './styles';
 
@@ -18,7 +18,7 @@ class SignIn extends Component {
           <Image style={s.logo} source={logo}/>
 
           <View style={s.buttons}>
-            <Button block onPress={() => this.props.fetchFbToken()}>
+            <Button block onPress={() => this.props.signIn()}>
               <Text>Sign in with Facebook</Text>
             </Button>
           </View>
@@ -31,6 +31,6 @@ class SignIn extends Component {
 export default connect(
   null,
   {
-    fetchFbToken
+    signIn
   }
 )(SignIn);

@@ -1,11 +1,9 @@
 import { createStackNavigator } from 'react-navigation';
 
 import SignIn from '../containers/auth/SignIn';
-import SignUp from '../containers/auth/SignUp';
 
 export default createStackNavigator({
-  SignIn: { screen: SignIn },
-  SignUp: { screen: SignUp }
+  SignIn: { screen: SignIn }
 }, {
   initialRouteName: 'SignIn',
   headerMode: 'none'
