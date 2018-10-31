@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { Container, Content, List, ListItem, Left, Body, Right, Thumbnail, Text } from 'native-base';
 
-import { socketConnect } from '../../../redux/ducks/chat/rooms';
-import { openOrCreateRoom } from '../../../redux/ducks/chat/room';
+import { socketConnect, openConversation } from '../../../redux/ducks/chat/rooms';
 
 import Spinner from '../../../components/common/Spinner';
 
@@ -27,14 +26,12 @@ class Rooms extends Component {
     getLastText = (msgs) => msgs.length ? msgs[0].text : null;
     getLastTime = (msgs) => msgs.length ? new Date(msgs[0].createdAt).toLocaleDateString('en-US') : null;
 
-    console.log(conversation);
-
     return (
       <ListItem 
         key={conversation._id}
         avatar 
         button 
-        onPress={() => this.props.openOrCreateRoom(conversation.friend._id)}>
+        onPress={() => this.props.openConversation(conversation.friend._id)}>
         <Left style={{ borderBottomWidth: 0 }}>
           <Thumbnail source={{ uri: conversation.friend.picture }} />
         </Left>
@@ -78,6 +75,6 @@ export default connect(
   }),
   {
     socketConnect,
-    openOrCreateRoom
+    openConversation
   }
 )(Rooms);

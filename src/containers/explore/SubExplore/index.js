@@ -5,29 +5,39 @@ import { Container, Header, Left, Body, Right, Title, Button, Icon, Text } from 
 import { fetchSubAdvisors, purgeSubAdvisors } from '../../../redux/ducks/explore/subExplore';
 
 import SubExplorer from '../../../components/explore/SubExplorer';
-import Spinner from '../../../components/common/Spinner';
-
-import s from './styles';
 
 class SubExplore extends Component {
+  constructor(props) {
+    super(props);
+
+    this.type = this.props.navigation.state.params.type;
+
+    this.state = {
+      page: 1,
+      limit: 5
+    };
+  }
+
   capitalize = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
   componentWillMount() {
-    const { type } = this.props.navigation.state.params;
-    this.props.fetchSubAdvisors({ type, page: 1, limit: 10 });
+    this.props.fetchSubAdvisors({ type: this.type, ...this.state });
   }
 
   componentWillUnmount() {
     this.props.purgeSubAdvisors();
   }
 
-  render() {
-    const { type } = this.props.navigation.state.params;
-    const { loading, data } = this.props;
+  fetchMoreAdvisors = () => {
+    this.setState((prevState) => ({
+      page: prevState.page + 1
+    }), () => this.props.fetchSubAdvisors({ type: this.type, ...this.state }));
+  }
 
-    return loading
-      ? <Spinner/>
-      : (
+  render() {
+    const { data } = this.props;
+
+    return (
       <Container>
         <Header>
           <Left>
@@ -37,12 +47,12 @@ class SubExplore extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>{this.capitalize(`${type} advisors`)}</Title>
+            <Title>{this.capitalize(`${this.type} advisors`)}</Title>
           </Body>
           <Right/>
         </Header>
 
-        <SubExplorer data={data}/>
+        <SubExplorer data={data} fetchMoreAdvisors={this.fetchMoreAdvisors}/>
       </Container>
     );
   }
@@ -50,8 +60,7 @@ class SubExplore extends Component {
 
 export default connect(
   (state) => ({
-    data: state.explore.subExplore.data,
-    loading: state.explore.subExplore.loading
+    data: state.explore.subExplore.data
   }), 
   {
     fetchSubAdvisors,

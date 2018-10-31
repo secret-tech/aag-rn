@@ -14,11 +14,15 @@ class SubExplorer extends Component {
   )
 
   render() {
+    console.log(this.props);
     return (
       <FlatList
         data={this.props.data}
+        initialNumToRender={5}
         renderItem={this._renderItem}
-        keyExtractor={this._keyExtractor}/>
+        keyExtractor={this._keyExtractor}
+        onEndReached={this.props.fetchMoreAdvisors}
+        onEndThreshold={0}/>
     );
   }
 }
