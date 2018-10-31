@@ -51,14 +51,16 @@ class Rooms extends Component {
 
   render() {
     const { conversations } = this.props;
+    console.log(conversations);
+
     return (
       <Container>
         <Content>
           <List>
             {conversations
               .sort((a, b) => {
-                const ats = a.messages[0] ? new Date(a.messages[0].createdAt).getTime() : 0;
-                const bts = b.messages[0] ? new Date(b.messages[0].createdAt).getTime() : 1;
+                const ats = a.messages.length > 0 ? new Date(a.messages[0].createdAt).getTime() : 0;
+                const bts = b.messages.length > 0 ? new Date(b.messages[0].createdAt).getTime() : 1;
                 return bts - ats;
               })
               .map(this.renderConversation)}

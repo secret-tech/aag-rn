@@ -9,7 +9,6 @@ import editTagsSaga from './sagas/profile/editTagsSaga';
 import exploreSaga from './sagas/explore/exploreSaga';
 import subExploreSaga from './sagas/explore/subExploreSaga';
 
-import roomSaga from './sagas/chat/roomSaga';
 import roomsSaga from './sagas/chat/roomsSaga';
 
 export default function* () {
@@ -20,7 +19,6 @@ export default function* () {
     fork(editTagsSaga),
     fork(exploreSaga),
     fork(subExploreSaga),
-    fork(roomSaga),
     fork(roomsSaga)
   ]);
 }

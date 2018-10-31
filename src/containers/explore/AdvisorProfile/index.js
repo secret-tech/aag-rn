@@ -4,7 +4,7 @@ import { Dimensions, Text, View, Image } from 'react-native';
 import { Container, Content, Button, Icon } from 'native-base';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
-import { openOrCreateRoom } from '../../../redux/ducks/chat/room';
+import { openConversation } from '../../../redux/ducks/chat/rooms';
 
 import s from './styles';
 
@@ -65,7 +65,7 @@ class AdvisorProfile extends Component {
                 inactiveDotScale={0.7}/>
             </View>
 
-            <Button transparent style={s.connect} onPress={() => this.props.openOrCreateRoom(_id)}>
+            <Button transparent style={s.connect} onPress={() => this.props.openConversation(_id)}>
               <Icon type="SimpleLineIcons" name="bubbles" style={{ fontSize: 24, color: '#fff', padding: 0, margin: 0 }}/>
             </Button>
           </View>
@@ -91,6 +91,6 @@ class AdvisorProfile extends Component {
 export default connect(
   null,
   {
-    openOrCreateRoom
+    openConversation
   }
 )(AdvisorProfile);

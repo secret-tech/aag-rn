@@ -11,7 +11,6 @@ import editTags from './ducks/profile/editTags';
 import explore from './ducks/explore/explore';
 import subExplore from './ducks/explore/subExplore';
 
-import room from './ducks/chat/room';
 import rooms from './ducks/chat/rooms';
 
 export default combineReducers({
@@ -33,7 +32,6 @@ export default combineReducers({
   }),
 
   chat: combineReducers({
-    room,
     rooms
   })
 });
