@@ -11,14 +11,17 @@ import { getToken } from '../../../utils/auth';
 function* createEventChannel(socket) {
   return eventChannel((emit) => {
     socket.on('conversationCreated', (conversation) => {
+      console.log('created', conversation);
       emit(openConversation.success(conversation));
     });
 
     socket.on('conversationExists', (conversation) => {
+      console.log('exist', conversation);
       emit(openConversation.success(conversation));
     })
 
     socket.on('loadConversations', (conversations) => {
+      console.log('saga', conversations);
       emit(loadConversations(conversations));
     });
 
@@ -94,8 +97,15 @@ function* openConversationSaga() {
 
 
 function* initializeWebSocketsChannel() {
+  window.navigator.userAgent = 'react-native'; // required to connect on iOS
   const token = yield call(getToken);
-  const socket = yield call(io, 'ws://aag.secrettech.io', { query: { token } });
+  const socket = io('wss://aag.secrettech.io', {
+    query: { token },
+    jsonp: false,  // required to connect on iOS
+    transports: ['websocket']  // required to connect on iOS
+  });
+
+  yield call(console.log, socket);
   yield all([
     yield fork(read, socket),
     yield fork(openConversationSaga),
