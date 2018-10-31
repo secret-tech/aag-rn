@@ -5,9 +5,7 @@ import Card from '../Card';
 
 
 class SubExplorer extends Component {
-  _keyExtracor = (advisor) => {
-    return advisor._id.toString();
-  }
+  _keyExtractor = (advisor) => advisor._id.toString();
 
   _renderItem = (advisor) => (
     <View style={{ paddingTop: 10, paddingLeft: 20, paddingRight: 20 }}>
@@ -20,7 +18,7 @@ class SubExplorer extends Component {
       <FlatList
         data={this.props.data}
         renderItem={this._renderItem}
-        keyExtractor={this._keyExtracor}/>
+        keyExtractor={this._keyExtractor}/>
     );
   }
 }

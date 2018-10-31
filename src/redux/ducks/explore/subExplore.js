@@ -29,5 +29,5 @@ export default createReducer({
     loading: false
   }),
 
-  [PURGE_SUB_ADVISORS]: () => ({ ...initialState })
+  [PURGE_SUB_ADVISORS]: () => initialState
 }, initialState);
