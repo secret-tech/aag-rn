@@ -8,6 +8,7 @@ import { socketConnect, openConversation } from '../../../redux/ducks/chat/rooms
 
 class Rooms extends Component {
   componentWillMount() {
+    console.log('mounted');
     this.props.socketConnect();
   }
 

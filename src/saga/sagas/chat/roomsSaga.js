@@ -3,7 +3,7 @@ import { eventChannel } from 'redux-saga';
 import { NavigationActions } from 'react-navigation';
 import io from 'socket.io-client';
 
-import { openConversation, loadConversations, loadConversation, sendMessage, receiveMessage } from '../../../redux/ducks/chat/rooms';
+import { INIT_SOCKET, openConversation, loadConversations, loadConversation, sendMessage, receiveMessage } from '../../../redux/ducks/chat/rooms';
 
 import { getToken } from '../../../utils/auth';
 
@@ -102,7 +102,6 @@ function* initializeWebSocketsChannel() {
     transports: ['websocket']  // required to connect on iOS
   });
 
-  yield call(console.log, socket);
   yield all([
     yield fork(read, socket),
     yield fork(openConversationSaga),
@@ -112,9 +111,16 @@ function* initializeWebSocketsChannel() {
   ]);
 }
 
+function* initializeWebSocketsChannelSaga() {
+  yield takeLatest(
+    INIT_SOCKET,
+    initializeWebSocketsChannel
+  );
+}
+
 
 export default function* () {
   yield all([
-    fork(initializeWebSocketsChannel)
+    fork(initializeWebSocketsChannelSaga)
   ]);
 }
