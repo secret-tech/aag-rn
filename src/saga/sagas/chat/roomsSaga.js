@@ -11,17 +11,14 @@ import { getToken } from '../../../utils/auth';
 function* createEventChannel(socket) {
   return eventChannel((emit) => {
     socket.on('conversationCreated', (conversation) => {
-      console.log('created', conversation);
       emit(openConversation.success(conversation));
     });
 
     socket.on('conversationExists', (conversation) => {
-      console.log('exist', conversation);
       emit(openConversation.success(conversation));
     })
 
     socket.on('loadConversations', (conversations) => {
-      console.log('saga', conversations);
       emit(loadConversations(conversations));
     });
 

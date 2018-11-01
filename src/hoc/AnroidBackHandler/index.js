@@ -14,7 +14,6 @@ const withBackHandler = (WrappedComponent) => {
     
       componentDidMount () {
         BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
-        console.log(BackHandler);
       }
     
       componentWillUnmount () {

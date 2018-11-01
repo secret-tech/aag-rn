@@ -5,8 +5,6 @@ import { Container, Content, List, ListItem, Left, Body, Right, Thumbnail, Text 
 
 import { socketConnect, openConversation } from '../../../redux/ducks/chat/rooms';
 
-import Spinner from '../../../components/common/Spinner';
-
 
 class Rooms extends Component {
   componentWillMount() {
@@ -48,7 +46,6 @@ class Rooms extends Component {
 
   render() {
     const { conversations } = this.props;
-    console.log(conversations);
 
     return (
       <Container>

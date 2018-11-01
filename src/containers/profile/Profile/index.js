@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Image } from 'react-native';
 import { Container, Content, View, Text, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
-import OneSignal from 'react-native-onesignal';
 
 import { fetchProfile } from '../../../redux/ducks/profile/profile';
 
@@ -19,14 +18,6 @@ class Profile extends Component {
   }
 
   componentWillMount() {
-    OneSignal.setLogLevel(7, 0);
-    OneSignal.setRequiresUserPrivacyConsent(true);
-    OneSignal.init('96ef2fff-208d-4b7e-a592-6c45b3633fad', { kOSSettingsKeyAutoPrompt: true });
-
-    OneSignal.addEventListener('received', (n) => console.log(n));
-    OneSignal.addEventListener('opened', (n) => console.log(n));
-    OneSignal.addEventListener('ids', (n) => console.log(n));
-
     this.props.fetchProfile();
   }
 

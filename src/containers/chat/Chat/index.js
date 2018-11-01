@@ -7,7 +7,7 @@ import { loadConversation, purgeConversation, sendMessage } from '../../../redux
 
 
 class Chat extends Component {
-  componentDidMount() {
+  componentWillMount() {
     this.props.loadConversation(this.props.navigation.state.params.conversationId);
   }
 
@@ -19,12 +19,10 @@ class Chat extends Component {
       senderId: this.props.conversation.user._id,
       receiverId: this.props.conversation.friend._id,
       conversationId
-    })
+    });
   }
 
   render() {
-    console.log(this.props.conversation);
-
     return (
       <Container>
         <Header>
