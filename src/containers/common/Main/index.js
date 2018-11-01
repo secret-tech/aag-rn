@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import TabNavigator from '../../../navigation/TabNavigator';
 
 import { initSocket } from '../../../redux/ducks/chat/rooms';
+import { fetchProfile } from '../../../redux/ducks/profile/profile';
 
 class Main extends Component {
   constructor (props) {
@@ -13,6 +14,7 @@ class Main extends Component {
 
   componentWillMount() {
     this.props.initSocket();
+    this.props.fetchProfile();
 
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
   }
@@ -37,6 +39,7 @@ export default connect(
     nav: state.nav 
   }),
   {
-    initSocket
+    initSocket,
+    fetchProfile
   }
 )(Main);

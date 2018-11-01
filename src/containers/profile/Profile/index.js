@@ -5,22 +5,11 @@ import { Image } from 'react-native';
 import { Container, Content, View, Text, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
-import { fetchProfile } from '../../../redux/ducks/profile/profile';
-
-// import withBack from '../../../hoc/AnroidBackHandler';
 import Spinner from '../../../components/common/Spinner';
 
 import s from './styles';
 
 class Profile extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentWillMount() {
-    this.props.fetchProfile();
-  }
-
   nav = (id, routeName) => this.props.navigation.navigate(id, {}, NavigationActions.navigate({ routeName }));
 
   render() {
@@ -58,13 +47,8 @@ class Profile extends Component {
   }
 }
 
-// const ComponentWithBack = withBack(Profile);
-
 export default connect(
   (state) => ({
     profile: state.profile.profile
-  }), 
-  {
-    fetchProfile
-  }
+  })
 )(Profile);
