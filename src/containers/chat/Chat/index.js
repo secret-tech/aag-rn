@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Container, Header, Left, Body, Right, Text, Button, Icon, Title } from 'native-base';
 import { GiftedChat } from 'react-native-gifted-chat';
 
-import { loadConversation, purgeConversation, sendMessage } from '../../../redux/ducks/chat/rooms';
+import { loadConversation, purgeConversation, sendMessage, fetchMoreMessages } from '../../../redux/ducks/chat/rooms';
 
 
 class Chat extends Component {
@@ -20,6 +20,19 @@ class Chat extends Component {
       receiverId: this.props.conversation.friend._id,
       conversationId
     });
+  }
+
+  fetchMoreMessages = () => {
+    const { conversationId } = this.props.navigation.state.params;
+
+    // key is createdAt Date of last loaded message
+    const key = this.props.conversation.messages.reduce((acc, msg, index) => {
+      if (index === 0) return msg.createdAt;
+      if (Date.parse(msg.createdAt) > Date.parse(acc)) return msg.createdAt;
+      return acc;
+    }, '');
+
+    this.props.fetchMoreMessages({ key, conversationId });
   }
 
   render() {
@@ -42,7 +55,9 @@ class Chat extends Component {
           messages={this.props.conversation.messages}
           onSend={this.sendMessage}
           inverted={true}
-          user={this.props.conversation.user}/>
+          user={this.props.conversation.user}
+          loadEarlier={true}
+          onLoadEarlier={this.fetchMoreMessages}/>
       </Container>
     );
   }
@@ -55,6 +70,7 @@ export default connect(
   {
     loadConversation,
     purgeConversation,
-    sendMessage
+    sendMessage,
+    fetchMoreMessages
   }
 )(Chat);

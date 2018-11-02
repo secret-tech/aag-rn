@@ -7,6 +7,7 @@ export const LOAD_CONVERSATIONS = 'chat/rooms/LOAD_CONVERSATIONS';
 export const SOCKET_CONNECT = 'chat/rooms/SOCKET_CONNECT';
 export const LOAD_CONVERSATION = 'chat/rooms/LOAD_CONVERSATION';
 export const PURGE_CONVERSATION = 'chat/rooms/PURGE_CONVERSATION';
+export const FETCH_MORE_MESSAGES = 'chat/rooms/FETCH_MORE_MESSAGES';
 export const SEND_MESSAGE = 'chat/rooms/SEND_MESSAGE';
 export const RECEIVE_MESSAGE = 'chat/rooms/RECEIVE_MESSAGE';
 export const MERGE_ROOM = 'chat/rooms/MERGE_ROOM';
@@ -18,6 +19,7 @@ export const loadConversations = createAction(LOAD_CONVERSATIONS);
 export const socketConnect = createAction(SOCKET_CONNECT);
 export const loadConversation = createAsyncAction(LOAD_CONVERSATION);
 export const purgeConversation = createAction(PURGE_CONVERSATION);
+export const fetchMoreMessages = createAsyncAction(FETCH_MORE_MESSAGES);
 export const sendMessage = createAsyncAction(SEND_MESSAGE);
 export const receiveMessage = createAction(RECEIVE_MESSAGE);
 export const mergeRoom = createAction(MERGE_ROOM);
@@ -72,6 +74,14 @@ export default createReducer({
   [PURGE_CONVERSATION]: (state) => ({
     ...state,
     conversation: initialState.conversation
+  }),
+
+  [fetchMoreMessages.SUCCESS]: (state, { payload }) => ({
+    ...state,
+    conversation: {
+      ...state.conversation,
+      messages: [...payload.messages, ...state.conversation.messages]
+    }
   }),
 
   [sendMessage.REQUEST]: (state, { payload }) => {
