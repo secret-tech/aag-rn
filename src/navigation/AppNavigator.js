@@ -6,13 +6,14 @@ import {
   createNavigationReducer,
 } from 'react-navigation-redux-helpers';
 
-import TabNavigator from './TabNavigator';
+// import TabNavigator from './TabNavigator';
+import Main from '../containers/common/Main';
 import AuthNavigator from './AuthNavigator';
 import AuthSpinner from '../containers/auth/AuthSpinner';
 
 const AppNavigator = createSwitchNavigator({
   AuthSpinner,
-  Home: TabNavigator,
+  Home: Main,
   Auth: AuthNavigator
 }, {
   initialRouteName: 'AuthSpinner',

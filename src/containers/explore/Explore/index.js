@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-// import withBack from '../../../hoc/AnroidBackHandler';
 import Explorer from '../../../components/explore/Explorer';
 import Spinner from '../../../components/common/Spinner';
 
@@ -21,8 +20,6 @@ class Explore extends Component {
       : <Explorer data={data}/>;
   }
 }
-
-// const ComponentWithBack = withBack(Explore);
 
 export default connect(
   (state) => ({

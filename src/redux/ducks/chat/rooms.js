@@ -1,5 +1,6 @@
 import { createAction, createAsyncAction, createReducer } from '../../../utils/actions';
 
+export const INIT_SOCKET = 'chat/rooms/INIT_SOCKET';
 export const OPEN_CONVERSATION = 'chat/rooms/OPEN_CONVERSATION';
 
 export const LOAD_CONVERSATIONS = 'chat/rooms/LOAD_CONVERSATIONS';
@@ -10,6 +11,7 @@ export const SEND_MESSAGE = 'chat/rooms/SEND_MESSAGE';
 export const RECEIVE_MESSAGE = 'chat/rooms/RECEIVE_MESSAGE';
 export const MERGE_ROOM = 'chat/rooms/MERGE_ROOM';
 
+export const initSocket = createAction(INIT_SOCKET);
 export const openConversation = createAsyncAction(OPEN_CONVERSATION);
 
 export const loadConversations = createAction(LOAD_CONVERSATIONS);
