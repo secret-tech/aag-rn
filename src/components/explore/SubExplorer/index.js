@@ -14,7 +14,6 @@ class SubExplorer extends Component {
   )
 
   render() {
-    console.log(this.props);
     return (
       <FlatList
         data={this.props.data}

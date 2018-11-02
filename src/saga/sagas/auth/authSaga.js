@@ -8,7 +8,7 @@ import { signIn, SIGN_OUT } from '../../../redux/ducks/auth/auth';
 import { setToken, rmToken } from '../../../utils/auth';
 
 
-function* signInIterator() {
+function* signInIterator({ payload }) {
   try {
     const fbReqPerm = ['public_profile', 'email', 'user_birthday', 'user_friends'];
     yield LoginManager.logInWithReadPermissions(fbReqPerm);
@@ -17,7 +17,7 @@ function* signInIterator() {
     const { data } = yield call(
       axios.post,
       'https://aag.secrettech.io/auth/facebook',
-      { access_token: accessToken }
+      { access_token: accessToken, playerId: payload.playerId }
     );
 
     yield call(setToken, data.token);

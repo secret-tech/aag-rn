@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavigationActions } from 'react-navigation';
+// import { NavigationActions } from 'react-navigation';
 import { StatusBar } from 'react-native';
 import { Footer, FooterTab, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
