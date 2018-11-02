@@ -28,7 +28,7 @@ class Chat extends Component {
     // key is createdAt Date of last loaded message
     const key = this.props.conversation.messages.reduce((acc, msg, index) => {
       if (index === 0) return msg.createdAt;
-      if (Date.parse(msg.createdAt) > Date.parse(acc)) return msg.createdAt;
+      if (Date.parse(msg.createdAt) < Date.parse(acc)) return msg.createdAt;
       return acc;
     }, '');
 

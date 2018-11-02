@@ -80,7 +80,7 @@ export default createReducer({
     ...state,
     conversation: {
       ...state.conversation,
-      messages: [...payload.messages, ...state.conversation.messages]
+      messages: [...state.conversation.messages, ...payload.messages]
     }
   }),
 

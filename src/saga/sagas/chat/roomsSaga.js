@@ -22,6 +22,10 @@ function* createEventChannel(socket) {
       emit(loadConversations(conversations));
     });
 
+    socket.on('loadMoreMessages', (messages) => {
+      emit(fetchMoreMessages.success(messages));
+    });
+
     socket.on('messages', (messages) => {
       emit(loadConversation.success(messages));
     });
