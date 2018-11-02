@@ -5,6 +5,7 @@ import CustomTabNavigation from '../components/common/CustomTabNavigator';
 import Explore from '../containers/explore/Explore';
 import SubExplore from '../containers/explore/SubExplore';
 import AdvisorProfile from '../containers/explore/AdvisorProfile';
+import ReviewAdvisor from '../containers/explore/ReviewAdvisor';
 
 import Rooms from '../containers/chat/Rooms';
 import Chat from '../containers/chat/Chat';
@@ -18,7 +19,8 @@ import EditTags from '../containers/profile/EditTags';
 const ExploreStack = createStackNavigator({
   ExploreExplore: { screen: Explore },
   ExploreSubExplore: { screen: SubExplore },
-  ExploreAdvisorProfile: { screen: AdvisorProfile }
+  ExploreAdvisorProfile: { screen: AdvisorProfile },
+  ExploreReviewAdvisor: { screen: ReviewAdvisor }
 }, {
   initialRouteName: 'ExploreExplore',
   headerMode: 'none',
