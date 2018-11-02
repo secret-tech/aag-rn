@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BackHandler } from 'react-native';
 import { connect } from 'react-redux';
+import { withNavigation, NavigationActions } from 'react-navigation';
 import TabNavigator from '../../../navigation/TabNavigator';
 
 import { initSocket } from '../../../redux/ducks/chat/rooms';
@@ -24,22 +25,24 @@ class Main extends Component {
   }
 
   onBackPress () {
-    const { dispatch, nav } = this.props;
-    dispatch(NavigationActions.back());
+    const { nav } = this.props;
+    this.props.navigation.dispatch(NavigationActions.back());
     return nav !== this.props.nav;
   }
 
   render() {
-    return <TabNavigator/>;
+    return <TabNavigator navigation={this.props.navigation}/>;
   }
 }
 
+Main.router = TabNavigator.router;
+
 export default connect(
-  (state) => ({ 
-    nav: state.nav 
+  (state) => ({
+    nav: state.nav
   }),
   {
     initSocket,
     fetchProfile
   }
-)(Main);
+)(withNavigation(Main));
