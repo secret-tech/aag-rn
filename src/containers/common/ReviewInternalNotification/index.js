@@ -25,7 +25,7 @@ class ReviewInternalNotification extends Component {
   }
 
   render() {
-    const { open, advisor } = this.props.review.toJS();
+    const { open } = this.props.review.toJS();
 
     // TODO
     // We can't use swipe, coz useNativeDriver props not working with that correctly.

@@ -12,8 +12,6 @@ import { initSocket } from '../../../redux/ducks/chat/rooms';
 import { fetchProfile } from '../../../redux/ducks/profile/profile';
 import { openNotification } from '../../../redux/ducks/common/review';
 
-// Редиректить если onesignal opened
-// Показывать тост с кнопкой если onesignal received
 
 class Main extends Component {
   componentWillMount() {
@@ -21,8 +19,8 @@ class Main extends Component {
     this.props.fetchProfile();
 
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
-    OneSignal.addEventListener('opened', (notify) => this.onOpenReviewNotification(notify.payload.additionalData));
-    OneSignal.addEventListener('received', (notify) => this.onReceiveReviewNotification(notify.payload.additionalData));
+    OneSignal.addEventListener('opened', (notify) => console.log(notify));
+    OneSignal.addEventListener('received', (notify) => this.onReceiveReviewNotification(notify));
   }
 
   componentWillUnmount () {
@@ -37,26 +35,25 @@ class Main extends Component {
     return nav !== this.props.nav;
   }
 
-  nav = (id, routeName, params) => 
-    this.props.navigation.navigate({
-      routeName: id, 
-      params, 
-      action: NavigationActions.navigate({ routeName, params })
-    });
+  onReceiveReviewNotification = (notification) => {
+    const review = notification 
+      && notification.payload 
+      && notification.payload.additionalData 
+      && notification.payload.additionalData.review 
+      || null;
 
-  onReceiveReviewNotification = (params) => {
-    if (params.review) {
-      this.props.openNotification({
-        id: params.userId,
-        picture: params.userPicture,
-        name: params.userName
-      });
-    }
-  }
+    if (review) {
+      const { 
+        payload: {
+          additionalData: {
+            userId: id,
+            userPicture: picture,
+            userName: name
+          }
+        }
+      } = notification;
 
-  onOpenReviewNotification = (params) => {
-    if (params.review) {
-      this.nav('Explore', 'ExploreReviewAdvisor', params)
+      this.props.openNotification({ id, picture, name });
     }
   }
 

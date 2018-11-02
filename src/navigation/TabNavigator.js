@@ -26,6 +26,12 @@ const ExploreStack = createStackNavigator({
   headerMode: 'none',
 });
 
+// hide tab bar
+ExploreStack.navigationOptions = ({ navigation }) => 
+  navigation.state.routes[navigation.state.index].routeName === 'ExploreReviewAdvisor'
+    ? ({ tabBarVisible: false })
+    : null;
+
 
 const ChatStack = createStackNavigator({
   ChatRooms: { screen: Rooms },
