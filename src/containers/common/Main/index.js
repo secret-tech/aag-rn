@@ -60,6 +60,7 @@ class Main extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('ExploreReviewAdvisor')}><Text>OPEN FEEDBACK VIEW</Text></TouchableOpacity>
         <TabNavigator navigation={this.props.navigation}/>
         <ReviewInternalNotification/>
       </View>
