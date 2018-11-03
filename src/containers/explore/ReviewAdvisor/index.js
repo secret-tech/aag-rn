@@ -49,7 +49,7 @@ class ReviewAdvisor extends Component {
     return (
       <View style={s.container}>
         <Button style={s.close} transparent onPress={() => this.nav('Explore', 'ExploreExplore')}>
-          <Icon name='arrow-left' size={24} color='#fff' />
+          <Icon name='arrow-left' size={24} color='#fff'/>
         </Button>
         
         <View style={s.picWrap}>

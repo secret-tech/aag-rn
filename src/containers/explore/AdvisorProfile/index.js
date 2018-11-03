@@ -73,6 +73,10 @@ class AdvisorProfile extends Component {
           <View style={s.info}>
             <Text style={s.name}>{name}</Text>
             <Text style={s.gender}>{this.capitalize(gender)}</Text>
+            <View style={s.ratioWrap}>
+              <Icon type="FontAwesome" name="star" style={{ fontSize: 16, color: '#e3b23c' }}/>
+              <Text style={s.ratio}>4.3</Text>
+            </View>
           </View>
 
           <View style={s.bioWrap}>

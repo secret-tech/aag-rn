@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { withNavigation, NavigationActions } from 'react-navigation';
 import { Dimensions, Image } from 'react-native';
-import { View, Button, Text } from 'native-base';
+import { View, Button, Text, Icon } from 'native-base';
 
 import s from './styles';
 
@@ -35,7 +35,10 @@ class Card extends PureComponent {
         onPress={() => this.nav('Explore', 'ExploreAdvisorProfile', this.props.item)}>
         <Image style={s.avatar} source={{ uri: picture }} resizeMode="cover" />
         <View style={s.frontdrop}>
-          {/* <Text style={s.ratio}>4/5</Text> */}
+          <View style={s.ratioWrap}>
+            <Icon type="FontAwesome" name="star" style={{ fontSize: 16, color: '#e3b23c' }}/>
+            <Text style={s.ratio}>4.3</Text>
+          </View>
           <View style={s.content}>
             <Text style={s.name}>{name}</Text>
             <Text style={s.common}>{this.capitalize(gender)}{age && `, ${age}`}</Text>
