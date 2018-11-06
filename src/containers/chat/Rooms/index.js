@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import { TouchableOpacity } from 'react-native';
 import { Container, Content, List, ListItem, Left, Body, Right, Thumbnail, Text } from 'native-base';
 
 import { socketConnect, openConversation } from '../../../redux/ducks/chat/rooms';
@@ -50,6 +51,7 @@ class Rooms extends Component {
 
     return (
       <Container>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('ChatAudioCall')}><Text>OPEN AUDIOCALL VIEW</Text></TouchableOpacity>
         <Content>
           <List>
             {conversations

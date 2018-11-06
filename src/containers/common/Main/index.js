@@ -43,7 +43,7 @@ class Main extends Component {
       || null;
 
     if (review) {
-      const { 
+      const {
         payload: {
           additionalData: {
             userId: id,
