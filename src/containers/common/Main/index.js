@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BackHandler, TouchableOpacity, Text } from 'react-native';
+import { BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { withNavigation, NavigationActions } from 'react-navigation';
 import OneSignal from 'react-native-onesignal';
@@ -10,7 +10,7 @@ import ReviewInternalNotification from '../ReviewInternalNotification';
 
 import { initSocket } from '../../../redux/ducks/chat/rooms';
 import { fetchProfile } from '../../../redux/ducks/profile/profile';
-import { openNotification } from '../../../redux/ducks/common/review';
+import { openNotification, setAdvisor } from '../../../redux/ducks/common/review';
 
 
 class Main extends Component {
@@ -19,7 +19,7 @@ class Main extends Component {
     this.props.fetchProfile();
 
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
-    OneSignal.addEventListener('opened', (notify) => console.log(notify));
+    OneSignal.addEventListener('opened', (notify) => this.onOpenReviewNotification(notify));
     OneSignal.addEventListener('received', (notify) => this.onReceiveReviewNotification(notify));
   }
 
@@ -35,7 +35,16 @@ class Main extends Component {
     return nav !== this.props.nav;
   }
 
+  nav = (id, routeName, params) => {
+    this.props.navigation.navigate({
+      routeName: id, 
+      params, 
+      action: NavigationActions.navigate({ routeName, params })
+    });
+  }
+
   onReceiveReviewNotification = (notification) => {
+    // TODO requires refactor
     const review = notification 
       && notification.payload 
       && notification.payload.additionalData 
@@ -57,10 +66,38 @@ class Main extends Component {
     }
   }
 
+  onOpenReviewNotification = (notification) => {
+    console.log('open notification', notification);
+    // TODO requires refactor
+    const review = notification
+      && notification.notification
+      && notification.notification.payload 
+      && notification.notification.payload.additionalData 
+      && notification.notification.payload.additionalData.review 
+      || null;
+
+    if (review) {
+      const {
+        notification: {
+          payload: {
+            additionalData: {
+              userId: id,
+              userPicture: picture,
+              userName: name
+            }
+          }
+        }
+      } = notification;
+
+      console.log({ id, picture, name });
+      this.props.setAdvisor({ id, picture, name });
+      this.nav('Explore', 'ExploreReviewAdvisor');
+    }
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('ExploreReviewAdvisor')}><Text>OPEN FEEDBACK VIEW</Text></TouchableOpacity>
         <TabNavigator navigation={this.props.navigation}/>
         <ReviewInternalNotification/>
       </View>
@@ -77,6 +114,7 @@ export default connect(
   {
     initSocket,
     fetchProfile,
-    openNotification
+    openNotification,
+    setAdvisor
   }
 )(withNavigation(Main));

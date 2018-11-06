@@ -1,16 +1,15 @@
 export default {
   modal: {
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    padding: 0,
   },
   content: {
+    marginTop: 0,
     backgroundColor: '#fff',
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
-    borderBottomLeftRadius: 6,
-    borderBottomRightRadius: 6,
+    borderRadius: 6,
     borderColor: 'rgba(0, 0, 0, 0.1)'
   }
 };

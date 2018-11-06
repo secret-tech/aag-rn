@@ -1,25 +1,32 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { withNavigation, NavigationActions } from 'react-navigation';
 import { Image } from 'react-native';
 import { View, Text, Button } from 'native-base';
 import StarRating from 'react-native-star-rating';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
+import { closeNotification, purgeAdvisor } from '../../../redux/ducks/common/review';
+
 import s from './styles';
 
 
 class ReviewAdvisor extends Component {
   state = {
-    rating: 0,
-    id: '0x000' // TODO get advisor id from notification
+    rating: 0
   }
 
-  nav = (id, routeName, params) => 
+  componentWillMount() {
+    this.props.closeNotification();
+  }
+
+  nav = (id, routeName, params) => {
     this.props.navigation.navigate({
       routeName: id, 
       params, 
       action: NavigationActions.navigate({ routeName, params })
     });
+  }
 
   getLabel = () => {
     const { rating } = this.state;
@@ -41,11 +48,17 @@ class ReviewAdvisor extends Component {
   }
 
   send = () => {
-    console.log('sended rating', this.state);
+    const { id } = this.props.advisor.toJS();
+    const { rating } = this.state;
+
+    console.log('sended rating', { id, rating });
     this.nav('Explore', 'ExploreExplore');
+    this.props.purgeAdvisor();
   }
 
   render() {
+    const { name, picture } = this.props.advisor.toJS();
+
     return (
       <View style={s.container}>
         <Button style={s.close} transparent onPress={() => this.nav('Explore', 'ExploreExplore')}>
@@ -53,13 +66,13 @@ class ReviewAdvisor extends Component {
         </Button>
         
         <View style={s.picWrap}>
-          <Image style={s.pic} source={{ uri: 'http://66.media.tumblr.com/81a261c7eae63d13f814692007fd6645/tumblr_nymn9jLXbY1qa7cpuo1_1280.jpg' }} resizeMode="cover" />
+          <Image style={s.pic} source={{ uri: picture }} resizeMode="cover" />
         </View>
 
         <View style={s.textWrap}>
-          <Text style={s.ttl}>Send feedback for Alice l`Advice!</Text>
+          <Text style={s.ttl}>Send feedback for {name}!</Text>
 
-          <Text style={s.descr}>You recently spoke with Alice, please leave your feedback about the service provided.</Text>
+          <Text style={s.descr}>You recently spoke with {name}, please leave your feedback about the service provided.</Text>
         </View>
 
         <View style={s.stars}>
@@ -102,4 +115,12 @@ class ReviewAdvisor extends Component {
 }
 
 
-export default withNavigation(ReviewAdvisor);
+export default connect(
+  (state) => ({
+    advisor: state.common.review.get('advisor')
+  }),
+  {
+    closeNotification,
+    purgeAdvisor
+  }
+)(withNavigation(ReviewAdvisor));

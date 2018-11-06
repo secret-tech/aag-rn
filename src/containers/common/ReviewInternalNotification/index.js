@@ -18,14 +18,12 @@ class ReviewInternalNotification extends Component {
     });
 
   open = () => {
-    const { advisor } = this.props.review.toJS();
-
     this.props.closeNotification();
-    this.nav('Explore', 'ExploreReviewAdvisor', advisor);
+    this.nav('Explore', 'ExploreReviewAdvisor');
   }
 
   render() {
-    const { open } = this.props.review.toJS();
+    const { open, advisor } = this.props.review.toJS();
 
     // TODO
     // We can't use swipe, coz useNativeDriver props not working with that correctly.
@@ -45,7 +43,7 @@ class ReviewInternalNotification extends Component {
         useNativeDriver={true}>
         <View style={s.content}>
           <TouchableOpacity onPress={this.open}>
-            <Text>Hey! Press here to review Alice advision</Text>
+            <Text>Hey! Press here to review {advisor.name} advision</Text>
           </TouchableOpacity>
         </View>
       </Modal>
