@@ -3,7 +3,7 @@ import { eventChannel } from 'redux-saga';
 import { NavigationActions } from 'react-navigation';
 import io from 'socket.io-client';
 
-import { INIT_SOCKET, openConversation, loadConversations, loadConversation, sendMessage, receiveMessage } from '../../../redux/ducks/chat/rooms';
+import { INIT_SOCKET, fetchMoreMessages, openConversation, loadConversations, loadConversation, sendMessage, receiveMessage } from '../../../redux/ducks/chat/rooms';
 
 import { getToken } from '../../../utils/auth';
 
@@ -20,6 +20,10 @@ function* createEventChannel(socket) {
 
     socket.on('loadConversations', (conversations) => {
       emit(loadConversations(conversations));
+    });
+
+    socket.on('loadMoreMessages', (messages) => {
+      emit(fetchMoreMessages.success(messages));
     });
 
     socket.on('messages', (messages) => {
@@ -48,15 +52,23 @@ function* read(socket) {
 
 function* openConversationGenerator(socket) {
   while (true) {
-    const { payload } = yield take(openConversation.REQUEST); // second user id
+    const { payload } = yield take(openConversation.REQUEST); // second userId
     socket.emit('createConversation', { userId: payload });
   }
 }
 
 function* loadMessagesGenerator(socket) {
   while (true) {
-    const { payload } = yield take(loadConversation.REQUEST); // conversation id
+    const { payload } = yield take(loadConversation.REQUEST); // conversationId
     socket.emit('loadMessages', { conversationId: payload });
+  }
+}
+
+function* fetchMoreMessagesGenerator(socket) {
+  while (true) {
+    const { payload } = yield take(fetchMoreMessages.REQUEST); // last message createdAt & conversationId
+    // { key: payload.key, conversationId: payload.conversationId }
+    socket.emit('fetchMoreMessages', payload);
   }
 }
 
@@ -107,6 +119,7 @@ function* initializeWebSocketsChannel() {
     yield fork(openConversationSaga),
     yield fork(openConversationGenerator, socket),
     yield fork(loadMessagesGenerator, socket),
+    yield fork(fetchMoreMessagesGenerator, socket),
     yield fork(sendMessageGenerator, socket)
   ]);
 }

@@ -4,6 +4,8 @@ import { navReducer } from '../navigation/AppNavigator';
 
 import auth from './ducks/auth/auth';
 
+import review from './ducks/common/review';
+
 import profile from './ducks/profile/profile'
 import editBio from './ducks/profile/editBio';
 import editTags from './ducks/profile/editTags';
@@ -18,6 +20,10 @@ export default combineReducers({
   
   auth: combineReducers({
     auth
+  }),
+
+  common: combineReducers({
+    review
   }),
 
   profile: combineReducers({

@@ -70,6 +70,17 @@ export default {
     fontSize: 16,
     color: '#000'
   },
+  ratioWrap: {
+    marginTop: 5,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  ratio: {
+    color: '#000',
+    fontSize: 16,
+    marginLeft: 5
+  },
 
   bioWrap: {
     paddingHorizontal: 20,
