@@ -5,13 +5,13 @@ export const OPEN_NOTIFICATION = 'common/review/OPEN_NOTIFICATION';
 export const CLOSE_NOTIFICATION = 'common/review/CLOSE_NOTIFICATION';
 export const SET_ADVISOR = 'common/review/SET_ADVISOR';
 export const PURGE_ADVISOR = 'common/review/PURGE_ADVISOR';
-export const SUBMIT_RATING = 'common/review/SUBMIT_RATING';
+export const SUBMIT_REVIEW = 'common/review/SUBMIT_REVIEW';
 
 export const openNotification = createAction(OPEN_NOTIFICATION);
 export const closeNotification = createAction(CLOSE_NOTIFICATION);
 export const setAdvisor = createAction(SET_ADVISOR);
 export const purgeAdvisor = createAction(PURGE_ADVISOR);
-export const submitRating = createAsyncAction(SUBMIT_RATING);
+export const submitReview = createAsyncAction(SUBMIT_REVIEW);
 
 const initialState = Map({
   open: false,

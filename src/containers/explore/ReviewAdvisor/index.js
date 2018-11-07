@@ -6,7 +6,7 @@ import { View, Text, Button } from 'native-base';
 import StarRating from 'react-native-star-rating';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
-import { closeNotification, purgeAdvisor } from '../../../redux/ducks/common/review';
+import { closeNotification, purgeAdvisor, submitReview } from '../../../redux/ducks/common/review';
 
 import s from './styles';
 
@@ -51,7 +51,7 @@ class ReviewAdvisor extends Component {
     const { id } = this.props.advisor.toJS();
     const { rating } = this.state;
 
-    console.log('sended rating', { id, rating });
+    this.props.submitReview({ id, rating });
     this.nav('Explore', 'ExploreExplore');
     this.props.purgeAdvisor();
   }
@@ -105,7 +105,7 @@ class ReviewAdvisor extends Component {
 
         <View style={s.buttonWrap}>
           <Button transparent block style={s.button} onPress={this.send}>
-            <Text style={s.buttonText}>Send</Text>
+            <Text style={s.buttonText}>RATE</Text>
           </Button>
         </View>
 
@@ -121,6 +121,7 @@ export default connect(
   }),
   {
     closeNotification,
-    purgeAdvisor
+    purgeAdvisor,
+    submitReview
   }
 )(withNavigation(ReviewAdvisor));

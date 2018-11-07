@@ -43,6 +43,7 @@ const initialState = {
   }
 };
 
+// TODO reducer requires refactor
 
 export default createReducer({
   [openConversation.SUCCESS]: (state, { payload: { conversation } }) => {

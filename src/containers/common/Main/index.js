@@ -67,7 +67,6 @@ class Main extends Component {
   }
 
   onOpenReviewNotification = (notification) => {
-    console.log('open notification', notification);
     // TODO requires refactor
     const review = notification
       && notification.notification
@@ -89,7 +88,6 @@ class Main extends Component {
         }
       } = notification;
 
-      console.log({ id, picture, name });
       this.props.setAdvisor({ id, picture, name });
       this.nav('Explore', 'ExploreReviewAdvisor');
     }
