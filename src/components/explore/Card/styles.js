@@ -14,12 +14,18 @@ export default {
     width: '100%',
     borderRadius: 6
   },
-  ratio: {
+  ratioWrap: {
     position: 'absolute',
     left: 20,
     top: 20,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  ratio: {
     color: '#fff',
-    fontSize: 16
+    fontSize: 16,
+    marginLeft: 5
   },
   content: {
     position: 'absolute',

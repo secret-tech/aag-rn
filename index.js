@@ -18,7 +18,7 @@ class App extends Component {
     OneSignal.addEventListener('opened', (n) => console.log('opened', n));
     OneSignal.addEventListener('received', (n) => console.log('received', n));
   }
-a
+
   componentWillUnmount() {
     OneSignal.removeEventListener('received');
     OneSignal.removeEventListener('opened');
