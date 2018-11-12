@@ -29,7 +29,10 @@ class SignIn extends Component {
       <View style={s.container}>
         <StatusBar barStyle="light-content" />
         <View style={s.loginView}>
-          <Image style={s.logo} source={logo}/>
+          <View>
+            <Image style={s.logo} source={logo}/>
+            <Text style={s.tagline}>Real advice from real girls in real-time</Text>
+          </View>
 
           <View style={s.buttons}>
             <Button block onPress={() => this.props.signIn({
