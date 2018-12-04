@@ -1,41 +1,48 @@
 import React, { Component } from 'react';
-import { View, Text, Button } from 'native-base';
-import { Voximplant } from 'react-native-voximplant';
+import { View } from 'native-base';
+import io from 'socket.io-client';
+import { RTCPeerConnection, RTCMediaStream, RTCIceCandidate, RTCSessionDescription, RTCView, MediaStreamTrack, getUserMedia } from 'react-native-webrtc';
 
+export default class Call extends Component {
+  constructor(props) {
+    super(props);
 
-class AudioCall extends Component {
-  componentWillMount() {
-    this.vox = Voximplant.getInstance({
-      enableVideo: true,
-      saveLogsToFile: true // TODO LOGS
-    });
-  }
+    this.socket = io.connect('https://react-native-webrtc.herokuapp.com', { transports: ['websocket'] });
 
-  login = async () => {
-    try {
-      const state = await this.vox.getClientState();
-      if (state === Voximplant.ClientState.DISCONNECTED) {
-        await this.vox.connect();
-      }
-
-      const authResult = await this.vox.login('test1@askagirl.oidrr.voximplant.com', '12345678');
-      console.log('vox login result', authResult);
-    } catch (e) {
-      console.warn('vox login error', e);
-    }
+    this.state = {
+      externalStreamURL: '',
+      internalStreamURL: ''
+    };
   }
 
   render() {
     return (
-      <View>
-        <Text>Audio call</Text>
-
-        <Button onPress={this.login}>
-          <Text>log in vox</Text>
-        </Button>
+      <View style={s.main}>
+        <RTCView style={s.externalVideo} streamURL={this.state.externalStreamURL}/>
+        <RTCView style={s.internalVideo} streamURL={this.state.internalStreamURL}/>
       </View>
     );
   }
 }
 
-export default AudioCall;
+const s = {
+  main: {
+    width: '100%',
+    height: '100%',
+    display: 'flex'
+  },
+  externalVideo: {
+    backgroundColor: 'green',
+    width: '100%',
+    height: '50%',
+    borderWidth: 1,
+    borderColor: '#d6d7da'
+  },
+  internalVideo: {
+    backgroundColor: 'red',
+    width: '100%',
+    height: '50%',
+    borderWidth: 1,
+    borderColor: '#d6d7da'
+  }
+};

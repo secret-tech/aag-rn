@@ -50,7 +50,7 @@ class Rooms extends Component {
 
     return (
       <Container>
-        {/* <TouchableOpacity onPress={() => this.props.navigation.navigate('ChatAudioCall')}><Text>OPEN AUDIOCALL VIEW</Text></TouchableOpacity> */}
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('ChatAudioCall')}><Text>OPEN AUDIOCALL VIEW</Text></TouchableOpacity>
         <Content>
           <List>
             {conversations

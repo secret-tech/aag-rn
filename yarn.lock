@@ -5464,10 +5464,14 @@ react-native-vector-icons@^6.0.2:
     prop-types "^15.6.2"
     yargs "^8.0.2"
 
-react-native-voximplant@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-voximplant/-/react-native-voximplant-1.2.0.tgz#9b2f5f5571079dea999bc1140622b842a3e2e769"
-  integrity sha512-mzkhPkmXmu7K4AdA4qdQdSUwRzULB8rlZQeaAmwW0L1JS5WN4d5oZ8nEfeRRqp8He6Usxdcu85uby9w1L1l3WQ==
+react-native-webrtc@^1.67.1:
+  version "1.67.1"
+  resolved "https://registry.yarnpkg.com/react-native-webrtc/-/react-native-webrtc-1.67.1.tgz#19c20f7f5fa3fe6c6e893922c0338233835f45b4"
+  integrity sha512-B61khaSiGx4wnGbPjghAo78Fvuzxnycfz1lXnQI8OLMhuaIrvgAQpH/9wBdg46HXX2d8lnwWo/A13o3ff+b4/g==
+  dependencies:
+    base64-js "^1.1.2"
+    event-target-shim "^1.0.5"
+    prop-types "^15.5.10"
 
 react-native@0.57.3:
   version "0.57.3"
