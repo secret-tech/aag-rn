@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Dimensions } from 'react-native';
 import { View, Button, Text } from 'native-base';
 import io from 'socket.io-client';
 import { RTCPeerConnection, RTCMediaStream, RTCIceCandidate, RTCSessionDescription, RTCView, MediaStreamTrack, getUserMedia } from 'react-native-webrtc';
@@ -51,9 +52,9 @@ export default class Call extends Component {
         if (peerConnection.remoteDescription.type === 'offer') {
           peerConnection.createAnswer((description) => {
             console.log('create answer', description);
-            peerConnection.setLocalDescription((description) => {
-              console.log('set local description', peerConnection.localDescription);
-              this.socket.emit('exchange', {'to': fromId, 'sdp': peerConnection.localDescription });
+            peerConnection.setLocalDescription(description, () => {
+              console.log('set local description', peerConnection.localDescription, description);
+              this.socket.emit('exchange', { to: data.from, sdp: peerConnection.localDescription });
             }, (e) => console.log(e));
           }, (e) => console.log(e));
         }
@@ -82,6 +83,8 @@ export default class Call extends Component {
     peerConnection.onaddstream = (event) => this.setState({ externalStream: event.stream });
     peerConnection.onnegotiationneeded = () => isOffer ? createOffer() : null;
     peerConnection.addStream(this.state.internalStream);
+
+    return peerConnection;
   }
 
   getInternalStream = (isFrontSource, callback) => {
@@ -90,8 +93,8 @@ export default class Call extends Component {
       video: {
         facingMode: 'user',
         mandatory: {
-          minWidth: 640,
-          minHeight: 360,
+          minWidth: Dimensions.get('window').width,
+          minHeight: Dimensions.get('window').height,
           minFrameRate: 30
         }
       }
@@ -109,8 +112,10 @@ export default class Call extends Component {
     return (
       <View style={s.main}>
         <RTCView style={s.externalVideo} streamURL={externalStream && externalStream.toURL()}/>
-        <Button onPress={() => this.join('pidor')}><Text>JOIN</Text></Button>
         <RTCView style={s.internalVideo} streamURL={internalStream && internalStream.toURL()}/>
+        <View style={s.button}>
+          <Button onPress={() => this.join('pidor')}><Text>JOIN</Text></Button>
+        </View>
       </View>
     );
   }
@@ -123,17 +128,12 @@ const s = {
     display: 'flex'
   },
   externalVideo: {
-    backgroundColor: 'green',
     width: '100%',
-    height: '50%',
-    borderWidth: 1,
-    borderColor: '#d6d7da'
+    height: '100%'
   },
-  internalVideo: {
-    backgroundColor: 'red',
-    width: '100%',
-    height: '50%',
-    borderWidth: 1,
-    borderColor: '#d6d7da'
+  button: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10
   }
 };
