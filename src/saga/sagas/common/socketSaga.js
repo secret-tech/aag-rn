@@ -80,6 +80,12 @@ function* initializeWebSocketsChannel() {
     transports: ['websocket']
   });
 
+  socket.on('disconnect', () => {
+    console.warn('[DICONNECT]', socket);
+    socket.connect();
+    console.warn('[RECONNECTION', socket);
+  })
+
   yield call(console.log, 'initializeWebSocketsChannel socket client', socket);
 
   yield all([
