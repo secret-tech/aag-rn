@@ -7,13 +7,15 @@ import { getToken } from '../../../utils/auth';
 
 
 function* fetchSubAdvisorsIterator({ payload: { type, page, limit } }) {
+  console.log(`https://aag.secrettech.io/explore/${type}?skip=${page * limit}&limit=${limit}`);
   try {
     const token = yield call(getToken);
-    const { data: { data } } = yield call(axios.get, `https://aag.secrettech.io/explorer/${type}?page=${page}&limit=${limit}`, {
+    const { data } = yield call(axios.get, `https://aag.secrettech.io/explore/${type}?skip=${page * limit}&limit=${limit}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
+    console.log(data);
 
     yield put(fetchSubAdvisors.success({ type, page, data }));
   } catch (e) {

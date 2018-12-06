@@ -7,7 +7,9 @@ export const fetchAdvisors = createAsyncAction(FETCH_ADVISOSRS);
 
 const initialState = Map({
   loading: false,
-  data: List()
+  newAdvisors: List(),
+  featuredAdvisors: List(),
+  onlineAdvisors: List()
 });
 
 export default createReducer({
@@ -17,7 +19,9 @@ export default createReducer({
 
   [fetchAdvisors.SUCCESS]: (state, { payload }) => state.merge({
     loading: false,
-    data: List(payload)
+    newAdvisors: List(payload.new),
+    onlineAdvisors: List(payload.online),
+    featuredAdvisors: List(payload.featured)
   }),
 
   [fetchAdvisors.FAILURE]: (state) => state.merge({

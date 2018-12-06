@@ -8,6 +8,7 @@ import { loadConversation, purgeConversation, sendMessage, fetchMoreMessages } f
 
 class Chat extends Component {
   componentWillMount() {
+    console.log('load conversation', this.props.navigation.state.params.conversationId);
     this.props.loadConversation(this.props.navigation.state.params.conversationId);
   }
 
@@ -16,8 +17,8 @@ class Chat extends Component {
 
     this.props.sendMessage({
       messages,
-      senderId: this.props.conversation.user._id,
-      receiverId: this.props.conversation.friend._id,
+      senderId: this.props.conversation.user.id,
+      receiverId: this.props.conversation.friend.id,
       conversationId
     });
   }
@@ -36,6 +37,7 @@ class Chat extends Component {
   }
 
   render() {
+    console.log('Chat', this.props);
     return (
       <Container>
         <Header>
@@ -46,7 +48,7 @@ class Chat extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>{this.props.conversation.friend.name}</Title>
+            <Title>{this.props.conversation.friend.firstName}</Title>
           </Body>
           <Right/>
         </Header>

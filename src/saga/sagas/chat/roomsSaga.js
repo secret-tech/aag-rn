@@ -11,26 +11,32 @@ import { getToken } from '../../../utils/auth';
 function* createEventChannel(socket) {
   return eventChannel((emit) => {
     socket.on('conversationCreated', (conversation) => {
+      console.log('on conversationCreated', conversation);
       emit(openConversation.success(conversation));
     });
 
     socket.on('conversationExists', (conversation) => {
+      console.log('on conversationExists', conversation);
       emit(openConversation.success(conversation));
     })
 
     socket.on('loadConversations', (conversations) => {
+      console.log('on loadConversations', conversations);
       emit(loadConversations(conversations));
     });
 
     socket.on('loadMoreMessages', (messages) => {
+      console.log('on loadMoreMessages', messages);
       emit(fetchMoreMessages.success(messages));
     });
 
     socket.on('messages', (messages) => {
+      console.log('on messages', messages);
       emit(loadConversation.success(messages));
     });
 
     socket.on('message', (message) => {
+      console.log('on message', message);
       emit(receiveMessage(message));
     });
 
@@ -54,6 +60,7 @@ function* openConversationGenerator(socket) {
   while (true) {
     const { payload } = yield take(openConversation.REQUEST); // second userId
     socket.emit('createConversation', { userId: payload });
+    console.log('emtit createConversation', payload);
   }
 }
 
@@ -61,6 +68,7 @@ function* loadMessagesGenerator(socket) {
   while (true) {
     const { payload } = yield take(loadConversation.REQUEST); // conversationId
     socket.emit('loadMessages', { conversationId: payload });
+    console.log('emtit loadMessages', payload);
   }
 }
 
@@ -90,7 +98,8 @@ function* sendMessageGenerator(socket) {
 
 function* openConversationIterator({ payload }) {
   try {
-    yield put(NavigationActions.navigate({ routeName: 'ChatChat', params: { conversationId: payload.conversation._id } }));
+    yield call(console.log, payload);
+    yield put(NavigationActions.navigate({ routeName: 'ChatChat', params: { conversationId: payload.id } }));
   } catch (e) {
     yield put(openConversation.failure());
     yield call(console.log, e);
@@ -113,6 +122,8 @@ function* initializeWebSocketsChannel() {
     jsonp: false,  // required to connect on iOS
     transports: ['websocket']  // required to connect on iOS
   });
+
+  yield call(console.log, socket);
 
   yield all([
     yield fork(read, socket),

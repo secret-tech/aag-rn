@@ -12,14 +12,14 @@ function* updateTagsIterator({ payload }) {
   try {
     const token = yield call(getToken);
     const req = { tags: payload };
-    const { data: { tags } } = yield call(axios.post, 'https://aag.secrettech.io/users/tags', req, {
+    const { data } = yield call(axios.post, 'https://aag.secrettech.io/user/tags', req, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
 
-    yield put(updateTags.success(tags));
-    yield put(mergeTags(tags));
+    yield put(updateTags.success(data.user.tags));
+    yield put(mergeTags(data.user.tags));
     yield put(NavigationActions.navigate({
       routeName: 'Profile',
       action: NavigationActions.navigate({

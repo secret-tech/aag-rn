@@ -27,15 +27,15 @@ class Rooms extends Component {
 
     return (
       <ListItem 
-        key={conversation._id}
+        key={conversation.id}
         avatar 
         button 
-        onPress={() => this.props.openConversation(conversation.friend._id)}>
+        onPress={() => this.props.openConversation(conversation.friend.id)}>
         <Left style={{ borderBottomWidth: 0 }}>
           <Thumbnail source={{ uri: conversation.friend.picture }} />
         </Left>
         <Body style={{ borderBottomWidth: 0 }}>
-          <Text>{conversation.friend.name}</Text>
+          <Text>{conversation.friend.firstName}</Text>
           <Text note>{getLastText(conversation.messages)}</Text>
         </Body>
         <Right style={{ borderBottomWidth: 0 }}>

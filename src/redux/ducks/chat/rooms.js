@@ -36,7 +36,7 @@ const initialState = {
   loading: false,
   conversations: [],
   conversation: {
-    _id: '',
+    id: '',
     user: {},
     friend: {},
     messages: []
@@ -46,17 +46,18 @@ const initialState = {
 // TODO reducer requires refactor
 
 export default createReducer({
-  [openConversation.SUCCESS]: (state, { payload: { conversation } }) => {
+  [openConversation.SUCCESS]: (state, { payload: conversation }) => {
     const conversations = [conversation, ...state.conversations];
 
     const exist = state.conversations.reduce((acc, conv) => {
-      if (conv._id === conversation._id) return true;
+      if (conv.id === conversation.id) return true;
       return acc;
     }, false);
 
     return ({
       ...state,
-      conversations: exist ? state.conversations : conversations
+      conversations: exist ? state.conversations : conversations,
+      conversation
     });
   },
 
@@ -66,6 +67,7 @@ export default createReducer({
   }),
 
   [loadConversation.SUCCESS]: (state, { payload }) => {
+    console.log('load conversation success', payload);
     return ({
       ...state,
       conversation: payload
@@ -87,7 +89,7 @@ export default createReducer({
 
   [sendMessage.REQUEST]: (state, { payload }) => {
     const conversations = state.conversations.map((conv) => {
-      if (conv._id === payload.conversationId) {
+      if (conv.id === payload.conversationId) {
         return {
           ...conv,
           messages: [...payload.messages, ...conv.messages]
@@ -97,7 +99,7 @@ export default createReducer({
       return conv;
     });
 
-    const messages = state.conversation._id === payload.conversationId
+    const messages = state.conversation.id === payload.conversationId
       ? [...payload.messages, ...state.conversation.messages]
       : state.conversation.messages;
 
@@ -115,7 +117,7 @@ export default createReducer({
     const conversations = [payload, ...state.conversations];
 
     const exist = state.conversations.reduce((acc, conv) => {
-      if (conv._id === payload._id) return true;
+      if (conv.id === payload.id) return true;
       return acc;
     }, false);
 
@@ -129,7 +131,7 @@ export default createReducer({
     const { conversationId, ...message } = payload;
 
     const conversations = state.conversations.map((conv) => {
-      if (conv._id === conversationId) {
+      if (conv.id === conversationId) {
         return ({
           ...conv,
           messages: [message, ...conv.messages]
@@ -139,7 +141,7 @@ export default createReducer({
       return conv;
     });
 
-    const messages = state.conversation._id === conversationId
+    const messages = state.conversation.id === conversationId
       ? [message, ...state.conversation.messages]
       : state.conversation.messages;
 

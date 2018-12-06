@@ -12,7 +12,8 @@ export const mergeTags = createAction(MERGE_TAGS);
 const initialState = Map({
   loading: false,
   email: '',
-  name: '',
+  firstName: '',
+  lastName: '',
   gender: '',
   age: 0,
   picture: '',
@@ -29,7 +30,8 @@ export default createReducer({
   [fetchProfile.SUCCESS]: (state, { payload }) => state.merge({
     loading: false,
     email: payload.email,
-    name: payload.name,
+    firstName: payload.firstName,
+    lastName: payload.lastName,
     gender: payload.gender,
     age: payload.age,
     picture: payload.picture,
