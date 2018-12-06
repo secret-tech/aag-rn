@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 
 import { INIT_SOCKET } from '../../../redux/ducks/common/socket';
 import { REQ_CONVERSATIONS, resConversations } from '../../../redux/ducks/chat/rooms';
-import { REQ_FIND_OR_CREATE_CONVERSATION, resConversation, redirectToConversation, REDIRECT_TO_CONVERSATION } from '../../../redux/ducks/chat/chat';
+import { REQ_FIND_OR_CREATE_CONVERSATION, resConversation, redirectToConversation, REDIRECT_TO_CONVERSATION, resMessages, REQ_MESSAGES, REQ_SEND_MESSAGE } from '../../../redux/ducks/chat/chat';
 
 import { getToken } from '../../../utils/auth';
 
@@ -32,6 +32,11 @@ function* createEventChannel(socket) {
       emit(resConversation(conversation));
       emit(redirectToConversation(conversation.id))
     });
+
+    socket.on('res:messages', (messages) => {
+      console.log('res:messages', messages);
+      emit(resMessages(messages));
+    })
 
     return () => {
       socket.disconnect();
@@ -68,6 +73,27 @@ function* redirectToConversationGenerator(socket) {
   }
 }
 
+function* reqMessagesGenerator(socket) {
+  while (true) {
+    // payload { key: payload.key, conversationId: payload.conversationId }
+    const { payload } = yield take(REQ_MESSAGES);
+    socket.emit('req:messages', payload);
+    console.log('req:message', payload);
+  }
+}
+
+function* reqSendMessage(socket) {
+  while (true) {
+    const { payload } = yield take(REQ_SEND_MESSAGE);
+    payload.messages.forEach((message) => {
+      socket.emit('req:sendMessage', { 
+        text: message.text, 
+        conversationId: payload.conversationId
+      });
+    });
+  }
+}
+
 
 function* initializeWebSocketsChannel() {
   window.navigator.userAgent = 'react-native';
@@ -92,7 +118,9 @@ function* initializeWebSocketsChannel() {
     yield fork(read, socket),
     yield fork(reqConversationsGenerator, socket),
     yield fork(reqFindOrCreateConversationGenerator, socket),
-    yield fork(redirectToConversationGenerator, socket)
+    yield fork(redirectToConversationGenerator, socket),
+    yield fork(reqMessagesGenerator, socket),
+    yield fork(reqSendMessage, socket)
   ]);
 }
 

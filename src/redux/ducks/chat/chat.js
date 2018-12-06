@@ -19,11 +19,18 @@ export const resReceiveMessage = createAction(RES_RECEIVE_MESSAGE);
 export const redirectToConversation = createAction(REDIRECT_TO_CONVERSATION);
 
 const initialState = {
-  conversation: {}
+  conversation: {},
+  messages: []
 };
 
 export default createReducer({
   [RES_CONVERSATION]: (state, { payload }) => ({
+    ...state,
     conversation: payload
+  }),
+
+  [RES_MESSAGES]: (state, { payload }) => ({
+    ...state,
+    messages: [...state.messages, ...payload]
   })
 }, initialState);

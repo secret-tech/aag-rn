@@ -5,6 +5,8 @@ import { GiftedChat } from 'react-native-gifted-chat';
 
 import { loadConversation, purgeConversation, sendMessage, fetchMoreMessages } from '../../../redux/ducks/chat/rooms';
 
+import { reqSendMessage } from '../../../redux/ducks/chat/chat';
+
 import { getAnotherUser } from '../Rooms/helpers';
 
 
@@ -12,10 +14,10 @@ class Chat extends Component {
   sendMessage = (messages) => {
     const { conversationId } = this.props.navigation.state.params;
 
-    this.props.sendMessage({
+    console.log('chat/sendMessage', messages, conversationId);
+
+    this.props.reqSendMessage({
       messages,
-      senderId: this.props.conversation.user.id,
-      receiverId: this.props.conversation.friend.id,
       conversationId
     });
   }
@@ -73,6 +75,8 @@ export default connect(
     loadConversation,
     purgeConversation,
     sendMessage,
-    fetchMoreMessages
+    fetchMoreMessages,
+
+    reqSendMessage
   }
 )(Chat);
