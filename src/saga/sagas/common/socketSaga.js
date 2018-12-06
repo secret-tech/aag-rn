@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 
 import { INIT_SOCKET } from '../../../redux/ducks/common/socket';
 import { REQ_CONVERSATIONS, resConversations } from '../../../redux/ducks/chat/rooms';
-import { REQ_FIND_OR_CREATE_CONVERSATION, resConversation } from '../../../redux/ducks/chat/chat';
+import { REQ_FIND_OR_CREATE_CONVERSATION, resConversation, redirectToConversation, REDIRECT_TO_CONVERSATION } from '../../../redux/ducks/chat/chat';
 
 import { getToken } from '../../../utils/auth';
 
@@ -30,7 +30,8 @@ function* createEventChannel(socket) {
     socket.on('res:conversation', (conversation) => {
       console.log('res:conversation', conversation);
       emit(resConversation(conversation));
-    })
+      emit(redirectToConversation(conversation.id))
+    });
 
     return () => {
       socket.disconnect();
@@ -54,6 +55,19 @@ function* reqFindOrCreateConversationGenerator(socket) {
   }
 }
 
+function* redirectToConversationGenerator(socket) {
+  while (true) {
+    const { payload: conversationId } = yield take(REDIRECT_TO_CONVERSATION);
+
+    yield put(NavigationActions.navigate({ 
+      routeName: 'ChatChat', 
+      params: { conversationId } 
+    }));
+
+    console.log('redirectToConversation', conversationId);
+  }
+}
+
 
 function* initializeWebSocketsChannel() {
   window.navigator.userAgent = 'react-native';
@@ -71,7 +85,8 @@ function* initializeWebSocketsChannel() {
   yield all([
     yield fork(read, socket),
     yield fork(reqConversationsGenerator, socket),
-    yield fork(reqFindOrCreateConversationGenerator, socket)
+    yield fork(reqFindOrCreateConversationGenerator, socket),
+    yield fork(redirectToConversationGenerator, socket)
   ]);
 }
 

@@ -15,8 +15,6 @@ function* fetchProfileIterator() {
       }
     });
 
-    console.log('fetch profile', data);
-
     yield put(fetchProfile.success(data));
   } catch (e) {
     yield put(fetchProfile.failure());

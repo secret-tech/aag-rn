@@ -4,6 +4,7 @@ import { navReducer } from '../navigation/AppNavigator';
 
 import auth from './ducks/auth/auth';
 
+import socket from './ducks/common/socket';
 import review from './ducks/common/review';
 
 import profile from './ducks/profile/profile'
@@ -14,6 +15,7 @@ import explore from './ducks/explore/explore';
 import subExplore from './ducks/explore/subExplore';
 
 import rooms from './ducks/chat/rooms';
+import chat from './ducks/chat/chat';
 
 export default combineReducers({
   nav: navReducer,
@@ -23,6 +25,7 @@ export default combineReducers({
   }),
 
   common: combineReducers({
+    socket,
     review
   }),
 
@@ -38,6 +41,7 @@ export default combineReducers({
   }),
 
   chat: combineReducers({
-    rooms
+    rooms,
+    chat
   })
 });

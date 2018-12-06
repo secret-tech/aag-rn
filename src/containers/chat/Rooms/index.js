@@ -5,6 +5,7 @@ import { TouchableOpacity } from 'react-native';
 import { Container, Content, List, ListItem, Left, Body, Right, Thumbnail, Text } from 'native-base';
 
 import { reqConversations } from '../../../redux/ducks/chat/rooms';
+import { reqFindOrCreateConversation } from '../../../redux/ducks/chat/chat';
 
 import { sortConversations, getAnotherUser } from './helpers';
 
@@ -24,7 +25,7 @@ class Rooms extends Component {
         key={conversation.id}
         avatar 
         button 
-        onPress={() => this.props.openConversation(anotherUser.id)}>
+        onPress={() => this.props.reqFindOrCreateConversation(anotherUser.id)}>
         <Left style={{ borderBottomWidth: 0 }}>
           <Thumbnail source={{ uri: anotherUser.picture }} />
         </Left>
@@ -66,6 +67,7 @@ export default connect(
     userId: state.profile.profile.get('id')
   }),
   {
-    reqConversations
+    reqConversations,
+    reqFindOrCreateConversation
   }
 )(Rooms);
