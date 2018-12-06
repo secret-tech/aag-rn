@@ -5,16 +5,21 @@ import { GiftedChat } from 'react-native-gifted-chat';
 
 import { loadConversation, purgeConversation, sendMessage, fetchMoreMessages } from '../../../redux/ducks/chat/rooms';
 
-import { reqSendMessage } from '../../../redux/ducks/chat/chat';
+import { reqSendMessage, reqMessages } from '../../../redux/ducks/chat/chat';
 
-import { getAnotherUser } from '../Rooms/helpers';
+import { getUser, getAnotherUser, transformMessage, transformUser } from '../Rooms/helpers';
 
 
 class Chat extends Component {
-  sendMessage = (messages) => {
+  componentDidMount() {
     const { conversationId } = this.props.navigation.state.params;
 
-    console.log('chat/sendMessage', messages, conversationId);
+    // fetch first messages without key
+    this.props.reqMessages({ conversationId });
+  }
+
+  sendMessage = (messages) => {
+    const { conversationId } = this.props.navigation.state.params;
 
     this.props.reqSendMessage({
       messages,
@@ -37,8 +42,13 @@ class Chat extends Component {
 
   render() {
     console.log('Chat', this.props);
+    const { conversation, userId, messages } = this.props;
+    const { users } = conversation;
 
-    const anoterUser = getAnotherUser(this.props.conversation.users);
+    const user = getUser(users, userId);
+    const anoterUser = getAnotherUser(users, userId);
+
+    console.log(messages);
 
     return (
       <Container>
@@ -56,10 +66,10 @@ class Chat extends Component {
         </Header>
 
         <GiftedChat
-          messages={this.props.conversation.messages}
+          messages={messages.map((message) => transformMessage(message))}
           onSend={this.sendMessage}
           inverted={true}
-          user={this.props.conversation.user}
+          user={transformUser(user)}
           loadEarlier={true}
           onLoadEarlier={this.fetchMoreMessages}/>
       </Container>
@@ -69,7 +79,8 @@ class Chat extends Component {
 
 export default connect(
   (state) => ({
-    conversation: state.chat.chat.conversation
+    ...state.chat.chat,
+    userId: state.profile.profile.get('id')
   }),
   {
     loadConversation,
@@ -77,6 +88,7 @@ export default connect(
     sendMessage,
     fetchMoreMessages,
 
-    reqSendMessage
+    reqSendMessage,
+    reqMessages
   }
 )(Chat);

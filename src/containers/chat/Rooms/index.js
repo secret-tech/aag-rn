@@ -13,6 +13,7 @@ import { sortConversations, getAnotherUser } from './helpers';
 class Rooms extends Component {
   componentWillMount() {
     this.props.reqConversations();
+    console.log('request conversations when Rooms will mount')
   }
 
   renderConversation = (conversation) => {
