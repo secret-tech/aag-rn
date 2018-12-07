@@ -85,9 +85,9 @@ function* reqMessagesGenerator(socket) {
 function* reqSendMessage(socket) {
   while (true) {
     const { payload } = yield take(REQ_SEND_MESSAGE);
-    payload.messages.forEach((message) => {
+    payload.messages.forEach(({ message }) => {
       socket.emit('req:sendMessage', { 
-        text: message.text, 
+        text: message, 
         conversationId: payload.conversationId
       });
     });
@@ -96,14 +96,18 @@ function* reqSendMessage(socket) {
 
 
 function* initializeWebSocketsChannel() {
-  window.navigator.userAgent = 'react-native';
+  window.navigator.userAgent = 'ReactNative';
 
   const token = yield call(getToken);
 
-  const socket = io('wss://aag.secrettech.io', {
+  const socket = io.connect('wss://aag.secrettech.io', {
     query: { token },
     jsonp: false,
-    transports: ['websocket']
+    transports: ['websocket'],
+    reconnection: true,
+    reconnectionDelay: 1000,
+    reconnectionDelayMax : 5000,
+    reconnectionAttempts: 99999
   });
 
   socket.on('disconnect', () => {

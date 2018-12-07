@@ -11,15 +11,29 @@ import { sortConversations, getAnotherUser } from './helpers';
 
 
 class Rooms extends Component {
+  constructor(props) {
+    super(props);
+
+    this.subs = [];
+  }
+
   componentWillMount() {
     this.props.reqConversations();
-    console.log('request conversations when Rooms will mount')
+    console.log('request conversations when Rooms will mount');
+
+    this.subs = [
+      this.props.navigation.addListener('willFocus', () => this.props.reqConversations())
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subs.forEach((sub) => {
+      sub.remove();
+    });
   }
 
   renderConversation = (conversation) => {
     const anotherUser = getAnotherUser(conversation.users, this.props.userId);
-
-    console.log(anotherUser);
 
     return (
       <ListItem 
