@@ -47,14 +47,11 @@ class Chat extends Component {
   }
 
   render() {
-    console.log('Chat', this.props);
     const { conversation, userId, messages } = this.props;
     const { users } = conversation;
 
     const user = getUser(users, userId);
     const anoterUser = getAnotherUser(users, userId);
-
-    console.log(messages);
 
     return (
       <Container>
@@ -68,7 +65,11 @@ class Chat extends Component {
           <Body>
             <Title>{anoterUser.firstName}</Title>
           </Body>
-          <Right/>
+          <Right>
+            <Button transparent>
+              <Icon name="ios-call" />
+            </Button>
+          </Right>
         </Header>
 
         <GiftedChat

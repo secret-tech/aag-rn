@@ -11,6 +11,8 @@ import AppNavigator from './src/navigation/AppNavigator';
 
 class App extends Component {
   componentWillMount() {
+    console.disableYellowBox = true;
+    
     OneSignal.setLogLevel(7, 0);
     OneSignal.init('96ef2fff-208d-4b7e-a592-6c45b3633fad', { kOSSettingsKeyAutoPrompt: true });
     OneSignal.inFocusDisplaying(0);

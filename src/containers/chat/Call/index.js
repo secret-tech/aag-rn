@@ -4,7 +4,11 @@ import { View, Button, Text } from 'native-base';
 import io from 'socket.io-client';
 import { RTCPeerConnection, RTCMediaStream, RTCIceCandidate, RTCSessionDescription, RTCView, MediaStreamTrack, getUserMedia } from 'react-native-webrtc';
 
+import CallButton from '../../../components/chat/CallButton';
+
 import socketService from '../../../utils/socketService';
+
+import s from './styles';
 
 const PEERS = {};
 
@@ -28,7 +32,7 @@ export default class Call extends Component {
 
   async componentDidMount() {
     await this.initSocket();
-    
+
     this.getInternalStream(true, (stream) => this.setState({ internalStream: stream }));
 
     this.socket.on('exchange', (data) => this.exchange(data));
@@ -119,29 +123,20 @@ export default class Call extends Component {
 
     return (
       <View style={s.main}>
-        <RTCView style={s.externalVideo} streamURL={externalStream && externalStream.toURL()}/>
-        <RTCView style={s.internalVideo} streamURL={internalStream && internalStream.toURL()}/>
-        <View style={s.button}>
-          <Button onPress={() => this.join('pidor')}><Text>JOIN</Text></Button>
+        <View style={s.externalVideoContainer}>
+          <RTCView objectFit="cover" style={s.externalVideo} streamURL={externalStream && externalStream.toURL()}/>
+        </View>
+        
+        <View style={s.internalVideoContainer}>
+          <RTCView objectFit="cover" style={s.internalVideo} streamURL={internalStream && internalStream.toURL()}/>
+        </View>
+
+        <View style={s.controls}>
+          <View style={s.button}>
+            <CallButton iconName="call-end" backgroundColor="#ff3b2f" iconColor="#fff"/>
+          </View>
         </View>
       </View>
     );
   }
 }
-
-const s = {
-  main: {
-    width: '100%',
-    height: '100%',
-    display: 'flex'
-  },
-  externalVideo: {
-    width: '100%',
-    height: '100%'
-  },
-  button: {
-    position: 'absolute',
-    bottom: 10,
-    right: 10
-  }
-};
