@@ -18,6 +18,9 @@ class Chat extends Component {
   }
 
   componentDidMount() {
+    // clear messages
+    this.props.purgeMessages();
+    
     // fetch first messages without key
     this.props.reqMessages({ conversationId: this.conversationId });
   }

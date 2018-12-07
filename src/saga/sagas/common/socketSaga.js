@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 
 import { INIT_SOCKET } from '../../../redux/ducks/common/socket';
 import { REQ_CONVERSATIONS, resConversations } from '../../../redux/ducks/chat/rooms';
-import { REQ_FIND_OR_CREATE_CONVERSATION, resConversation, redirectToConversation, REDIRECT_TO_CONVERSATION, resMessages, REQ_MESSAGES, REQ_SEND_MESSAGE } from '../../../redux/ducks/chat/chat';
+import { REQ_FIND_OR_CREATE_CONVERSATION, resConversation, redirectToConversation, REDIRECT_TO_CONVERSATION, resMessages, REQ_MESSAGES, REQ_SEND_MESSAGE, resReceiveMessage } from '../../../redux/ducks/chat/chat';
 
 import { getToken } from '../../../utils/auth';
 
@@ -36,7 +36,12 @@ function* createEventChannel(socket) {
     socket.on('res:messages', (messages) => {
       console.log('res:messages', messages);
       emit(resMessages(messages));
-    })
+    });
+
+    socket.on('res:receiveMessage', (message) => {
+      console.log('res:receiveMessage', message);
+      emit(resReceiveMessage(message));
+    });
 
     return () => {
       socket.disconnect();
