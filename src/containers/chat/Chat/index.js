@@ -36,7 +36,9 @@ class Chat extends Component {
   fetchMoreMessages = () => {
     // key is createdAt Date of last loaded message
     const key = this.props.messages.reduce((acc, message, index) => 
-      message.timestamp > acc ? message.timestamp : acc, 0);
+      acc === 0 
+        ? message.timestamp
+        : message.timestamp < acc ? message.timestamp : acc, 0);
 
     this.props.reqMessages({ key, conversationId: this.conversationId });
   }
