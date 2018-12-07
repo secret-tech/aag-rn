@@ -1,13 +1,12 @@
 import { all, fork, take, takeLatest, call, put } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import { NavigationActions } from 'react-navigation';
-import io from 'socket.io-client';
 
 import { INIT_SOCKET } from '../../../redux/ducks/common/socket';
 import { REQ_CONVERSATIONS, resConversations } from '../../../redux/ducks/chat/rooms';
 import { REQ_FIND_OR_CREATE_CONVERSATION, resConversation, redirectToConversation, REDIRECT_TO_CONVERSATION, resMessages, REQ_MESSAGES, REQ_SEND_MESSAGE, resReceiveMessage } from '../../../redux/ducks/chat/chat';
 
-import { getToken } from '../../../utils/auth';
+import socketService from '../../../utils/socketService';
 
 
 function* read(socket) {
@@ -101,19 +100,7 @@ function* reqSendMessage(socket) {
 
 
 function* initializeWebSocketsChannel() {
-  window.navigator.userAgent = 'ReactNative';
-
-  const token = yield call(getToken);
-
-  const socket = io.connect('wss://aag.secrettech.io', {
-    query: { token },
-    jsonp: false,
-    transports: ['websocket'],
-    reconnection: true,
-    reconnectionDelay: 1000,
-    reconnectionDelayMax : 5000,
-    reconnectionAttempts: 99999
-  });
+  const socket = yield call(socketService);
 
   socket.on('disconnect', () => {
     console.warn('[DICONNECT]', socket);

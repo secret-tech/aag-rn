@@ -4,13 +4,15 @@ import { View, Button, Text } from 'native-base';
 import io from 'socket.io-client';
 import { RTCPeerConnection, RTCMediaStream, RTCIceCandidate, RTCSessionDescription, RTCView, MediaStreamTrack, getUserMedia } from 'react-native-webrtc';
 
+import socketService from '../../../utils/socketService';
+
 const PEERS = {};
 
 export default class Call extends Component {
   constructor(props) {
     super(props);
 
-    this.socket = io.connect('https://react-native-webrtc.herokuapp.com', { transports: ['websocket'] });
+    this.socket = null;
     this.configuration = {'iceServers': [{ 'url': 'stun:stun.l.google.com:19302' }]};
 
     this.state = {
@@ -20,7 +22,13 @@ export default class Call extends Component {
     };
   }
 
-  componentDidMount() {
+  async initSocket() {
+    this.socket = await socketService();
+  }
+
+  async componentDidMount() {
+    await this.initSocket();
+    
     this.getInternalStream(true, (stream) => this.setState({ internalStream: stream }));
 
     this.socket.on('exchange', (data) => this.exchange(data));
