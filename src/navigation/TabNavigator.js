@@ -10,6 +10,7 @@ import ReviewAdvisor from '../containers/explore/ReviewAdvisor';
 import Rooms from '../containers/chat/Rooms';
 import Chat from '../containers/chat/Chat';
 import IncomingCall from '../containers/chat/IncomingCall';
+import OutgoingCall from '../containers/chat/OutgoingCall';
 import Call from '../containers/chat/Call';
 
 import Profile from '../containers/profile/Profile';
@@ -39,6 +40,7 @@ const ChatStack = createStackNavigator({
   ChatRooms: { screen: Rooms },
   ChatChat: { screen: Chat },
   ChatIncomingCall: { screen: IncomingCall },
+  ChatOutgoingCall: { screen: OutgoingCall },
   ChatCall: { screen: Call }
 }, {
   initialRouteName: 'ChatRooms',
@@ -52,6 +54,7 @@ ChatStack.navigationOptions = ({ navigation }) => {
   if (routeName === 'ChatChat') return ({ tabBarVisible: false });
   if (routeName === 'ChatCall') return ({ tabBarVisible: false });
   if (routeName === 'ChatIncomingCall') return ({ tabBarVisible: false });
+  if (routeName === 'ChatOutgoingCall') return ({ tabBarVisible: false });
   return null;
 }
 

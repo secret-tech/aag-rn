@@ -119,7 +119,7 @@ function* reqCallGenerator(socket) {
     const { payload: conversationId } = yield take(REQ_CALL);
     socket.emit('req:call', { conversationId });
     yield put(NavigationActions.navigate({ 
-      routeName: 'ChatCall', 
+      routeName: 'ChatOutgoingCall', 
       params: { conversationId } 
     }));
 

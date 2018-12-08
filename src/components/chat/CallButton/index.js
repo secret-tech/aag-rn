@@ -19,7 +19,8 @@ class CallButton extends Component {
       iconSize,
       iconName,
       textColor,
-      text
+      text,
+      ...restProps
     } = this.props;
 
     const buttonStyle = {
@@ -41,7 +42,7 @@ class CallButton extends Component {
 
     return (
       <View>
-        <Button style={buttonStyle}>
+        <Button style={buttonStyle} {...restProps}>
           <Icon name={iconName} size={iconSize} color={iconColor} />
         </Button>
 
