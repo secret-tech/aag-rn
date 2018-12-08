@@ -9,7 +9,7 @@ import { getToken, rmToken } from '../../../utils/auth';
 function* fetchProfileIterator() {
   try {
     const token = yield call(getToken);
-    const { data } = yield call(axios.get, 'https://aag.secrettech.io/users/me', {
+    const { data } = yield call(axios.get, 'https://aag.secrettech.io/user/me', {
       headers: {
         'Authorization': `Bearer ${token}`
       }

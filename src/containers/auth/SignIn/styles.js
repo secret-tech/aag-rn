@@ -24,14 +24,10 @@ export default {
     marginBottom: 60,
     marginTop: 100
   },
-  image: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    width: dwidth,
-    height: lwidth
+  tagline: {
+    fontSize: 20,
+    color: '#fff',
+    marginTop: 20
   },
   buttons: {
     marginBottom: 20,

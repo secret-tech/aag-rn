@@ -13,7 +13,7 @@ class Profile extends Component {
   nav = (id, routeName) => this.props.navigation.navigate(id, {}, NavigationActions.navigate({ routeName }));
 
   render() {
-    const { loading, picture, name, age, bio, tags } = this.props.profile.toJS();
+    const { loading, picture, firstName, lastName, age, bio, tags } = this.props.profile.toJS();
 
     return loading
       ? <Spinner/>
@@ -30,7 +30,7 @@ class Profile extends Component {
             </View>
 
             <View style={s.nameWrap}>
-              <Text style={s.name}>{name}, {age}</Text>
+              <Text style={s.name}>{firstName} {lastName}{age && `, ${age}`}</Text>
             </View>
 
             <View style={s.bioWrap}>

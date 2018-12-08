@@ -3,20 +3,25 @@ export default {
     width: '100%',
     height: '100%',
     backgroundColor: '#6546fa',
+  },
+  wrap: {
+    width: '100%',
+    height: '100%',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 20
+    padding: 20,
+    paddingBottom: 50 
   },
 
   picWrap: {
-    width: 150,
-    height: 150,
-    backgroundColor: 'grey',
+    width: 120,
+    height: 120,
+    backgroundColor: '#fff',
     borderRadius: 500,
     overflow: 'hidden',
     marginTop: 20,
-    marginBottom: 20
+    marginBottom: 10
   },
   pic: {
     width: '100%',
@@ -43,8 +48,8 @@ export default {
   },
 
   stars: {
-    marginTop: 10,
-    marginBottom: 20
+    marginTop: 40,
+    marginBottom: 50
   },
   starsLabel: {
     marginBottom: 20

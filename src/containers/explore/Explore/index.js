@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Container, Content } from 'native-base';
 
-import Explorer from '../../../components/explore/Explorer';
 import Spinner from '../../../components/common/Spinner';
+import ExplorerSection from '../../../components/explore/ExporerSection';
 
 import { fetchAdvisors } from '../../../redux/ducks/explore/explore';
 
@@ -13,11 +14,19 @@ class Explore extends Component {
   }
 
   render() {
-    const { data, loading } = this.props.explore.toJS();
+    const { newAdvisors, featuredAdvisors, onlineAdvisors, loading } = this.props.explore.toJS();
 
     return loading
       ? <Spinner/>
-      : <Explorer data={data}/>;
+      : (
+        <Container>
+          <Content>
+            <ExplorerSection title="Featured advisors" type="featured" data={featuredAdvisors}/>
+            <ExplorerSection title="New advisors" type="new" data={newAdvisors}/>
+            <ExplorerSection title="Online advisors" type="online" data={onlineAdvisors}/>
+          </Content>
+        </Container>
+      );
   }
 }
 

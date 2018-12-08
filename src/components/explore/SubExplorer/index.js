@@ -5,7 +5,7 @@ import Card from '../Card';
 
 
 class SubExplorer extends Component {
-  _keyExtractor = (advisor) => advisor._id.toString();
+  _keyExtractor = (advisor) => advisor.id.toString();
 
   _renderItem = (advisor) => (
     <View style={{ paddingTop: 10, paddingLeft: 20, paddingRight: 20 }}>

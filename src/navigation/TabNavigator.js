@@ -9,7 +9,9 @@ import ReviewAdvisor from '../containers/explore/ReviewAdvisor';
 
 import Rooms from '../containers/chat/Rooms';
 import Chat from '../containers/chat/Chat';
-import AudioCall from '../containers/chat/AudioCall';
+import IncomingCall from '../containers/chat/IncomingCall';
+import OutgoingCall from '../containers/chat/OutgoingCall';
+import Call from '../containers/chat/Call';
 
 import Profile from '../containers/profile/Profile';
 import Settings from '../containers/profile/Settings';
@@ -37,7 +39,9 @@ ExploreStack.navigationOptions = ({ navigation }) =>
 const ChatStack = createStackNavigator({
   ChatRooms: { screen: Rooms },
   ChatChat: { screen: Chat },
-  ChatAudioCall: { screen: AudioCall }
+  ChatIncomingCall: { screen: IncomingCall },
+  ChatOutgoingCall: { screen: OutgoingCall },
+  ChatCall: { screen: Call }
 }, {
   initialRouteName: 'ChatRooms',
   headerMode: 'none'
@@ -48,7 +52,9 @@ ChatStack.navigationOptions = ({ navigation }) => {
   const { routeName } = navigation.state.routes[navigation.state.index];
 
   if (routeName === 'ChatChat') return ({ tabBarVisible: false });
-  if (routeName === 'ChatAudioCall') return ({ tabBarVisible: false });
+  if (routeName === 'ChatCall') return ({ tabBarVisible: false });
+  if (routeName === 'ChatIncomingCall') return ({ tabBarVisible: false });
+  if (routeName === 'ChatOutgoingCall') return ({ tabBarVisible: false });
   return null;
 }
 

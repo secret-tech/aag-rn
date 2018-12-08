@@ -4,7 +4,7 @@ import { Dimensions, Text, View, Image } from 'react-native';
 import { Container, Content, Button, Icon } from 'native-base';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
-import { openConversation } from '../../../redux/ducks/chat/rooms';
+import { reqFindOrCreateConversation } from '../../../redux/ducks/chat/chat';
 
 import s from './styles';
 
@@ -31,10 +31,11 @@ class AdvisorProfile extends Component {
 
   render() {
     const {
-      _id,
+      id,
+      age,
       picture,
       pictures,
-      name,
+      firstName,
       bio,
       gender,
       tags,
@@ -66,14 +67,14 @@ class AdvisorProfile extends Component {
                 inactiveDotScale={0.7}/>
             </View>
 
-            <Button transparent style={s.connect} onPress={() => this.props.openConversation(_id)}>
+            <Button transparent style={s.connect} onPress={() => this.props.reqFindOrCreateConversation(id)}>
               <Icon type="SimpleLineIcons" name="bubbles" style={{ fontSize: 24, color: '#fff', padding: 0, margin: 0 }}/>
             </Button>
           </View>
 
           <View style={s.info}>
-            <Text style={s.name}>{name}</Text>
-            <Text style={s.gender}>{this.capitalize(gender)}</Text>
+            <Text style={s.name}>{firstName}</Text>
+            <Text style={s.gender}>{this.capitalize(gender)} {age && `, ${age}`}</Text>
             {rating > 0
               ? (
                 <View style={s.ratioWrap}>
@@ -100,6 +101,6 @@ class AdvisorProfile extends Component {
 export default connect(
   null,
   {
-    openConversation
+    reqFindOrCreateConversation
   }
 )(AdvisorProfile);

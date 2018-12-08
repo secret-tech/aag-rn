@@ -5,37 +5,55 @@ import { GiftedChat } from 'react-native-gifted-chat';
 
 import { loadConversation, purgeConversation, sendMessage, fetchMoreMessages } from '../../../redux/ducks/chat/rooms';
 
+import { reqSendMessage, reqMessages, purgeMessages } from '../../../redux/ducks/chat/chat';
+import { reqCall } from '../../../redux/ducks/chat/call';
+
+import { getUser, getAnotherUser, transformMessage, revTransformMessage, transformUser } from '../Rooms/helpers';
+
 
 class Chat extends Component {
-  componentWillMount() {
-    this.props.loadConversation(this.props.navigation.state.params.conversationId);
+  constructor(props) {
+    super(props);
+
+    this.conversationId = this.props.navigation.state.params.conversationId;
+  }
+
+  componentDidMount() {
+    // clear messages
+    this.props.purgeMessages();
+    
+    // fetch first messages without key
+    this.props.reqMessages({ conversationId: this.conversationId });
+  }
+
+  componentWillUnmount() {
+    this.props.purgeMessages();
   }
 
   sendMessage = (messages) => {
-    const { conversationId } = this.props.navigation.state.params;
-
-    this.props.sendMessage({
-      messages,
-      senderId: this.props.conversation.user._id,
-      receiverId: this.props.conversation.friend._id,
-      conversationId
+    this.props.reqSendMessage({
+      messages: messages.map((message) => revTransformMessage(message)),
+      conversationId: this.conversationId
     });
   }
 
   fetchMoreMessages = () => {
-    const { conversationId } = this.props.navigation.state.params;
-
     // key is createdAt Date of last loaded message
-    const key = this.props.conversation.messages.reduce((acc, msg, index) => {
-      if (index === 0) return msg.createdAt;
-      if (Date.parse(msg.createdAt) < Date.parse(acc)) return msg.createdAt;
-      return acc;
-    }, '');
+    const key = this.props.messages.reduce((acc, message, index) => 
+      acc === 0 
+        ? message.timestamp
+        : message.timestamp < acc ? message.timestamp : acc, 0);
 
-    this.props.fetchMoreMessages({ key, conversationId });
+    this.props.reqMessages({ key, conversationId: this.conversationId });
   }
 
   render() {
+    const { conversation, userId, messages } = this.props;
+    const { users, id } = conversation;
+
+    const user = getUser(users, userId);
+    const anoterUser = getAnotherUser(users, userId);
+
     return (
       <Container>
         <Header>
@@ -46,16 +64,20 @@ class Chat extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>{this.props.conversation.friend.name}</Title>
+            <Title>{anoterUser.firstName}</Title>
           </Body>
-          <Right/>
+          <Right>
+            <Button transparent onPress={() => this.props.reqCall(id)}>
+              <Icon name="ios-call" />
+            </Button>
+          </Right>
         </Header>
 
         <GiftedChat
-          messages={this.props.conversation.messages}
+          messages={messages.map((message) => transformMessage(message))}
           onSend={this.sendMessage}
           inverted={true}
-          user={this.props.conversation.user}
+          user={transformUser(user)}
           loadEarlier={true}
           onLoadEarlier={this.fetchMoreMessages}/>
       </Container>
@@ -65,12 +87,13 @@ class Chat extends Component {
 
 export default connect(
   (state) => ({
-    conversation: state.chat.rooms.conversation
+    ...state.chat.chat,
+    userId: state.profile.profile.get('id')
   }),
   {
-    loadConversation,
-    purgeConversation,
-    sendMessage,
-    fetchMoreMessages
+    reqSendMessage,
+    reqMessages,
+    purgeMessages,
+    reqCall
   }
 )(Chat);
