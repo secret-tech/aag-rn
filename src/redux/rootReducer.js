@@ -16,6 +16,7 @@ import subExplore from './ducks/explore/subExplore';
 
 import rooms from './ducks/chat/rooms';
 import chat from './ducks/chat/chat';
+import call from './ducks/chat/call';
 
 export default combineReducers({
   nav: navReducer,
@@ -42,6 +43,7 @@ export default combineReducers({
 
   chat: combineReducers({
     rooms,
-    chat
+    chat,
+    call
   })
 });

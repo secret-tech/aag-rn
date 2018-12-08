@@ -6,6 +6,7 @@ import { GiftedChat } from 'react-native-gifted-chat';
 import { loadConversation, purgeConversation, sendMessage, fetchMoreMessages } from '../../../redux/ducks/chat/rooms';
 
 import { reqSendMessage, reqMessages, purgeMessages } from '../../../redux/ducks/chat/chat';
+import { reqCall } from '../../../redux/ducks/chat/call';
 
 import { getUser, getAnotherUser, transformMessage, revTransformMessage, transformUser } from '../Rooms/helpers';
 
@@ -48,7 +49,7 @@ class Chat extends Component {
 
   render() {
     const { conversation, userId, messages } = this.props;
-    const { users } = conversation;
+    const { users, id } = conversation;
 
     const user = getUser(users, userId);
     const anoterUser = getAnotherUser(users, userId);
@@ -66,7 +67,7 @@ class Chat extends Component {
             <Title>{anoterUser.firstName}</Title>
           </Body>
           <Right>
-            <Button transparent>
+            <Button transparent onPress={() => this.props.reqCall(id)}>
               <Icon name="ios-call" />
             </Button>
           </Right>
@@ -92,6 +93,7 @@ export default connect(
   {
     reqSendMessage,
     reqMessages,
-    purgeMessages
+    purgeMessages,
+    reqCall
   }
 )(Chat);

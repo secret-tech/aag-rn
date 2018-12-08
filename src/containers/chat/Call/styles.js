@@ -1,9 +1,41 @@
 export default {
-  main: {
+  container: {
     width: '100%',
     height: '100%',
     display: 'flex'
   },
+
+  image: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%'
+  },
+  dialer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)'
+  },
+  title: {
+    paddingTop: 40
+  },
+  name: {
+    fontSize: 36,
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold'
+  },
+  call: {
+    fontSize: 14,
+    color: '#fff',
+    textAlign: 'center',
+    marginTop: 10
+  },
+
   externalVideoContainer: {
     width: '100%',
     height: '100%',
@@ -27,6 +59,7 @@ export default {
   internalVideo: {
     flex: 1
   },
+
   controls: {
     width: '100%',
     position: 'absolute',

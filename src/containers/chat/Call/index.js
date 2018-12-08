@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, Image } from 'react-native';
 import { View, Button, Text } from 'native-base';
 import io from 'socket.io-client';
 import { RTCPeerConnection, RTCMediaStream, RTCIceCandidate, RTCSessionDescription, RTCView, MediaStreamTrack, getUserMedia } from 'react-native-webrtc';
@@ -21,6 +21,7 @@ export default class Call extends Component {
 
     this.state = {
       peers: {},
+      connected: false,
       externalStream: '',
       internalStream: ''
     };
@@ -115,14 +116,35 @@ export default class Call extends Component {
     getUserMedia(options, (stream) => callback(stream), (e) => console.log(e));
   }
 
-  render() {
+  renderCallingView = () => {
+    return (
+      <View style={s.container}>
+        <Image style={s.image} resizeMode="cover" source={{ uri: 'https://images.pexels.com/photos/756453/pexels-photo-756453.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' }} blurRadius={10}/>
+        <View style={s.dialer}>
+
+          <View style={s.title}>
+            <Text style={s.name}>Trudy Jezabel</Text>
+            <Text style={s.call}>Outcoming Askagirl video call</Text>
+          </View>
+
+          <View style={s.controls}>
+            <View style={s.button}>
+              <CallButton iconName="call-end" backgroundColor="#ff3b2f" iconColor="#fff"/>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  renderCallView = () => {
     const {
       externalStream,
       internalStream
     } = this.state;
 
     return (
-      <View style={s.main}>
+      <View style={s.container}>
         <View style={s.externalVideoContainer}>
           <RTCView objectFit="cover" style={s.externalVideo} streamURL={externalStream && externalStream.toURL()}/>
         </View>
@@ -138,5 +160,9 @@ export default class Call extends Component {
         </View>
       </View>
     );
+  }
+
+  render() {
+    return !this.state.connected ? this.renderCallingView() : this.renderCallView();
   }
 }
