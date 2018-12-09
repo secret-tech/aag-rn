@@ -4,6 +4,7 @@ import { Root } from 'native-base';
 import { Provider } from 'react-redux';
 import OneSignal from 'react-native-onesignal';
 
+import './src/utils/socketService';
 import store from './src/redux/configureStore';
 import { name as appName } from './app.json';
 

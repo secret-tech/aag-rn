@@ -187,15 +187,15 @@ function* resCallDeclinedGenerator(socket) {
 
 
 function* initializeWebSocketsChannel() {
-  const socket = yield call(socketService);
+  // const socket = yield call(socketService);
+  const socket = global.socket;
+  yield call(console.log, 'initializeWebSocketsChannel socket client', socket);
 
   socket.on('disconnect', () => {
     console.warn('[DICONNECT]', socket);
     socket.connect();
     console.warn('[RECONNECTION', socket);
-  })
-
-  yield call(console.log, 'initializeWebSocketsChannel socket client', socket);
+  });
 
   yield all([
     yield fork(read, socket),

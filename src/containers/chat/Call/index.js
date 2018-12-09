@@ -16,8 +16,6 @@ import { RTCPeerConnection, RTCMediaStream, RTCIceCandidate, RTCSessionDescripti
 
 import CallButton from '../../../components/chat/CallButton';
 
-import socketService from '../../../utils/socketService';
-
 import s from './styles';
 
 let conversationId = '';
@@ -103,7 +101,7 @@ class Call extends Component {
 
   async initSocket() {
     // Create socket instance
-    this.socket = await socketService();
+    this.socket = global.socket;
 
     // Do what the server say
     // Сервер определяет кто является caller и присылает этот ивент клиенту caller
@@ -201,12 +199,12 @@ class Call extends Component {
             streamURL={remoteStream && remoteStream.toURL()}/>
         </View>
         
-        <View style={s.internalVideoContainer}>
+        {/* <View style={s.internalVideoContainer}>
           <RTCView 
             objectFit="cover" 
             style={s.internalVideo} 
             streamURL={localStream && localStream.toURL()}/>
-        </View>
+    </View> */}
 
         <View style={s.controls}>
           <View style={s.button}>
