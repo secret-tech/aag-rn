@@ -4,6 +4,8 @@ import android.app.Application;
 import com.facebook.CallbackManager;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.react.ReactApplication;
+import com.oney.WebRTCModule.WebRTCModulePackage;
+import com.zxcpoiu.incallmanager.InCallManagerPackage;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
@@ -11,7 +13,6 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.oney.WebRTCModule.WebRTCModulePackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,8 +33,9 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
           new WebRTCModulePackage(),
-            new ReactNativeOneSignalPackage(),
-            new VectorIconsPackage(),
+          new InCallManagerPackage(),
+          new ReactNativeOneSignalPackage(),
+          new VectorIconsPackage(),
           new FBSDKPackage(mCallbackManager)
       );
     }

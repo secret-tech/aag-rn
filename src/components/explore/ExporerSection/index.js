@@ -13,7 +13,7 @@ class ExplorerSection extends Component {
   getItems = () => {
     const advisors = this.props.data.map((advisor) => ({ ...advisor, type: 'advisor' }));
     const button = { type: 'button', nav: this.props.type }
-    const withButton = [button, ...advisors, ];
+    const withButton = [...advisors, button];
 
     return withButton;
   }

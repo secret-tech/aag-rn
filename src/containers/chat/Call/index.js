@@ -10,6 +10,7 @@ import React, { Component } from 'react';
 import { Dimensions, Image } from 'react-native';
 import { View, Button, Text } from 'native-base';
 import { NavigationActions } from 'react-navigation';
+import InCallManager from 'react-native-incall-manager';
 import io from 'socket.io-client';
 import { RTCPeerConnection, RTCMediaStream, RTCIceCandidate, RTCSessionDescription, RTCView, MediaStreamTrack, getUserMedia } from 'react-native-webrtc';
 
@@ -18,6 +19,8 @@ import CallButton from '../../../components/chat/CallButton';
 import socketService from '../../../utils/socketService';
 
 import s from './styles';
+
+let conversationId = '';
 
 // Конфигурация локальных медиа данных
 const LOCAL_STREAM_OPTIONS = {
@@ -54,6 +57,9 @@ class Call extends Component {
   }
 
   async componentWillMount() {
+    // 0 Записываю ид в глобальную переменную
+    conversationId = this.props.navigation.state.params.conversationId;
+
     // 1 Создаем RTC Peer Connection
     this.localPeer = new RTCPeerConnection(this.configuration);
 
@@ -80,6 +86,9 @@ class Call extends Component {
     this.localPeer.onaddstream = (event) => {
       this.setState({ remoteStream: event.stream });
     };
+
+    // Start incall manager
+    InCallManager.start({ media: 'video' });
   }
 
   componentWillUnmount() {
@@ -163,14 +172,17 @@ class Call extends Component {
   handleResHangup = () => {
     this.props.navigation.navigate('ChatRooms');
     this.localPeer.close();
+    InCallManager.stop();
   }
 
   // on hangup button click
   handleHangup = () => {
     // Сказать пока серверу чтобы уведомить о выходе другого пира
-    this.socket.emit('req:hangup', this.props.navigation.state.params.conversationId);
+    this.socket.emit('req:hangup', conversationId);
+    console.log(this.props.navigation.state.params.conversationId, conversationId);
     this.props.navigation.navigate('ChatRooms');
     this.localPeer.close();
+    InCallManager.stop();
   }
 
   render() {
