@@ -89,6 +89,7 @@ class Call extends Component {
 
     // Start incall manager
     InCallManager.start({ media: 'video' });
+    InCallManager.setForceSpeakerphoneOn(true);
   }
 
   componentWillUnmount() {
