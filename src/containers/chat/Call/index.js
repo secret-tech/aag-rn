@@ -9,6 +9,7 @@
 import React, { Component } from 'react';
 import { Dimensions, Image } from 'react-native';
 import { View, Button, Text } from 'native-base';
+import { NavigationActions } from 'react-navigation';
 import io from 'socket.io-client';
 import { RTCPeerConnection, RTCMediaStream, RTCIceCandidate, RTCSessionDescription, RTCView, MediaStreamTrack, getUserMedia } from 'react-native-webrtc';
 
@@ -45,7 +46,6 @@ class Call extends Component {
     this.configuration = {'iceServers': [{ 'url': 'stun:stun.l.google.com:19302' }]};
 
     this.localPeer = null;
-    this.remotePeer = null;
 
     this.state = {
       localStream: null,
@@ -56,7 +56,6 @@ class Call extends Component {
   async componentWillMount() {
     // 1 Создаем RTC Peer Connection
     this.localPeer = new RTCPeerConnection(this.configuration);
-    this.remotePeer = new RTCPeerConnection(this.configuration);
 
     // 2 Handle ICE candidates and sync that shit between peers via socket
     this.localPeer.onicecandidate = ({ candidate }) => {
@@ -83,7 +82,14 @@ class Call extends Component {
     };
   }
 
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    // Removing socket handlers
+    this.socket.off('res:uCaller');
+    this.socket.off('res:offer');
+    this.socket.off('res:answer');
+    this.socket.off('res:ice');
+    this.socket.off('res:hangup');
+  }
 
   async initSocket() {
     // Create socket instance
@@ -101,6 +107,9 @@ class Call extends Component {
 
     // Синхронизируем ICE сервера между клиентами
     this.socket.on('res:ice', this.handleNewIceCandidate);
+
+    // Слушать отключение внешнего пира
+    this.socket.on('res:hangup', this.handleResHangup);
 
     // Сказать серверу, что клиент готов принимать всякое
     this.socket.emit('req:imReady', this.props.navigation.state.params.conversationId);
@@ -150,6 +159,20 @@ class Call extends Component {
     this.localPeer.addIceCandidate(new RTCIceCandidate(candidate));
   }
 
+  // on socket res:hangup event
+  handleResHangup = () => {
+    this.props.navigation.navigate('ChatRooms');
+    this.localPeer.close();
+  }
+
+  // on hangup button click
+  handleHangup = () => {
+    // Сказать пока серверу чтобы уведомить о выходе другого пира
+    this.socket.emit('req:hangup', this.props.navigation.state.params.conversationId);
+    this.props.navigation.navigate('ChatRooms');
+    this.localPeer.close();
+  }
+
   render() {
     const {
       localStream,
@@ -159,16 +182,26 @@ class Call extends Component {
     return (
       <View style={s.container}>
         <View style={s.externalVideoContainer}>
-          <RTCView objectFit="cover" style={s.externalVideo} streamURL={remoteStream && remoteStream.toURL()}/>
+          <RTCView 
+            objectFit="cover" 
+            style={s.externalVideo} 
+            streamURL={remoteStream && remoteStream.toURL()}/>
         </View>
         
         <View style={s.internalVideoContainer}>
-          <RTCView objectFit="cover" style={s.internalVideo} streamURL={localStream && localStream.toURL()}/>
+          <RTCView 
+            objectFit="cover" 
+            style={s.internalVideo} 
+            streamURL={localStream && localStream.toURL()}/>
         </View>
 
         <View style={s.controls}>
           <View style={s.button}>
-            <CallButton iconName="call-end" backgroundColor="#ff3b2f" iconColor="#fff"/>
+            <CallButton
+              onPress={this.handleHangup}
+              iconName="call-end" 
+              backgroundColor="#ff3b2f" 
+              iconColor="#fff"/>
           </View>
         </View>
       </View>

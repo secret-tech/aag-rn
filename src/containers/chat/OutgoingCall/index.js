@@ -16,22 +16,20 @@ class OutgoingCall extends Component {
     this.conversationId = this.props.navigation.state.params.conversationId || '';
   }
 
-  componentWillMount() {
-    console.log('OutgoingCall will mount. ConversationId: ', this.conversationId);
-  }
-
   decline = () => {
     this.props.reqDeclineCall(this.conversationId);
   }
 
   render() {
+    const { user } = this.props.navigation.state.params;
+
     return (
       <View style={s.container}>
-        <Image style={s.image} resizeMode="cover" source={{ uri: 'https://images.pexels.com/photos/756453/pexels-photo-756453.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' }} blurRadius={10}/>
+        <Image style={s.image} resizeMode="cover" source={{ uri: user.picture }} blurRadius={5}/>
         <View style={s.dialer}>
 
           <View style={s.title}>
-            <Text style={s.name}>Trudy Jezabel</Text>
+            <Text style={s.name}>{user.firstName}</Text>
             <Text style={s.call}>Outgoing Askagirl video call</Text>
           </View>
 

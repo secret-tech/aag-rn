@@ -67,7 +67,7 @@ class Chat extends Component {
             <Title>{anoterUser.firstName}</Title>
           </Body>
           <Right>
-            <Button transparent onPress={() => this.props.reqCall(id)}>
+            <Button transparent onPress={() => this.props.reqCall({ conversationId: id, user: anoterUser })}>
               <Icon name="ios-call" />
             </Button>
           </Right>

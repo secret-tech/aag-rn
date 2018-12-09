@@ -45,7 +45,7 @@ function* createEventChannel(socket) {
 
     socket.on('res:incomingCall', (payload) => {
       console.log('res:incomingCall', payload);
-      emit(resIcomingCall(payload.conversationId));
+      emit(resIcomingCall(payload));
     });
 
     socket.on('res:callAccepted', (payload) => {
@@ -116,14 +116,14 @@ function* reqSendMessageGenerator(socket) {
 
 function* reqCallGenerator(socket) {
   while (true) {
-    const { payload: conversationId } = yield take(REQ_CALL);
+    const { payload: { conversationId, user } } = yield take(REQ_CALL);
     socket.emit('req:call', { conversationId });
     yield put(NavigationActions.navigate({ 
       routeName: 'ChatOutgoingCall', 
-      params: { conversationId } 
+      params: { conversationId, user } 
     }));
 
-    console.log('req:call', { conversationId });
+    console.log('req:call', { conversationId, user });
   }
 }
 
@@ -154,13 +154,13 @@ function* reqDeclineCallGenerator(socket) {
 
 function* resIncomingCallGenerator(socket) {
   while (true) {
-    const { payload: conversationId } = yield take(RES_INCOMING_CALL);
+    const { payload } = yield take(RES_INCOMING_CALL);
     yield put(NavigationActions.navigate({
       routeName: 'ChatIncomingCall',
-      params: { conversationId }
+      params: payload
     }));
 
-    console.log('res:incomingCall generator', conversationId);
+    console.log('res:incomingCall generator', payload);
   }
 }
 
