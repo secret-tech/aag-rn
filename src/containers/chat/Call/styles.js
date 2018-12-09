@@ -39,22 +39,24 @@ export default {
   externalVideoContainer: {
     width: '100%',
     height: '100%',
-    alignSelf: 'stretch',
-    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
     backgroundColor: 'blue'
   },
   externalVideo: {
     width: '100%',
     height: '100%',
-    flex: 1,
-    backgroundColor: 'red'
+    flex: 1
   },
   internalVideoContainer: {
     width: 90,
     height: 160,
     position: 'absolute',
     top: 20,
-    right: 20
+    right: 20,
+    backgroundColor: 'red',
+    zIndex: 2
   },
   internalVideo: {
     flex: 1

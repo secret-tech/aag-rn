@@ -62,7 +62,7 @@ class Rooms extends Component {
 
     return (
       <Container>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('ChatCall')}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('ChatCall', { conversationId: '5c09d7ea88e7aa004e1cec9e:5c09d84a88e7aa004e1ced03' })}>
           <Text>OPEN CALL VIEW</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => this.props.navigation.navigate('ChatIncomingCall')}>

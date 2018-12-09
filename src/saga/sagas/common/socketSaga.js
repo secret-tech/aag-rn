@@ -43,19 +43,19 @@ function* createEventChannel(socket) {
       emit(resReceiveMessage(message));
     });
 
-    socket.on('res:incomingCall', (call) => {
-      console.log('res:incomingCall', call);
-      emit(resIcomingCall(call));
+    socket.on('res:incomingCall', (payload) => {
+      console.log('res:incomingCall', payload);
+      emit(resIcomingCall(payload.conversationId));
     });
 
-    socket.on('res:callAccepted', (conversationId) => {
-      console.log('res:callAccepted', conversationId);
-      emit(resCallAccepted(conversationId));
+    socket.on('res:callAccepted', (payload) => {
+      console.log('res:callAccepted', payload);
+      emit(resCallAccepted(payload.conversationId));
     });
 
-    socket.on('res:callDeclined', (conversationId) => {
-      console.log('res:callDeclined', conversationId);
-      emit(resCallDeclined(conversationId));
+    socket.on('res:callDeclined', (payload) => {
+      console.log('res:callDeclined', payload);
+      emit(resCallDeclined(payload.conversationId));
     });
 
     return () => {
@@ -154,7 +154,7 @@ function* reqDeclineCallGenerator(socket) {
 
 function* resIncomingCallGenerator(socket) {
   while (true) {
-    const { payload: { conversationId } } = yield take(RES_INCOMING_CALL);
+    const { payload: conversationId } = yield take(RES_INCOMING_CALL);
     yield put(NavigationActions.navigate({
       routeName: 'ChatIncomingCall',
       params: { conversationId }
