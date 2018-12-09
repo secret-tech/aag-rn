@@ -19,7 +19,6 @@ class Rooms extends Component {
 
   componentWillMount() {
     this.props.reqConversations();
-    console.log('request conversations when Rooms will mount');
 
     this.subs = [
       this.props.navigation.addListener('willFocus', () => this.props.reqConversations())
@@ -58,17 +57,8 @@ class Rooms extends Component {
   render() {
     const { conversations } = this.props;
 
-    console.log('Rooms props', this.props);
-
     return (
       <Container>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('ChatCall', { conversationId: '5c09d7ea88e7aa004e1cec9e:5c09d84a88e7aa004e1ced03' })}>
-          <Text>OPEN CALL VIEW</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('ChatIncomingCall')}>
-          <Text>OPEN ICOMING CALL VIEW</Text>
-        </TouchableOpacity>
-
         <Content>
           <List>
             {sortConversations(conversations).map((conversation) => this.renderConversation(conversation))}
