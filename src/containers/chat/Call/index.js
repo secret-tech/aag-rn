@@ -87,7 +87,7 @@ class Call extends Component {
 
     // Start incall manager
     InCallManager.start({ media: 'video' });
-    InCallManager.setForceSpeakerphoneOn(true);
+    InCallManager.setSpeakerphoneOn(true);
   }
 
   componentWillUnmount() {
@@ -193,7 +193,7 @@ class Call extends Component {
     return (
       <View style={s.container}>
         <View style={s.externalVideoContainer}>
-          <RTCView 
+          <RTCView
             objectFit="cover" 
             style={s.externalVideo} 
             streamURL={remoteStream && remoteStream.toURL()}/>
