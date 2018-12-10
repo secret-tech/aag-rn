@@ -15,15 +15,18 @@ class Explore extends Component {
 
   render() {
     const { newAdvisors, featuredAdvisors, onlineAdvisors, loading } = this.props.explore.toJS();
+    const { role } = this.props.profile.toJS();
+
+    const getLabel = (type, role) => `${type} ${role === 'advisor' ? 'users' : 'advisors'}`;
 
     return loading
       ? <Spinner/>
       : (
         <Container>
           <Content>
-            <ExplorerSection title="Featured advisors" type="featured" data={featuredAdvisors}/>
-            <ExplorerSection title="New advisors" type="new" data={newAdvisors}/>
-            <ExplorerSection title="Online advisors" type="online" data={onlineAdvisors}/>
+            <ExplorerSection title={getLabel('Featured', role)} type="featured" data={featuredAdvisors}/>
+            <ExplorerSection title={getLabel('New', role)} type="new" data={newAdvisors}/>
+            <ExplorerSection title={getLabel('Online', role)} type="online" data={onlineAdvisors}/>
           </Content>
         </Container>
       );
@@ -32,7 +35,8 @@ class Explore extends Component {
 
 export default connect(
   (state) => ({
-    explore: state.explore.explore
+    explore: state.explore.explore,
+    profile: state.profile.profile
   }), 
   {
     fetchAdvisors

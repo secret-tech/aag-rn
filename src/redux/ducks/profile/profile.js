@@ -20,6 +20,7 @@ const initialState = Map({
   picture: '',
   birthday: '',
   bio: '',
+  role: 'user',
   tags: List()
 });
 
@@ -39,6 +40,7 @@ export default createReducer({
     picture: payload.picture,
     birthday: payload.birthday,
     bio: payload.bio,
+    role: payload.role,
     tags: List(payload.tags)
   }),
 
