@@ -48,8 +48,15 @@ export default createReducer({
     messages: [...payload.messages, ...state.messages]
   }),
 
-  [RES_RECEIVE_MESSAGE]: (state, { payload }) => ({
-    ...state,
-    messages: [payload, ...state.messages]
-  })
+  [RES_RECEIVE_MESSAGE]: (state, { payload }) => {
+    // Сохарняем сообщение в состоянии только если открыт диалог, куда пришло это сообщение
+    if (state.conversation.id === payload.conversation) {
+      return ({
+        ...state,
+        messages: [payload, ...state.messages]
+      });
+    } else {
+      return state;
+    }
+  }
 }, initialState);
