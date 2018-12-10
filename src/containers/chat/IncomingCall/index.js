@@ -16,28 +16,25 @@ class IncomingCall extends Component {
     this.conversationId = this.props.navigation.state.params.conversationId || '';
   }
 
-  componentWillMount() {
-    console.log('IncomingCall will mount. ConversationId: ', this.conversationId);
-  }
-
   accept = () => {
-    console.log('Icoming call accept method fired');
     this.props.reqAcceptCall(this.conversationId);
   }
 
   decline = () => {
-    console.log('Icoming call decline method fired');
     this.props.reqDeclineCall(this.conversationId);
   }
 
   render() {
+    console.log(this.props);
+    const { user } = this.props.navigation.state.params;
+
     return (
       <View style={s.container}>
-        <Image style={s.image} resizeMode="cover" source={{ uri: 'https://images.pexels.com/photos/756453/pexels-photo-756453.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' }} blurRadius={10}/>
+        <Image style={s.image} resizeMode="cover" source={{ uri: user.picture }} blurRadius={5}/>
         <View style={s.dialer}>
 
           <View style={s.title}>
-            <Text style={s.name}>Trudy Jezabel</Text>
+            <Text style={s.name}>{user.firstName}</Text>
             <Text style={s.call}>Incoming Askagirl video call</Text>
           </View>
 

@@ -5351,6 +5351,11 @@ react-native-fbsdk@^0.8.0:
     react-native-parsed-text "^0.0.20"
     uuid "3.3.0"
 
+react-native-incall-manager@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-incall-manager/-/react-native-incall-manager-3.2.2.tgz#5cc032f0538953707063cc1d574c2fe5f6d200d4"
+  integrity sha512-uhXQyGybOUIa1UA3Cmbks6dC1fNvtv3U00biPZKJrimuKqkJvQcv8ENkY52fc2tzGbJ12Eiu2WtM0LkVd6sF8A==
+
 react-native-iphone-x-helper@^1.0.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.0.tgz#9f8a376eb00bc712115abff4420318a0063fa796"

@@ -180,10 +180,11 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-webrtc')
+    compile project(':react-native-incall-manager')
     compile project(':react-native-onesignal')
     compile project(':react-native-vector-icons')
     compile project(':react-native-fbsdk')
-    compile project(':WebRTCModule')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules

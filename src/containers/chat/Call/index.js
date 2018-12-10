@@ -1,145 +1,224 @@
+// All comments in russian language coz I'm too lazy to rewrite them. Enjoy :-)
+
+// Оставь надежду, всяк сюда входящий.
+// Подумай 10 раз, перед тем, как что-то менять в этом проклятом файле. Тут тебе не рады.
+// Тут используется deprecated webrtc DOM API потому что пакет react-native-webrtc еще не поддерживает актуальную версию.
+// Для понимания какого хуя здесь происходит - советую прочитать документацию WEBRTC на mdn полностью
+// https://developer.mozilla.org/ru/docs/Web/API/WebRTC_API
+
 import React, { Component } from 'react';
 import { Dimensions, Image } from 'react-native';
 import { View, Button, Text } from 'native-base';
+import { NavigationActions } from 'react-navigation';
+import InCallManager from 'react-native-incall-manager';
 import io from 'socket.io-client';
 import { RTCPeerConnection, RTCMediaStream, RTCIceCandidate, RTCSessionDescription, RTCView, MediaStreamTrack, getUserMedia } from 'react-native-webrtc';
 
 import CallButton from '../../../components/chat/CallButton';
 
-import socketService from '../../../utils/socketService';
-
 import s from './styles';
 
-const PEERS = {};
+let conversationId = '';
 
-export default class Call extends Component {
+// Конфигурация локальных медиа данных
+const LOCAL_STREAM_OPTIONS = {
+  audio: true,
+  video: {
+    facingMode: 'user',
+    mandatory: {
+      minWidth: 90,
+      minHeight: 160,
+      minFrameRate: 30
+    }
+  }
+};
+
+// Устаревшие опции для создания offer. По-умолчанию они являются true, а тут находятся на всякий случай
+const OFFER_OPTIONS = {
+  offerToReceiveAudio: true,
+  offerToReceiveVideo: true
+};
+
+
+class Call extends Component {
   constructor(props) {
     super(props);
 
-    this.socket = null;
     this.configuration = {'iceServers': [{ 'url': 'stun:stun.l.google.com:19302' }]};
-    this.conversationId = this.props.navigation.state.params.conversationId || '';
+
+    this.localPeer = null;
 
     this.state = {
-      peers: {},
-      externalStream: '',
-      internalStream: ''
+      localStream: null,
+      remoteStream: null
     };
+  }
+
+  async componentWillMount() {
+    // 0 Записываю ид в глобальную переменную
+    conversationId = this.props.navigation.state.params.conversationId;
+
+    // 1 Создаем RTC Peer Connection
+    this.localPeer = new RTCPeerConnection(this.configuration);
+
+    // 2 Handle ICE candidates and sync that shit between peers via socket
+    this.localPeer.onicecandidate = ({ candidate }) => {
+      const body = { conversationId: this.props.navigation.state.params.conversationId, candidate };
+      if (candidate) this.socket.emit('req:ice', body);
+    };
+
+    // Create local stream (video, audio)
+    await getUserMedia(
+      LOCAL_STREAM_OPTIONS, 
+      (stream) => this.setState({ localStream: stream }), 
+      (e) => console.log(e)
+    );
+
+    // Add localStream to localPeer
+    this.localPeer.addStream(this.state.localStream);
+
+    // Init socket client and they handlers
+    await this.initSocket();
+
+    // Handle adding stream and put them into the state
+    this.localPeer.onaddstream = (event) => {
+      this.setState({ remoteStream: event.stream });
+    };
+
+    // Start incall manager
+    InCallManager.start({ media: 'video' });
+    InCallManager.setSpeakerphoneOn(true);
+  }
+
+  componentWillUnmount() {
+    // Removing socket handlers
+    this.socket.off('res:uCaller');
+    this.socket.off('res:offer');
+    this.socket.off('res:answer');
+    this.socket.off('res:ice');
+    this.socket.off('res:hangup');
   }
 
   async initSocket() {
-    this.socket = await socketService();
+    // Create socket instance
+    this.socket = global.socket;
+
+    // Do what the server say
+    // Сервер определяет кто является caller и присылает этот ивент клиенту caller
+    this.socket.on('res:uCaller', this.createOffer);
+
+    // После того, как caller выполнил req:offer, callee получит событие res:offer
+    this.socket.on('res:offer', this.handleIncomingOffer);
+
+    // После того, как callee принял description присылаем событие caller-у 
+    this.socket.on('res:answer', this.handleAnswer);
+
+    // Синхронизируем ICE сервера между клиентами
+    this.socket.on('res:ice', this.handleNewIceCandidate);
+
+    // Слушать отключение внешнего пира
+    this.socket.on('res:hangup', this.handleResHangup);
+
+    // Сказать серверу, что клиент готов принимать всякое
+    this.socket.emit('req:imReady', this.props.navigation.state.params.conversationId);
   }
 
-  async componentDidMount() {
-    await this.initSocket();
-
-    this.getInternalStream(true, (stream) => this.setState({ internalStream: stream }));
-
-    this.socket.on('exchange', (data) => this.exchange(data));
-    this.socket.on('connect', (data) => {
-      this.getInternalStream(true, (stream) => this.setState({ internalStream: stream }));
-    });
-
-    this.join(this.conversationId);
-  }
-
-  join = (roomId) => {
-    this.socket.emit('join', roomId, (socketIds) => {
-      for (const index in socketIds) {
-        const socketId = socketIds[index];
-        this.createPeerConnection(socketId, true);
-      }
-    });
-  }
-
-  exchange = (data) => {
-    // const peerConn = this.createPeerConnection(data.from, false);
-    let peerConnection;
-    if (data.from in PEERS) {
-      peerConnection = PEERS[data.from];
-    } else {
-      peerConnection = this.createPeerConnection(data.from, false);
-    }
-
-    if (data.sdp) {
-      peerConnection.setRemoteDescription(new RTCSessionDescription(data.sdp), () => {
-        if (peerConnection.remoteDescription.type === 'offer') {
-          peerConnection.createAnswer((description) => {
-            console.log('create answer', description);
-            peerConnection.setLocalDescription(description, () => {
-              console.log('set local description', peerConnection.localDescription, description);
-              this.socket.emit('exchange', { to: data.from, sdp: peerConnection.localDescription });
-            }, (e) => console.log(e));
-          }, (e) => console.log(e));
-        }
+  // Запускается при сокет событии res:uCaller
+  // [CALLER] создает offer и устанавливает description
+  // При успехе всей цепи порождает событие req:offer
+  createOffer = () => {
+    this.localPeer.createOffer((description) => {
+      this.localPeer.setLocalDescription(description, () => {
+        const body = { conversationId: this.props.navigation.state.params.conversationId, description };
+        this.socket.emit('req:offer', body);
       }, (e) => console.log(e));
-    } else {
-      console.log('exchange candidate', data);
-      peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
-    }
+    }, (e) => console.log(e), OFFER_OPTIONS);
   }
 
-  createPeerConnection = (peerId, isOffer) => {
-    const peerConnection = new RTCPeerConnection(this.configuration);
+  // Запускается при сокет событии res:offer
+  // [CALLEE] устанавливает description и вызывает следующую функцию
+  handleIncomingOffer = ({ description }) => {
+    this.localPeer.setRemoteDescription(new RTCSessionDescription(description), () => {
+      this.createAnswer();
+    }, (e) => console.log(e));
+  }
 
-    PEERS[peerId] = peerConnection;
-
-    const createOffer = () => {
-      peerConnection.createOffer((description) => {
-        console.log('create offer', description);
-        peerConnection.setLocalDescription(description, () => {
-          console.log('set local description', description);
-          this.socket.emit('exchange', { to: peerId, sdp: peerConnection.localDescription });
-        }, (e) => console.log(e));
+  // [CALLEE] создает answer description, устанавливает его для себя и передает другому пиру
+  // При успехе порождает событие req:asnwer
+  createAnswer = () => {
+    this.localPeer.createAnswer((description) => {
+      this.localPeer.setLocalDescription(description, () => {
+        const body = { conversationId: this.props.navigation.state.params.conversationId, description };
+        this.socket.emit('req:answer', body);
       }, (e) => console.log(e));
-    }
-
-    peerConnection.onaddstream = (event) => this.setState({ externalStream: event.stream });
-    peerConnection.onnegotiationneeded = () => isOffer ? createOffer() : null;
-    peerConnection.addStream(this.state.internalStream);
-
-    return peerConnection;
+    }, (e) => console.log(e));
   }
 
-  getInternalStream = (isFrontSource, callback) => {
-    const options = {
-      audio: true,
-      video: {
-        facingMode: 'user',
-        mandatory: {
-          minWidth: Dimensions.get('window').width,
-          minHeight: Dimensions.get('window').height,
-          minFrameRate: 30
-        }
-      }
-    };
+  // Запускается при сокет событии res:answer
+  // [CALLER] получает ответ от callee и устанавливает description
+  handleAnswer = ({ description }) => {
+    // не трогать аргументы!!! Почему-то без них не совсем работает, я хз
+    this.localPeer.setRemoteDescription(new RTCSessionDescription(description), () => {}, (e) => console.log(e));
+  }
 
-    getUserMedia(options, (stream) => callback(stream), (e) => console.log(e));
+  // Запускается при сокет событии res:ice
+  // Любой клиент получает нового ICE кандидата и устанавливает его в RTCPC
+  handleNewIceCandidate = ({ candidate }) => {
+    this.localPeer.addIceCandidate(new RTCIceCandidate(candidate));
+  }
+
+  // on socket res:hangup event
+  handleResHangup = () => {
+    this.props.navigation.navigate('ChatRooms');
+    this.localPeer.close();
+    InCallManager.stop();
+  }
+
+  // on hangup button click
+  handleHangup = () => {
+    // Сказать пока серверу чтобы уведомить о выходе другого пира
+    this.socket.emit('req:hangup', conversationId);
+    console.log(this.props.navigation.state.params.conversationId, conversationId);
+    this.props.navigation.navigate('ChatRooms');
+    this.localPeer.close();
+    InCallManager.stop();
   }
 
   render() {
     const {
-      externalStream,
-      internalStream
+      localStream,
+      remoteStream
     } = this.state;
 
     return (
       <View style={s.container}>
         <View style={s.externalVideoContainer}>
-          <RTCView objectFit="cover" style={s.externalVideo} streamURL={externalStream && externalStream.toURL()}/>
+          <RTCView
+            objectFit="cover" 
+            style={s.externalVideo} 
+            streamURL={remoteStream && remoteStream.toURL()}/>
         </View>
         
-        <View style={s.internalVideoContainer}>
-          <RTCView objectFit="cover" style={s.internalVideo} streamURL={internalStream && internalStream.toURL()}/>
-        </View>
+        {/* <View style={s.internalVideoContainer}>
+          <RTCView 
+            objectFit="cover" 
+            style={s.internalVideo} 
+            streamURL={localStream && localStream.toURL()}/>
+    </View> */}
 
         <View style={s.controls}>
           <View style={s.button}>
-            <CallButton iconName="call-end" backgroundColor="#ff3b2f" iconColor="#fff"/>
+            <CallButton
+              onPress={this.handleHangup}
+              iconName="call-end" 
+              backgroundColor="#ff3b2f" 
+              iconColor="#fff"/>
           </View>
         </View>
       </View>
     );
   }
 }
+
+
+export default Call;
