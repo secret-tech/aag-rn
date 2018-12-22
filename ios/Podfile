@@ -20,4 +20,6 @@ target 'askagirl' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
+  pod 'react-native-webrtc', :path => '../node_modules/react-native-webrtc'
+
 end

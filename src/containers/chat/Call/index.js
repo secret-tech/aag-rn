@@ -54,7 +54,7 @@ class Call extends Component {
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     // 0 Записываю ид в глобальную переменную
     conversationId = this.props.navigation.state.params.conversationId;
 
@@ -70,12 +70,15 @@ class Call extends Component {
     // Create local stream (video, audio)
     await getUserMedia(
       LOCAL_STREAM_OPTIONS, 
-      (stream) => this.setState({ localStream: stream }), 
+      (stream) => {
+        this.setState({ localStream: stream });
+        this.localPeer.addStream(stream);
+      }, 
       (e) => console.log(e)
     );
 
     // Add localStream to localPeer
-    this.localPeer.addStream(this.state.localStream);
+    // this.localPeer.addStream(this.state.localStream);
 
     // Init socket client and they handlers
     await this.initSocket();
