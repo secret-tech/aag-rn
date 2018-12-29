@@ -18,13 +18,11 @@ class App extends Component {
     OneSignal.init('96ef2fff-208d-4b7e-a592-6c45b3633fad', { kOSSettingsKeyAutoPrompt: true });
     OneSignal.inFocusDisplaying(0);
 
-    OneSignal.addEventListener('opened', (n) => console.log('opened', n));
     OneSignal.addEventListener('received', (n) => console.log('received', n));
   }
 
   componentWillUnmount() {
     OneSignal.removeEventListener('received');
-    OneSignal.removeEventListener('opened');
   }
 
   render() {
