@@ -61,11 +61,11 @@
 		8140D2F421CEC6A0001B32A4 /* libc.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8140D2F321CEC69F001B32A4 /* libc.tbd */; };
 		8140D2F621CEC6AA001B32A4 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8140D2F521CEC6AA001B32A4 /* libc++.tbd */; };
 		8140D2F821CEC6B9001B32A4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8140D2F721CEC6B9001B32A4 /* libsqlite3.tbd */; };
+		81AF936021D7E48900789BB1 /* libRCTOneSignal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8140D2DA21CEC44F001B32A4 /* libRCTOneSignal.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		89C9401DFC2B420389CCD98F /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E29D0C2C714747DC8E236601 /* EvilIcons.ttf */; };
 		98E1415B56464ADF96A6FBD6 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B6F169A45F24D3080FA8D44 /* Feather.ttf */; };
 		A02DB1888C264C08A344F8DE /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0F82B93F57484F4C8ABB994C /* FontAwesome5_Regular.ttf */; };
-		A05C12F39ABD435B99101431 /* libRCTOneSignal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8077DBA462B140EE9C9D07DB /* libRCTOneSignal.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		BC7A2A044E0D44DCBAB7B8A6 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 447F65C983BD4DC290A0EB82 /* FontAwesome.ttf */; };
 		BD7CB839FA7C4401BE924099 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3C796A237518460386B5CC56 /* AntDesign.ttf */; };
@@ -510,6 +510,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81AF936021D7E48900789BB1 /* libRCTOneSignal.a in Frameworks */,
 				8140D2F821CEC6B9001B32A4 /* libsqlite3.tbd in Frameworks */,
 				8140D2F621CEC6AA001B32A4 /* libc++.tbd in Frameworks */,
 				8140D2F421CEC6A0001B32A4 /* libc.tbd in Frameworks */,
@@ -539,7 +540,6 @@
 				F8DF234544644CCD90EA489B /* FBSDKShareKit.framework in Frameworks */,
 				FD0D1900E8614A90BD177DBB /* FBSDKLoginKit.framework in Frameworks */,
 				2BA657A5E9FA43A19313BC3E /* libRNVectorIcons.a in Frameworks */,
-				A05C12F39ABD435B99101431 /* libRCTOneSignal.a in Frameworks */,
 				5BB1AD700D6943AC92710868 /* libRNInCallManager.a in Frameworks */,
 				C86ED862756F4940A015A84D /* libRCTWebRTC.a in Frameworks */,
 				E19B350E6D64EB73213A0E87 /* libPods-askagirl.a in Frameworks */,

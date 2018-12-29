@@ -19,10 +19,12 @@ class App extends Component {
     OneSignal.inFocusDisplaying(0);
 
     OneSignal.addEventListener('received', (n) => console.log('received', n));
+    OneSignal.addEventListener('opened', (n) => console.log('opened', n));
   }
 
   componentWillUnmount() {
     OneSignal.removeEventListener('received');
+    OneSignal.removeEventListener('opened');
   }
 
   render() {

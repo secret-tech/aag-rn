@@ -19,14 +19,14 @@ class Main extends Component {
     this.props.fetchProfile();
 
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
-    // OneSignal.addEventListener('opened', (notify) => this.onOpenReviewNotification(notify));
+    OneSignal.addEventListener('opened', (notify) => this.onOpenReviewNotification(notify));
     OneSignal.addEventListener('received', (notify) => this.onReceiveReviewNotification(notify));
   }
 
   componentWillUnmount () {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
     OneSignal.removeEventListener('received');
-    // OneSignal.removeEventListener('opened');
+    OneSignal.removeEventListener('opened');
   }
 
   onBackPress = () => {
