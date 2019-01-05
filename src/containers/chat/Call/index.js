@@ -1,4 +1,4 @@
-// All comments in russian language coz I'm too lazy to rewrite them. Enjoy :-)
+// All comments in russian language coz I'm too lazy to translate them. Enjoy :-)
 
 // Оставь надежду, всяк сюда входящий.
 // Подумай 10 раз, перед тем, как что-то менять в этом проклятом файле. Тут тебе не рады.
@@ -181,7 +181,6 @@ class Call extends Component {
   handleHangup = () => {
     // Сказать пока серверу чтобы уведомить о выходе другого пира
     this.socket.emit('req:hangup', conversationId);
-    console.log(this.props.navigation.state.params.conversationId, conversationId);
     this.props.navigation.navigate('ChatRooms');
     this.localPeer.close();
     InCallManager.stop();
@@ -189,7 +188,6 @@ class Call extends Component {
 
   render() {
     const {
-      localStream,
       remoteStream
     } = this.state;
 
@@ -201,13 +199,6 @@ class Call extends Component {
             style={s.externalVideo} 
             streamURL={remoteStream && remoteStream.toURL()}/>
         </View>
-        
-        {/* <View style={s.internalVideoContainer}>
-          <RTCView 
-            objectFit="cover" 
-            style={s.internalVideo} 
-            streamURL={localStream && localStream.toURL()}/>
-    </View> */}
 
         <View style={s.controls}>
           <View style={s.button}>
