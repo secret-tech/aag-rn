@@ -18,8 +18,6 @@ import CallButton from '../../../components/chat/CallButton';
 
 import s from './styles';
 
-let conversationId = '';
-
 // Конфигурация локальных медиа данных
 const LOCAL_STREAM_OPTIONS = {
   audio: true,
@@ -44,7 +42,16 @@ class Call extends Component {
   constructor(props) {
     super(props);
 
-    this.configuration = {'iceServers': [{ 'url': 'stun:stun.l.google.com:19302' }]};
+    this.configuration = {
+      'iceServers': [
+        { url: 'stun:stun2.1.google.com:19302' },
+        { url: 'stun:stun1.l.google.com:19302' },
+        { url: 'stun:stun1.voiceeclipse.net:3478' },
+        { url: 'stun:stun2.l.google.com:19302' },
+        { url: 'stun:stun3.l.google.com:19302' },
+        { url: 'stun:stun4.l.google.com:19302' }
+      ]
+    };
 
     this.localPeer = null;
 
@@ -55,9 +62,6 @@ class Call extends Component {
   }
 
   async componentDidMount() {
-    // 0 Записываю ид в глобальную переменную
-    conversationId = this.props.navigation.state.params.conversationId;
-
     // 1 Создаем RTC Peer Connection
     this.localPeer = new RTCPeerConnection(this.configuration);
 
@@ -74,7 +78,7 @@ class Call extends Component {
         this.setState({ localStream: stream });
         this.localPeer.addStream(stream);
       }, 
-      (e) => console.log(e)
+      console.log
     );
 
     // Add localStream to localPeer
@@ -94,12 +98,15 @@ class Call extends Component {
   }
 
   componentWillUnmount() {
+    this.localPeer.close();
+    InCallManager.stop();
+
     // Removing socket handlers
-    this.socket.off('res:uCaller');
-    this.socket.off('res:offer');
-    this.socket.off('res:answer');
-    this.socket.off('res:ice');
-    this.socket.off('res:hangup');
+    // this.socket.off('res:uCaller');
+    // this.socket.off('res:offer');
+    // this.socket.off('res:answer');
+    // this.socket.off('res:ice');
+    // this.socket.off('res:hangup');
   }
 
   async initSocket() {
@@ -134,8 +141,8 @@ class Call extends Component {
       this.localPeer.setLocalDescription(description, () => {
         const body = { conversationId: this.props.navigation.state.params.conversationId, description };
         this.socket.emit('req:offer', body);
-      }, (e) => console.log(e));
-    }, (e) => console.log(e), OFFER_OPTIONS);
+      }, console.log);
+    }, console.log, OFFER_OPTIONS);
   }
 
   // Запускается при сокет событии res:offer
@@ -143,7 +150,7 @@ class Call extends Component {
   handleIncomingOffer = ({ description }) => {
     this.localPeer.setRemoteDescription(new RTCSessionDescription(description), () => {
       this.createAnswer();
-    }, (e) => console.log(e));
+    }, console.log);
   }
 
   // [CALLEE] создает answer description, устанавливает его для себя и передает другому пиру
@@ -153,15 +160,14 @@ class Call extends Component {
       this.localPeer.setLocalDescription(description, () => {
         const body = { conversationId: this.props.navigation.state.params.conversationId, description };
         this.socket.emit('req:answer', body);
-      }, (e) => console.log(e));
-    }, (e) => console.log(e));
+      }, console.log);
+    }, console.log);
   }
 
   // Запускается при сокет событии res:answer
   // [CALLER] получает ответ от callee и устанавливает description
   handleAnswer = ({ description }) => {
-    // не трогать аргументы!!! Почему-то без них не совсем работает, я хз
-    this.localPeer.setRemoteDescription(new RTCSessionDescription(description), () => {}, (e) => console.log(e));
+    this.localPeer.setRemoteDescription(new RTCSessionDescription(description), console.log, console.log);
   }
 
   // Запускается при сокет событии res:ice
@@ -180,10 +186,10 @@ class Call extends Component {
   // on hangup button click
   handleHangup = () => {
     // Сказать пока серверу чтобы уведомить о выходе другого пира
-    this.socket.emit('req:hangup', conversationId);
-    this.props.navigation.navigate('ChatRooms');
+    this.socket.emit('req:hangup', this.props.navigation.state.params.conversationId);
     this.localPeer.close();
     InCallManager.stop();
+    this.props.navigation.navigate('ChatRooms');
   }
 
   render() {
