@@ -4,6 +4,8 @@ import { NavigationActions } from 'react-navigation';
 import { TouchableOpacity } from 'react-native';
 import { Container, Content, List, ListItem, Left, Body, Right, Thumbnail, Text } from 'native-base';
 
+import PlatformMargin from '../../../components/common/PlatformMargin';
+
 import { reqConversations } from '../../../redux/ducks/chat/rooms';
 import { reqFindOrCreateConversation } from '../../../redux/ducks/chat/chat';
 
@@ -60,9 +62,11 @@ class Rooms extends Component {
     return (
       <Container>
         <Content>
-          <List>
-            {sortConversations(conversations).map((conversation) => this.renderConversation(conversation))}
-          </List>
+          <PlatformMargin>
+            <List>
+              {sortConversations(conversations).map((conversation) => this.renderConversation(conversation))}
+            </List>
+          </PlatformMargin>
         </Content>
       </Container>
     );

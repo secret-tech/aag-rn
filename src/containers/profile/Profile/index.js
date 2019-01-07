@@ -5,6 +5,7 @@ import { Image } from 'react-native';
 import { Container, Content, View, Text, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
+import PlatformMargin from '../../../components/common/PlatformMargin';
 import Spinner from '../../../components/common/Spinner';
 
 import s from './styles';
@@ -20,27 +21,29 @@ class Profile extends Component {
       : (
       <Container>
         <Content>
-          <View style={s.profile}>
-            <Button style={s.settings} transparent onPress={() => this.nav('Profile', 'ProfileSettings')}>
-              <Icon name='settings' size={24} color='#000' />
-            </Button>
+          <PlatformMargin>
+            <View style={s.profile}>
+              <Button style={s.settings} transparent onPress={() => this.nav('Profile', 'ProfileSettings')}>
+                <Icon name='settings' size={24} color='#000' />
+              </Button>
 
-            <View style={s.pictureWrap}>
-              <Image style={s.avatar} source={{ uri: picture }} resizeMode="cover" />
-            </View>
+              <View style={s.pictureWrap}>
+                <Image style={s.avatar} source={{ uri: picture }} resizeMode="cover" />
+              </View>
 
-            <View style={s.nameWrap}>
-              <Text style={s.name}>{firstName} {lastName}{age && `, ${age}`}</Text>
-            </View>
+              <View style={s.nameWrap}>
+                <Text style={s.name}>{firstName} {lastName}{age && `, ${age}`}</Text>
+              </View>
 
-            <View style={s.bioWrap}>
-              <Text style={s.bio}>{bio}</Text>
-            </View>
+              <View style={s.bioWrap}>
+                <Text style={s.bio}>{bio}</Text>
+              </View>
 
-            <View style={s.tagsWrap}>
-              {tags.map((tag, i) => <Text style={s.tag} key={`${tag}-${i}`}>{tag}</Text>)}
+              <View style={s.tagsWrap}>
+                {tags.map((tag, i) => <Text style={s.tag} key={`${tag}-${i}`}>{tag}</Text>)}
+              </View>
             </View>
-          </View>
+          </PlatformMargin>
         </Content>
       </Container>
     );

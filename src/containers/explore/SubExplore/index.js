@@ -37,8 +37,6 @@ class SubExplore extends Component {
   render() {
     const { data } = this.props;
 
-    console.log(this.props);
-
     return (
       <Container>
         <Header>

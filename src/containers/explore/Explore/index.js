@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Content } from 'native-base';
 
+import PlatformMargin from '../../../components/common/PlatformMargin';
 import Spinner from '../../../components/common/Spinner';
 import ExplorerSection from '../../../components/explore/ExporerSection';
 
@@ -21,9 +22,11 @@ class Explore extends Component {
       : (
         <Container>
           <Content>
-            <ExplorerSection title="Featured advisors" type="featured" data={featuredAdvisors}/>
-            <ExplorerSection title="New advisors" type="new" data={newAdvisors}/>
-            <ExplorerSection title="Online advisors" type="online" data={onlineAdvisors}/>
+            <PlatformMargin>
+              <ExplorerSection title="Featured advisors" type="featured" data={featuredAdvisors}/>
+              <ExplorerSection title="New advisors" type="new" data={newAdvisors}/>
+              <ExplorerSection title="Online advisors" type="online" data={onlineAdvisors}/>
+            </PlatformMargin>
           </Content>
         </Container>
       );

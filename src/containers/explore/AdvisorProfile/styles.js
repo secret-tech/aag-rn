@@ -1,9 +1,8 @@
-export default {
+import { StyleSheet, Platform } from 'react-native';
+
+export default StyleSheet.create({
   container: {
     backgroundColor: '#fff'
-  },
-  pictureWrapper: {
-    positin: 'relative'
   },
   picture: {
     height: '100%',
@@ -17,12 +16,9 @@ export default {
     width: '100%',
     top: 0,
     left: 0,
-    bakcgroundColor: 'rgba(0, 0, 0, 0.9)'
+    backgroundColor: 'rgba(0, 0, 0, 0.05)'
   },
 
-  carousel: {
-    positin: 'relative'
-  },
   dotStyle: {
     width: 8,
     height: 8,
@@ -31,7 +27,7 @@ export default {
 
   back: {
     position: 'absolute',
-    top: 10,
+    top: Platform.OS === 'ios' ? 30 : 10,
     zIndex: 1
   },
   connect: {
@@ -44,7 +40,6 @@ export default {
     backgroundColor: '#6546fa',
     borderRadius: 150,
     padding: 0,
-    border: 0,
     margin: 0,
     width: 64,
     height: 64
@@ -104,7 +99,7 @@ export default {
   tag: {
     fontSize: 14,
     color: '#000',
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: '#e5e5e5',
     overflow: 'hidden',
     borderRadius: 6,
     paddingTop: 3,
@@ -113,4 +108,4 @@ export default {
     paddingRight: 10,
     margin: 2.5
   }
-};
+});
