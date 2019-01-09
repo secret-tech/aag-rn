@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, SafeAreaView } from 'react-native';
 import { Container, Content, List, ListItem, Left, Body, Right, Thumbnail, Text } from 'native-base';
-
-import PlatformMargin from '../../../components/common/PlatformMargin';
 
 import { reqConversations } from '../../../redux/ducks/chat/rooms';
 import { reqFindOrCreateConversation } from '../../../redux/ducks/chat/chat';
@@ -60,15 +58,15 @@ class Rooms extends Component {
     const { conversations } = this.props;
 
     return (
-      <Container>
-        <Content>
-          <PlatformMargin>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <Container>
+          <Content>
             <List>
               {sortConversations(conversations).map((conversation) => this.renderConversation(conversation))}
             </List>
-          </PlatformMargin>
-        </Content>
-      </Container>
+          </Content>
+        </Container>
+      </SafeAreaView>
     );
   }
 }

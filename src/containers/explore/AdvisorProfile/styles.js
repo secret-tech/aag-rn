@@ -27,7 +27,7 @@ export default StyleSheet.create({
 
   back: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 30 : 10,
+    top: 10,
     zIndex: 1
   },
   connect: {
