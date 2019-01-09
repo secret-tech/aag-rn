@@ -22,7 +22,8 @@ class Card extends PureComponent {
 
   render() {
     const {
-      name,
+      firstName,
+      lastName,
       gender,
       age,
       picture,
@@ -45,7 +46,7 @@ class Card extends PureComponent {
             )
             : null}
           <View style={s.content}>
-            <Text style={s.name}>{name}</Text>
+            <Text style={s.name}>{firstName}</Text>
             <Text style={s.common}>{this.capitalize(gender)}{age && `, ${age}`}</Text>
           </View>
         </View>

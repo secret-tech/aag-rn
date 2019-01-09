@@ -11,8 +11,8 @@ class ExplorerSection extends Component {
   capitalize = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
   getItems = () => {
-    const advisors = this.props.data.advisors.map((advisor) => ({ ...advisor, type: 'advisor' }));
-    const button = { type: 'button', nav: this.props.data.type }
+    const advisors = this.props.data.map((advisor) => ({ ...advisor, type: 'advisor' }));
+    const button = { type: 'button', nav: this.props.type }
     const withButton = [...advisors, button];
 
     return withButton;
@@ -27,20 +27,18 @@ class ExplorerSection extends Component {
   }
 
   render() {
-    return this.props.data.advisors.length <= 0
-      ? <View><Text>...</Text></View>
-      : (
-        <View style={s.section}>
-          <Text style={s.title}>{this.capitalize(this.props.title)}</Text>
-  
-          <Carousel
-            ref={(c) => { this._carousel = c; }}
-            data={this.getItems()}
-            renderItem={this.itemRenderer}
-            sliderWidth={sliderWidth}
-            itemWidth={largeSlideWidth}/>
-        </View>
-      );
+    return (
+      <View style={s.section}>
+        <Text style={s.title}>{this.props.title}</Text>
+
+        <Carousel
+          ref={(c) => { this._carousel = c; }}
+          data={this.getItems()}
+          renderItem={this.itemRenderer}
+          sliderWidth={sliderWidth}
+          itemWidth={largeSlideWidth}/>
+      </View>
+    );
   }
 }
 

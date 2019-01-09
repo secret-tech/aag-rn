@@ -12,7 +12,7 @@ function* updateBioIterator({ payload }) {
   try {
     const token = yield call(getToken);
     const req = { bio: payload };
-    const { data } = yield call(axios.post, 'https://aag.secrettech.io/users/bio', req, {
+    const { data } = yield call(axios.post, 'https://aag.secrettech.io/user/bio', req, {
       headers: {
         'Authorization': `Bearer ${token}`
       }

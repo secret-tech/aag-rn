@@ -57,7 +57,7 @@ class ReviewAdvisor extends Component {
   }
 
   render() {
-    const { name, picture } = this.props.advisor.toJS();
+    const { firstName, picture } = this.props.advisor.toJS();
 
     return (
       <Container style={s.container}>
@@ -72,9 +72,9 @@ class ReviewAdvisor extends Component {
             </View>
 
             <View style={s.textWrap}>
-              <Text style={s.ttl}>Send feedback for {name}!</Text>
+              <Text style={s.ttl}>Send feedback for {firstName}!</Text>
 
-              <Text style={s.descr}>You recently spoke with {name}, please leave your feedback about the service provided.</Text>
+              <Text style={s.descr}>You recently spoke with {firstName}, please leave your feedback about the service provided.</Text>
             </View>
 
             <View style={s.stars}>

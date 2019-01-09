@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StatusBar, Image } from 'react-native';
+import { SafeAreaView, StatusBar, Image } from 'react-native';
 import { View, Button, Text } from 'native-base';
 import OneSignal from 'react-native-onesignal';
 
@@ -26,7 +26,7 @@ class SignIn extends Component {
 
   render() {
     return (
-      <View style={s.container}>
+      <SafeAreaView style={s.container}>
         <StatusBar barStyle="light-content" />
         <View style={s.loginView}>
           <View>
@@ -42,7 +42,7 @@ class SignIn extends Component {
             </Button>
           </View>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }

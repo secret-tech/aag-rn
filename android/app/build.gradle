@@ -180,7 +180,8 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-voximplant')
+    compile project(':react-native-webrtc')
+    compile project(':react-native-incall-manager')
     compile project(':react-native-onesignal')
     compile project(':react-native-vector-icons')
     compile project(':react-native-fbsdk')

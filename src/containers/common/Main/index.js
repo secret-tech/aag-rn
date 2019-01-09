@@ -8,7 +8,7 @@ import { View } from 'native-base';
 import TabNavigator from '../../../navigation/TabNavigator';
 import ReviewInternalNotification from '../ReviewInternalNotification';
 
-import { initSocket } from '../../../redux/ducks/chat/rooms';
+import { initSocket } from '../../../redux/ducks/common/socket';
 import { fetchProfile } from '../../../redux/ducks/profile/profile';
 import { openNotification, setAdvisor } from '../../../redux/ducks/common/review';
 
@@ -66,6 +66,7 @@ class Main extends Component {
     }
   }
 
+  // ios framework having as issue with onesignal's 'opened' event, so we need to disable it.
   onOpenReviewNotification = (notification) => {
     // TODO requires refactor
     const review = notification
