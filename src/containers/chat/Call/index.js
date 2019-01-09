@@ -1,4 +1,4 @@
-// All comments in russian language coz I'm too lazy to rewrite them. Enjoy :-)
+// All comments in russian language coz I'm too lazy to translate them. Enjoy :-)
 
 // Оставь надежду, всяк сюда входящий.
 // Подумай 10 раз, перед тем, как что-то менять в этом проклятом файле. Тут тебе не рады.
@@ -17,8 +17,6 @@ import { RTCPeerConnection, RTCMediaStream, RTCIceCandidate, RTCSessionDescripti
 import CallButton from '../../../components/chat/CallButton';
 
 import s from './styles';
-
-let conversationId = '';
 
 // Конфигурация локальных медиа данных
 const LOCAL_STREAM_OPTIONS = {
@@ -44,7 +42,16 @@ class Call extends Component {
   constructor(props) {
     super(props);
 
-    this.configuration = {'iceServers': [{ 'url': 'stun:stun.l.google.com:19302' }]};
+    this.configuration = {
+      'iceServers': [
+        { url: 'stun:stun2.1.google.com:19302' },
+        { url: 'stun:stun1.l.google.com:19302' },
+        { url: 'stun:stun1.voiceeclipse.net:3478' },
+        { url: 'stun:stun2.l.google.com:19302' },
+        { url: 'stun:stun3.l.google.com:19302' },
+        { url: 'stun:stun4.l.google.com:19302' }
+      ]
+    };
 
     this.localPeer = null;
 
@@ -54,10 +61,7 @@ class Call extends Component {
     };
   }
 
-  async componentWillMount() {
-    // 0 Записываю ид в глобальную переменную
-    conversationId = this.props.navigation.state.params.conversationId;
-
+  async componentDidMount() {
     // 1 Создаем RTC Peer Connection
     this.localPeer = new RTCPeerConnection(this.configuration);
 
@@ -70,12 +74,15 @@ class Call extends Component {
     // Create local stream (video, audio)
     await getUserMedia(
       LOCAL_STREAM_OPTIONS, 
-      (stream) => this.setState({ localStream: stream }), 
-      (e) => console.log(e)
+      (stream) => {
+        this.setState({ localStream: stream });
+        this.localPeer.addStream(stream);
+      }, 
+      console.log
     );
 
     // Add localStream to localPeer
-    this.localPeer.addStream(this.state.localStream);
+    // this.localPeer.addStream(this.state.localStream);
 
     // Init socket client and they handlers
     await this.initSocket();
@@ -91,12 +98,15 @@ class Call extends Component {
   }
 
   componentWillUnmount() {
+    this.localPeer.close();
+    InCallManager.stop();
+
     // Removing socket handlers
-    this.socket.off('res:uCaller');
-    this.socket.off('res:offer');
-    this.socket.off('res:answer');
-    this.socket.off('res:ice');
-    this.socket.off('res:hangup');
+    // this.socket.off('res:uCaller');
+    // this.socket.off('res:offer');
+    // this.socket.off('res:answer');
+    // this.socket.off('res:ice');
+    // this.socket.off('res:hangup');
   }
 
   async initSocket() {
@@ -131,8 +141,8 @@ class Call extends Component {
       this.localPeer.setLocalDescription(description, () => {
         const body = { conversationId: this.props.navigation.state.params.conversationId, description };
         this.socket.emit('req:offer', body);
-      }, (e) => console.log(e));
-    }, (e) => console.log(e), OFFER_OPTIONS);
+      }, console.log);
+    }, console.log, OFFER_OPTIONS);
   }
 
   // Запускается при сокет событии res:offer
@@ -140,7 +150,7 @@ class Call extends Component {
   handleIncomingOffer = ({ description }) => {
     this.localPeer.setRemoteDescription(new RTCSessionDescription(description), () => {
       this.createAnswer();
-    }, (e) => console.log(e));
+    }, console.log);
   }
 
   // [CALLEE] создает answer description, устанавливает его для себя и передает другому пиру
@@ -150,15 +160,14 @@ class Call extends Component {
       this.localPeer.setLocalDescription(description, () => {
         const body = { conversationId: this.props.navigation.state.params.conversationId, description };
         this.socket.emit('req:answer', body);
-      }, (e) => console.log(e));
-    }, (e) => console.log(e));
+      }, console.log);
+    }, console.log);
   }
 
   // Запускается при сокет событии res:answer
   // [CALLER] получает ответ от callee и устанавливает description
   handleAnswer = ({ description }) => {
-    // не трогать аргументы!!! Почему-то без них не совсем работает, я хз
-    this.localPeer.setRemoteDescription(new RTCSessionDescription(description), () => {}, (e) => console.log(e));
+    this.localPeer.setRemoteDescription(new RTCSessionDescription(description), console.log, console.log);
   }
 
   // Запускается при сокет событии res:ice
@@ -177,16 +186,14 @@ class Call extends Component {
   // on hangup button click
   handleHangup = () => {
     // Сказать пока серверу чтобы уведомить о выходе другого пира
-    this.socket.emit('req:hangup', conversationId);
-    console.log(this.props.navigation.state.params.conversationId, conversationId);
-    this.props.navigation.navigate('ChatRooms');
+    this.socket.emit('req:hangup', this.props.navigation.state.params.conversationId);
     this.localPeer.close();
     InCallManager.stop();
+    this.props.navigation.navigate('ChatRooms');
   }
 
   render() {
     const {
-      localStream,
       remoteStream
     } = this.state;
 
@@ -198,13 +205,6 @@ class Call extends Component {
             style={s.externalVideo} 
             streamURL={remoteStream && remoteStream.toURL()}/>
         </View>
-        
-        {/* <View style={s.internalVideoContainer}>
-          <RTCView 
-            objectFit="cover" 
-            style={s.internalVideo} 
-            streamURL={localStream && localStream.toURL()}/>
-    </View> */}
 
         <View style={s.controls}>
           <View style={s.button}>

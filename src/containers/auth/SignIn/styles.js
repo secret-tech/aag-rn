@@ -1,10 +1,10 @@
 // stable
-import { Dimensions, Platform } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 
 const dwidth = Dimensions.get('window').width;
 const lwidth = Dimensions.get('window').height;
 
-export default {
+export default StyleSheet.create({
   container: {
     backgroundColor: '#6546fa',
     flex: 1,
@@ -40,4 +40,4 @@ export default {
     marginBottom: 10,
     width: '100%'
   }
-};
+});

@@ -66,6 +66,7 @@ class Main extends Component {
     }
   }
 
+  // ios framework having as issue with onesignal's 'opened' event, so we need to disable it.
   onOpenReviewNotification = (notification) => {
     // TODO requires refactor
     const review = notification

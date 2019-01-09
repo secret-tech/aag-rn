@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Header, Left, Body, Right, Text, Button, Icon, Title } from 'native-base';
 import { GiftedChat } from 'react-native-gifted-chat';
@@ -55,32 +56,34 @@ class Chat extends Component {
     const anoterUser = getAnotherUser(users, userId);
 
     return (
-      <Container>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="arrow-back" />
-              <Text>Back</Text>
-            </Button>
-          </Left>
-          <Body>
-            <Title>{anoterUser.firstName}</Title>
-          </Body>
-          <Right>
-            <Button transparent onPress={() => this.props.reqCall({ conversationId: id, user: anoterUser })}>
-              <Icon name="ios-call" />
-            </Button>
-          </Right>
-        </Header>
+        <Container>
+          <Header>
+            <Left>
+              <Button transparent onPress={() => this.props.navigation.goBack()}>
+                <Icon name="arrow-back" />
+                <Text>Back</Text>
+              </Button>
+            </Left>
+            <Body>
+              <Title>{anoterUser.firstName}</Title>
+            </Body>
+            <Right>
+              <Button transparent onPress={() => this.props.reqCall({ conversationId: id, user: anoterUser })}>
+                <Icon name="ios-call" />
+              </Button>
+            </Right>
+          </Header>
 
-        <GiftedChat
-          messages={messages.map((message) => transformMessage(message))}
-          onSend={this.sendMessage}
-          inverted={true}
-          user={transformUser(user)}
-          loadEarlier={true}
-          onLoadEarlier={this.fetchMoreMessages}/>
-      </Container>
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+              <GiftedChat
+                messages={messages.map((message) => transformMessage(message))}
+                onSend={this.sendMessage}
+                inverted={true}
+                user={transformUser(user)}
+                loadEarlier={true}
+                onLoadEarlier={this.fetchMoreMessages}/>
+            </SafeAreaView>
+        </Container>
     );
   }
 }

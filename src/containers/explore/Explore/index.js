@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Content } from 'native-base';
 
@@ -19,13 +20,15 @@ class Explore extends Component {
     return loading
       ? <Spinner/>
       : (
-        <Container>
-          <Content>
-            <ExplorerSection title="Featured advisors" type="featured" data={featuredAdvisors}/>
-            <ExplorerSection title="New advisors" type="new" data={newAdvisors}/>
-            <ExplorerSection title="Online advisors" type="online" data={onlineAdvisors}/>
-          </Content>
-        </Container>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+          <Container>
+            <Content>
+              <ExplorerSection title="Featured advisors" type="featured" data={featuredAdvisors}/>
+              <ExplorerSection title="New advisors" type="new" data={newAdvisors}/>
+              <ExplorerSection title="Online advisors" type="online" data={onlineAdvisors}/>
+            </Content>
+          </Container>
+        </SafeAreaView>
       );
   }
 }
