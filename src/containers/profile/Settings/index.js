@@ -39,6 +39,7 @@ class Settings extends Component {
         <Content>
           <List>
             {this.renderListItem('Edit profile', () => this.nav('Profile', 'ProfileEditProfile'))}
+            {/* his.renderListItem('Become advisor', () => this.nav('Profile', 'ProfileBecomeAdvisor')) */}
 
             <Separator/>
 

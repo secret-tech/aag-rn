@@ -7,5 +7,9 @@
 export default {
   footer: {
     backgroundColor: '#fff'
+  },
+
+  label: {
+    fontSize: 10
   }
 };
