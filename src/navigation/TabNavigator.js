@@ -18,6 +18,7 @@ import Settings from '../containers/profile/Settings';
 import EditProfile from '../containers/profile/EditProfile';
 import EditBio from '../containers/profile/EditBio';
 import EditTags from '../containers/profile/EditTags';
+import BecomeAdvisor from '../containers/profile/BecomeAdvisor';
 
 const ExploreStack = createStackNavigator({
   ExploreExplore: { screen: Explore },
@@ -64,7 +65,8 @@ const ProfileStack = createStackNavigator({
   ProfileSettings: { screen: Settings },
   ProfileEditProfile: { screen: EditProfile },
   ProfileEditBio: { screen: EditBio },
-  ProfileEditTags: { screen: EditTags }
+  ProfileEditTags: { screen: EditTags },
+  ProfileBecomeAdvisor: { screen: BecomeAdvisor }
 }, {
   initialRouteName: 'ProfileProfile',
   headerMode: 'none'
